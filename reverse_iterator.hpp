@@ -117,37 +117,37 @@ namespace ft {
 	template <class Iterator>
 	bool	operator==( const reverse_iterator< Iterator > & x, const reverse_iterator< Iterator > & y ) {
 
-		x.current == y.current;
+		return x.current == y.current;
 	}
 
 	template <class Iterator>
 	bool	operator<( const reverse_iterator< Iterator > & x, const reverse_iterator< Iterator > & y ) {
 
-		x.current > y.current;
+		return x.current > y.current;
 	}
 
 	template <class Iterator>
 	bool	operator!=( const reverse_iterator< Iterator > & x, const reverse_iterator< Iterator > & y ) {
 
-		x.current != y.current;
+		return x.current != y.current;
 	}
 
 	template <class Iterator>
 	bool	operator>( const reverse_iterator< Iterator > & x, const reverse_iterator< Iterator > & y ) {
 
-		x.current < y.current;
+		return x.current < y.current;
 	}
 
 	template <class Iterator>
 	bool	operator>=( const reverse_iterator< Iterator > & x, const reverse_iterator< Iterator > & y ) {
 
-		x.current <= y.current;
+		return x.current <= y.current;
 	}
 
 	template <class Iterator>
 	bool	operator<=( const reverse_iterator< Iterator > & x, const reverse_iterator< Iterator > & y ) {
 
-		x.current >= y.current;
+		return x.current >= y.current;
 	}
 
 	template <class Iterator>
