@@ -7,6 +7,7 @@
 # include "is_integral.hpp"
 # include <memory>
 # include <iterator>
+# include <stdexcept>
 
 namespace ft {
 
@@ -19,7 +20,7 @@ namespace ft {
 			typedef typename Allocator::reference			reference;
 			typedef typename Allocator::const_reference		const_reference;
 			typedef ft::vector_iterator< T >				iterator;
-			typedef ft::vector_iterator< T const>			const_iterator;
+			typedef ft::vector_const_iterator< T >			const_iterator;
 			typedef Allocator::size_type					size_type;
 			typedef Allocator::difference_type				difference_type
 			typedef typename T								value_type;
@@ -123,36 +124,180 @@ namespace ft {
 			}
 
 		/* iterators */
-			iterator	begin();
-			const_iterator	begin() const;
-			iterator	end();
-			const_iterator	end() const;
-			reverse_iterator	rbegin();
-			const_reverse_iterator	rbegin() const;
-			reverse_iterator	rend();
-			const_reverse_iterator	rend() const;
+			iterator	begin() {
+
+				return iterator( _array );
+			}
+
+			const_iterator	begin() const {
+
+				return const_iterator( _array );
+			}
+
+			iterator	end() {
+
+				return iterator( _array + _size );
+			}
+
+			const_iterator	end() const {
+
+				return const_iterator( _array + _size );
+			}
+
+			reverse_iterator	rbegin() {
+
+				return reverse_iterator( _array + _size );
+			}
+
+			const_reverse_iterator	rbegin() const {
+
+				return const_reverse_iterator( _array + _size );
+			}
+
+			reverse_iterator	rend() {
+
+				return reverse_iterator( _array );
+			}
+
+			const_reverse_iterator	rend() const {
+
+				return	const_reverse_iterator( _array );
+			}
 
 		/* capacity */
-			size_type	size() const;
-			size_type	max_size() const;
-			void	resize( size_type sz, T c = T() );
-			size_type	capacity() const;
-			bool	empty() const;
-			void	reserve( size_type n );
+			size_type	size() const {
+
+				return _size;
+			}
+
+			size_type	max_size() const {
+
+				return _alloc.max_size();
+			}
+
+			void	resize( size_type sz, T c = T() ) {
+
+				if ( sz > size() )
+					insert( end(), sz - size(), c);
+				else if (sz < size() )
+					erase( begin() + sz, end() );
+				return ;
+			}
+
+			size_type	capacity() const {
+
+				return _capacity;
+			}
+
+			bool	empty() const {
+
+				return _size == 0;
+			}
+
+			void	reserve( size_type n ) {
+
+				if ( n > max_size() )
+					throw std::length_error("_M_default_append");
+				if ( n >_capacity ) {
+
+					pointer	newArray = _alloc.allocate( n );
+					for ( size_type i = 0 ; i < _size ; ++i ) {
+
+						_alloc.construct( newArray + i, *(_array + i) );
+						_alloc.destroy( _array + i );
+					}
+					_alloc.deallocate( _array, _capacity );
+					_capacity = n;
+					_array = newArray
+				}
+				return ;
+			}
 
 		/* element access */
-			reference	operator[]( size_type n );
-			const_reference	operator[]( size_type n ) const;
-			const_reference	at( size_type n ) const;
-			reference	at( size_type n );
-			reference	front();
-			const_reference	front() const;
-			reference	back();
-			const_reference	back() const;
+			reference	operator[]( size_type n ) {
+
+				return	_array[n];
+			}
+
+			const_reference	operator[]( size_type n ) const {
+
+				return _array[n];
+			}
+
+			reference	at( size_type n ) {
+
+				if (n < 0 || _size < n ) {
+
+					std::stringstream strStream;
+					strStream << "vector::_M_range_check: __n (which is " << n << ") ";
+					if ( n < 0 )
+						strStream << "< 0";
+					else
+						strStream << ">= this->size() (which is " << this->size() << ")";
+					throw std::out_of_range( strStream.str() );
+				}
+				return _array[n];
+			}
+
+			const_reference	at( size_type n ) const {
+
+				if (n < 0 || _size < n ) {
+
+					std::stringstream strStream;
+					strStream << "vector::_M_range_check: __n (which is " << n << ") ";
+					if ( n < 0 )
+						strStream << "< 0";
+					else
+						strStream << ">= this->size() (which is " << this->size() << ")";
+					throw std::out_of_range( strStream.str() );
+				}
+				return _array[n];
+			}
+
+			reference	front() {
+
+				return *(begin());
+			}
+
+			const_reference	front() const {
+
+				return *(begin());
+			}
+
+			reference	back() {
+
+				return *(rbegin());
+			}
+
+			const_reference	back() const {
+
+				return *(rbegin());
+			}
 
 		/* modifiers */
-			void	push_back( const T& x );
-			void	pop_back();
+			void	push_back( const T& x ) {
+
+				if ( _capacity == 0 )
+					reserve( 1 );
+				else if ( _size == _capacity ) {
+
+					if ( _capacity >> ( sizeof( _capacity ) * CHAR_BIT - 1 - std::numeric_limits<size_type>::is_signed ) != 1 )
+						reserve( _capacity * 2 );
+					else
+						reserve( _capacity + 1 );
+				}
+				_alloc.construct( _array + _size, x );
+				_size++;
+				return ;
+			}
+
+			void	pop_back() {
+
+				_size--;
+				_alloc.destroy( _array + _size );
+				return ;
+			}
+
 			iterator	insert( iterator position, const T& x );
 			void	insert( iterator position, size_type n, const T& x );
 
