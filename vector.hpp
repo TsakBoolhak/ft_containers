@@ -281,7 +281,7 @@ namespace ft {
 					reserve( 1 );
 				else if ( _size == _capacity ) {
 
-					if ( _capacity >> ( sizeof( _capacity ) * CHAR_BIT - 1 - std::numeric_limits<size_type>::is_signed ) != 1 )
+					if ( max_size() - _capacity >= _capacity )
 						reserve( _capacity * 2 );
 					else
 						reserve( _capacity + 1 );
@@ -298,11 +298,42 @@ namespace ft {
 				return ;
 			}
 
-			iterator	insert( iterator position, const T& x );
-			void	insert( iterator position, size_type n, const T& x );
+			iterator	insert( iterator position, const T& x ) {
+
+				insert( position, 1, val );
+				return	iterator( begin() + ( position.get_ptr(), _array ) );
+			}
+
+			void	insert( iterator position, size_type n, const T& x ) {
+
+				size_type	dist = std::distance( begin(), position );
+				if ( n <= 0 )
+					return ;
+				else if ( n > _capacity - _size ) {
+
+					if ( max_size() - _capacity >= _capacity && n <= ( _capacity * 2 ) - _size )
+						reserve( _capacity * 2 );
+					else
+						reserve( _size + n );
+					position = begin() + dist;
+				}
+				pointer	arrEnd = _array + _size + n - 1;
+				pointer arrStart = _array + dist + n - 1;
+				while ( arrEnd != arrStart ) {
+					_alloc.construct( arrEnd, *( arrEnd - n) );
+					_alloc.destroy( arrEnd - n );
+					arrEnd--;
+				}
+				_size += count;
+				for ( size_type i = 0 ; i < n ; ++i )
+					_alloc.construct( _array + dist + i, val );
+				return ;
+			}
 
 			template< class InputIterator >
-			void	insert( iterator position, InputIterator first, InputIterator last );
+			void	insert( iterator position, InputIterator first, InputIterator last ) {
+
+			}
 
 			iterator	erase( iterator position );
 			iterator	erase( iterator first, iterator last );
