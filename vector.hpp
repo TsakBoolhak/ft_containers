@@ -324,42 +324,153 @@ namespace ft {
 					_alloc.destroy( arrEnd - n );
 					arrEnd--;
 				}
-				_size += count;
+				_size += n;
 				for ( size_type i = 0 ; i < n ; ++i )
 					_alloc.construct( _array + dist + i, val );
 				return ;
 			}
 
 			template< class InputIterator >
-			void	insert( iterator position, InputIterator first, InputIterator last ) {
+			void	insert( iterator position, ft::enable_if< !ft::is_integral< InputIterator >::value, InputIterator >::type first, InputIterator last ) {
 
+				size_type	dist = std::distance( begin(), position );
+				size_type	n = std::distance( first, last );
+
+				if ( n <= 0 )
+					return ;
+				else if ( n > _capacity - _size ) {
+
+					if ( max_size() - _capacity >= _capacity && n <= ( _capacity * 2 ) - _size )
+						reserve( _capacity * 2 );
+					else
+						reserve( _size + n );
+					position = begin() + dist;
+				}
+				pointer	arrEnd = _array + _size + n - 1;
+				pointer arrStart = _array + dist + n - 1;
+				while ( arrEnd != arrStart ) {
+					_alloc.construct( arrEnd, *( arrEnd - n ) );
+					_alloc.destroy( arrEnd - n );
+					arrEnd--;
+				}
+				_size += count;
+				for ( size_type i = 0 ; i < n ; ++i )
+					_alloc.construct( _array + dist + i, *(first++) );
+				return ;
 			}
 
-			iterator	erase( iterator position );
-			iterator	erase( iterator first, iterator last );
-			void	swap( vector< T, Allocator > & );
-			void	clear();
+			iterator	erase( iterator position ) {
+
+				size_type dist = std::distance( begin(), position );
+				if ( position == end() || emtpy() )
+					return end();
+				_alloc.destroy( position.get_ptr() );
+				pointer	arrEnd = _array + _size;
+				pointer arrStart = _array + dist;
+				while ( arrEnd != arrStart ) {
+					_alloc.construct( arrEnd, *( arrEnd - 1 ) );
+					_alloc.destroy( arrEnd - 1 );
+					arrEnd--;
+				}
+				_size--;
+			}
+
+			iterator	erase( iterator first, iterator last ) {
+
+				size_type	dist = std::distance( begin(), position );
+				size_type	n = std::distance( first, last );
+				size_type	dist2 = std::distance( last, end() );
+
+				if ( n <= 0 )
+					return ;
+				pointer	arrEnd = _array + dist + n - 1;
+				pointer arrStart = _array + dist;
+				for ( size_type i = 0 ; arrStart != _arrEnd ; arrStart++, i++) {
+
+					_alloc.destroy( arrStart );
+					if ( i < dist2 )
+						_alloc.construct( arrStart, *( arrEnd + i ) );
+				}
+				_size -= n;
+				return ;
+			}
+
+			void	swap( vector< T, Allocator > &rhs ) {
+
+				allocator_type	tmpAlloc = rhs._alloc;
+				size_type	tmpCapacity = rhs._capacity;
+				size_type	tmpSize = rhs._size;
+				pointer	tmpArray = rhs._array;
+
+				rhs._alloc = _alloc;
+				rhs._capacity = _capacity;
+				rhs._size = _size;
+				rhs._array = _array;
+
+				_alloc = tmpAlloc;
+				_capacity = tmpCapacity;
+				_size = tmpSize;
+				_array = tmpArray;
+
+				return ;
+			}
+
+			void	clear() {
+
+				for ( size_type i = 0 ; i < _size ; ++i )
+					_alloc.destroy( _array + i );
+				_size = 0;
+				return ;
+			}
 		
 	};
 
 /* non-member comparators */
 	template< class T, class Allocator >
-	bool	operator==( const vector< const vector< T, Allocator >& x, const vector< const vector< T, Allocator >& y );
+	bool	operator==( const vector< const vector< T, Allocator >& x, const vector< const vector< T, Allocator >& y ) {
+
+		if ( x.size() != y.size() )
+			return false;
+		return ft::equal( x.begin(), x.end(), y.end() );
+	}
+
 	template< class T, class Allocator >
-	bool	operator<( const vector< const vector< T, Allocator >& x, const vector< const vector< T, Allocator >& y );
+	bool	operator<( const vector< const vector< T, Allocator >& x, const vector< const vector< T, Allocator >& y ) {
+
+		return	ft::lexicograpgical_compare( x.begin(), x.end(), y.begin(), y.end() );
+	}
+
 	template< class T, class Allocator >
-	bool	operator!=( const vector< const vector< T, Allocator >& x, const vector< const vector< T, Allocator >& y );
+	bool	operator!=( const vector< const vector< T, Allocator >& x, const vector< const vector< T, Allocator >& y ) {
+
+		return !(x == y);
+	}
+
 	template< class T, class Allocator >
-	bool	operator>( const vector< const vector< T, Allocator >& x, const vector< const vector< T, Allocator >& y );
+	bool	operator>( const vector< const vector< T, Allocator >& x, const vector< const vector< T, Allocator >& y ) {
+
+		return y < x;
+	}
+
 	template< class T, class Allocator >
-	bool	operator>=( const vector< const vector< T, Allocator >& x, const vector< const vector< T, Allocator >& y );
+	bool	operator>=( const vector< const vector< T, Allocator >& x, const vector< const vector< T, Allocator >& y ) {
+
+		return !(x < y);
+	}
+
 	template< class T, class Allocator >
-	bool	operator<=( const vector< const vector< T, Allocator >& x, const vector< const vector< T, Allocator >& y );
+	bool	operator<=( const vector< const vector< T, Allocator >& x, const vector< const vector< T, Allocator >& y ) {
+
+		return !(x > y);
+	}
 
 /* specialized algorithms */
 	template< class T, class Allocator >
-	void	swap( vector< T, Allocator>& x, vector< T, Allocator >& y );
+	void	swap( vector< T, Allocator>& x, vector< T, Allocator >& y ) {
 
+		x.swap( y );
+		return ;
+	}
 }
 
 #endif
