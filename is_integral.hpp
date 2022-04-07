@@ -33,7 +33,7 @@ namespace ft {
 		static bool const value = true;
 	};
 
-	template <>
+/*	template <>
 	struct is_integral_base< char16_t > {
 
 		static bool const value = true;
@@ -43,7 +43,7 @@ namespace ft {
 	struct is_integral_base< char32_t > {
 
 		static bool const value = true;
-	};
+	};*/
 
 	template <>
 	struct is_integral_base< wchar_t > {
@@ -64,12 +64,6 @@ namespace ft {
 	};
 
 	template <>
-	struct is_integral_base< signed short int > {
-
-		static bool const value = true;
-	};
-
-	template <>
 	struct is_integral_base< int > {
 
 		static bool const value = true;
@@ -77,12 +71,6 @@ namespace ft {
 
 	template <>
 	struct is_integral_base< unsigned int > {
-
-		static bool const value = true;
-	};
-
-	template <>
-	struct is_integral_base< signed int > {
 
 		static bool const value = true;
 	};
@@ -100,12 +88,6 @@ namespace ft {
 	};
 
 	template <>
-	struct is_integral_base< signed long int > {
-
-		static bool const value = true;
-	};
-
-	template <>
 	struct is_integral_base< long long int > {
 
 		static bool const value = true;
@@ -113,12 +95,6 @@ namespace ft {
 
 	template <>
 	struct is_integral_base< unsigned long long int > {
-
-		static bool const value = true;
-	};
-
-	template <>
-	struct is_integral_base< signed long long int > {
 
 		static bool const value = true;
 	};

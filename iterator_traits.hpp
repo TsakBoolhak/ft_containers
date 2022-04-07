@@ -1,5 +1,9 @@
 #ifndef ITERATOR_TRAITS_HPP
 # define ITERATOR_TRAITS_HPP
+
+# include <cstddef>
+# include <iterator>
+
 namespace ft {
 
 	template< class Iterator >
@@ -13,26 +17,28 @@ namespace ft {
 
 	};
 
-	template< class T > struct iterator_traits< T* > {
+	template< class T >
+	struct iterator_traits< T* > {
 
-		typedef typename ptrdiff_t					difference_type;
-		typedef typename T							value_type;
-		typedef typename T*							pointer;
-		typedef typename T&							reference;
-		typedef typename random_access_iterator_tag	iterator_category;
+		typedef std::ptrdiff_t					difference_type;
+		typedef T								value_type;
+		typedef T*								pointer;
+		typedef T&								reference;
+		typedef std::random_access_iterator_tag	iterator_category;
 
 	}; 
 
-	template< class T > struct iterator_traits< const T* > {
+	template< class T >
+	struct iterator_traits< const T* > {
 
-		typedef typename ptrdiff_t					difference_type;
-		typedef typename T							value_type;
-		typedef typename const T*					pointer;
-		typedef typename const T&					reference;
-		typedef typename random_access_iterator_tag	iterator_category;
+		typedef std::ptrdiff_t					difference_type;
+		typedef T								value_type;
+		typedef const T*						pointer;
+		typedef const T&						reference;
+		typedef std::random_access_iterator_tag	iterator_category;
 
 	};
 
-}; 
+} 
 
 #endif

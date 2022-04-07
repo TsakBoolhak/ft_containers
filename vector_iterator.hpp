@@ -1,6 +1,9 @@
 #ifndef VECTOR_ITERATOR_HPP
 # define VECTOR_ITERATOR_HPP
 
+# include <cstddef>
+#include <iterator>
+
 namespace ft {
 
 	template< typename T >
@@ -9,7 +12,7 @@ namespace ft {
 		public :
 
 			typedef T								value_type;
-			typedef ptrdiff_t						difference_type;
+			typedef std::ptrdiff_t						difference_type;
 			typedef T*								pointer;
 			typedef T&								reference;
 			typedef std::random_access_iterator_tag	iterator_category;
@@ -78,7 +81,7 @@ namespace ft {
 				return tmp;
 			}
 
-			vector_iterator operator+( difference_type n, vector_iterator const & rhs ) {
+			friend vector_iterator operator+( difference_type n, vector_iterator const & rhs ) {
 
 				vector_iterator	tmp = rhs;
 				return	tmp += n;
@@ -212,8 +215,8 @@ namespace ft {
 
 			typedef T const							value_type;
 			typedef ptrdiff_t						difference_type;
-			typedef T*	const						pointer;
-			typedef T&	const						reference;
+			typedef T const	*					pointer;
+			typedef T const	&					reference;
 			typedef std::random_access_iterator_tag	iterator_category;
 
 		protected :
@@ -237,12 +240,12 @@ namespace ft {
 				return ;
 			}
 
-			vector_const_iterator( vector_iterator const & src ) : current ( src.current ) {
+			vector_const_iterator( ft::vector_iterator< T > const & src ) : current ( src.current ) {
 
 				return ;
 			}
 
-			~vector_iterator() {
+			~vector_const_iterator() {
 
 				return ;
 			}
@@ -285,7 +288,7 @@ namespace ft {
 				return tmp;
 			}
 
-			vector_const_iterator operator+( difference_type n, vector_const_iterator const & rhs ) {
+			friend vector_const_iterator operator+( difference_type n, vector_const_iterator const & rhs ) {
 
 				vector_const_iterator	tmp = rhs;
 				return	tmp += n;

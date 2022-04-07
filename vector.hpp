@@ -5,9 +5,13 @@
 # include "reverse_iterator.hpp"
 # include "enable_if.hpp"
 # include "is_integral.hpp"
+# include "equal.hpp"
+# include "lexicographical_compare.hpp"
 # include <memory>
 # include <iterator>
 # include <stdexcept>
+# include <string>
+# include <sstream>
 
 namespace ft {
 
@@ -21,9 +25,9 @@ namespace ft {
 			typedef typename Allocator::const_reference		const_reference;
 			typedef ft::vector_iterator< T >				iterator;
 			typedef ft::vector_const_iterator< T >			const_iterator;
-			typedef Allocator::size_type					size_type;
-			typedef Allocator::difference_type				difference_type
-			typedef typename T								value_type;
+			typedef typename Allocator::size_type					size_type;
+			typedef typename Allocator::difference_type				difference_type;
+			typedef T								value_type;
 			typedef Allocator								allocator_type;
 			typedef typename Allocator::pointer				pointer;
 			typedef typename Allocator::const_pointer		const_pointer;
@@ -104,14 +108,14 @@ namespace ft {
 			}
 
 			template< class InputIterator >
-			void	assign( typename ft::enableif< !ft::is_integral< InputIterator>::value, InputIterator >::type first, InputIterator last ) {
+			void	assign( typename ft::enable_if< !ft::is_integral< InputIterator >::value, InputIterator >::type first, InputIterator last ) {
 				
 				erase( begin(), end() );
 				insert( begin(), first, last ) ;
 				return ;
 			}
 
-			void	assign( size_type n, const T& u ) {
+			void	assign( size_type n, const T& t ) {
 
 				erase( begin(), end() );
 				insert( begin(), n, t );
@@ -208,7 +212,7 @@ namespace ft {
 					}
 					_alloc.deallocate( _array, _capacity );
 					_capacity = n;
-					_array = newArray
+					_array = newArray;
 				}
 				return ;
 			}
@@ -300,7 +304,7 @@ namespace ft {
 
 			iterator	insert( iterator position, const T& x ) {
 
-				insert( position, 1, val );
+				insert( position, 1, x );
 				return	iterator( begin() + ( position.get_ptr(), _array ) );
 			}
 
@@ -326,12 +330,12 @@ namespace ft {
 				}
 				_size += n;
 				for ( size_type i = 0 ; i < n ; ++i )
-					_alloc.construct( _array + dist + i, val );
+					_alloc.construct( _array + dist + i, x );
 				return ;
 			}
 
 			template< class InputIterator >
-			void	insert( iterator position, ft::enable_if< !ft::is_integral< InputIterator >::value, InputIterator >::type first, InputIterator last ) {
+			void	insert( iterator position, typename ft::enable_if< !ft::is_integral< InputIterator >::value, InputIterator >::type first, InputIterator last ) {
 
 				size_type	dist = std::distance( begin(), position );
 				size_type	n = std::distance( first, last );
@@ -353,7 +357,7 @@ namespace ft {
 					_alloc.destroy( arrEnd - n );
 					arrEnd--;
 				}
-				_size += count;
+				_size += n;
 				for ( size_type i = 0 ; i < n ; ++i )
 					_alloc.construct( _array + dist + i, *(first++) );
 				return ;
@@ -362,7 +366,7 @@ namespace ft {
 			iterator	erase( iterator position ) {
 
 				size_type dist = std::distance( begin(), position );
-				if ( position == end() || emtpy() )
+				if ( position == end() || empty() )
 					return end();
 				_alloc.destroy( position.get_ptr() );
 				pointer	arrEnd = _array + _size;
@@ -377,22 +381,22 @@ namespace ft {
 
 			iterator	erase( iterator first, iterator last ) {
 
-				size_type	dist = std::distance( begin(), position );
+				size_type	dist = std::distance( begin(), first );
 				size_type	n = std::distance( first, last );
 				size_type	dist2 = std::distance( last, end() );
 
 				if ( n <= 0 )
-					return ;
+					return end();
 				pointer	arrEnd = _array + dist + n - 1;
 				pointer arrStart = _array + dist;
-				for ( size_type i = 0 ; arrStart != _arrEnd ; arrStart++, i++) {
+				for ( size_type i = 0 ; arrStart != arrEnd ; arrStart++, i++) {
 
 					_alloc.destroy( arrStart );
 					if ( i < dist2 )
 						_alloc.construct( arrStart, *( arrEnd + i ) );
 				}
 				_size -= n;
-				return ;
+				return first;
 			}
 
 			void	swap( vector< T, Allocator > &rhs ) {
@@ -427,7 +431,7 @@ namespace ft {
 
 /* non-member comparators */
 	template< class T, class Allocator >
-	bool	operator==( const vector< const vector< T, Allocator >& x, const vector< const vector< T, Allocator >& y ) {
+	bool	operator==( vector< T, Allocator >const & x, vector< T, Allocator > const & y ) {
 
 		if ( x.size() != y.size() )
 			return false;
@@ -435,31 +439,31 @@ namespace ft {
 	}
 
 	template< class T, class Allocator >
-	bool	operator<( const vector< const vector< T, Allocator >& x, const vector< const vector< T, Allocator >& y ) {
+	bool	operator<( vector< T, Allocator >const & x, vector< T, Allocator > const & y ) {
 
-		return	ft::lexicograpgical_compare( x.begin(), x.end(), y.begin(), y.end() );
+		return	ft::lexicographical_compare( x.begin(), x.end(), y.begin(), y.end() );
 	}
 
 	template< class T, class Allocator >
-	bool	operator!=( const vector< const vector< T, Allocator >& x, const vector< const vector< T, Allocator >& y ) {
+	bool	operator!=( vector< T, Allocator >const & x, vector< T, Allocator > const & y ) {
 
 		return !(x == y);
 	}
 
 	template< class T, class Allocator >
-	bool	operator>( const vector< const vector< T, Allocator >& x, const vector< const vector< T, Allocator >& y ) {
-
-		return y < x;
-	}
-
-	template< class T, class Allocator >
-	bool	operator>=( const vector< const vector< T, Allocator >& x, const vector< const vector< T, Allocator >& y ) {
+	bool	operator>=( vector< T, Allocator >const & x, vector< T, Allocator > const & y ) {
 
 		return !(x < y);
 	}
 
 	template< class T, class Allocator >
-	bool	operator<=( const vector< const vector< T, Allocator >& x, const vector< const vector< T, Allocator >& y ) {
+	bool	operator>( vector< T, Allocator >const & x, vector< T, Allocator > const & y ) {
+
+		return y < x;
+	}
+
+	template< class T, class Allocator >
+	bool	operator<=( vector< T, Allocator >const & x, vector< T, Allocator > const & y ) {
 
 		return !(x > y);
 	}
