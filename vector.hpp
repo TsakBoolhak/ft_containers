@@ -69,7 +69,7 @@ namespace ft {
 				return ;
 			}
 
-			vector( const vector< T, Allocator > & x ) : _alloc ( x._alloc ), _size ( x._size ), _capacity ( x._capacity ), _array ( NULL ) {
+			vector( const vector< T, Allocator > & x ) : _alloc ( x._alloc ), _size ( x._size ), _capacity ( x._size ), _array ( NULL ) {
 
 				_array = _alloc.allocate( _capacity );
 				for ( size_type i = 0 ; i < _size ; ++i )
@@ -230,7 +230,7 @@ namespace ft {
 
 			reference	at( size_type n ) {
 
-				if (n < 0 || _size < n ) {
+				if (n < 0 || _size <= n ) {
 
 					std::stringstream strStream;
 					strStream << "vector::_M_range_check: __n (which is " << n << ") ";
@@ -245,7 +245,7 @@ namespace ft {
 
 			const_reference	at( size_type n ) const {
 
-				if (n < 0 || _size < n ) {
+				if (n < 0 || _size <= n ) {
 
 					std::stringstream strStream;
 					strStream << "vector::_M_range_check: __n (which is " << n << ") ";

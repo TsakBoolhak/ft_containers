@@ -8,6 +8,8 @@ NAME		= vector_test
 
 CC			= c++
 
+
+#ifndef CFLAGS
 CFLAGS		= -MMD -Wall -Wextra -Werror -std=c++98 -g3 -I.
 
 RM			= rm -f
@@ -17,18 +19,30 @@ RM			= rm -f
 
 ${NAME}:		 ${OBJS}
 	${CC} ${CFLAGS} ${OBJS} -o ${NAME}
-	${CC} ${CFLAGS} -D REAL_STD ${OBJS} -o ${NAME}_real
-	./${NAME}
-	./${NAME}_real
-	diff ./${NAME} ./${NAME}_real > log
+#	${CC} ${CFLAGS} ${OBJS} -o ${NAME}_real
+#	make test
 
-all:			${NAME}
+test:
+	$(MAKE) all
+	cp ${NAME} ${NAME}_mine
+	$(MAKE) clean
+	$(MAKE) all CFLAGS="-MMD -Wall -Wextra -Werror -std=c++98 -g3 -I. -D REAL_STD"
+	cp ${NAME} ${NAME}_real
+	$(MAKE) clean
+	./${NAME}_real
+	./${NAME}_mine
+	./${NAME}_real > realOutput
+	./${NAME}_mine > myOutput
+	@-diff ./realOutput ./myOutput > log
+
+all:
+	$(MAKE) -j $(NAME)
 
 clean:
 	${RM} ${OBJS} ${DEP}
 
 fclean:			clean
-	${RM} ${NAME} ${NAME}_real log
+	${RM} ${NAME} ${NAME}_mine ${NAME}_real log realOutput myOutput
 
 re:				fclean all
 
