@@ -1,15 +1,15 @@
-#include "vector.hpp"
-#include <vector>
 #include <iostream>
 #include <stdexcept>
 
 #ifndef REAL_STD
 # define NAMESPACE ft
 # define VERSION "ft"
+# include "vector.hpp"
 
 # else
 # define NAMESPACE std
 # define VERSION "std"
+# include <vector>
 #endif
 
 
@@ -117,5 +117,9 @@ int	main() {
 	for ( NAMESPACE::vector<int>::iterator it = myCopyVec.begin() ; it < myCopyVec.end() ; ++it )
 		std::cout << *it << std::endl;
 
+	std::cout << std::endl;
+
+	NAMESPACE::vector<int>::iterator it = myCopyVec.begin();
+	NAMESPACE::vector<int>::const_iterator itConst( it );
 	return 0;
 }

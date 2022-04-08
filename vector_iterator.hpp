@@ -240,7 +240,7 @@ namespace ft {
 				return ;
 			}
 
-			vector_const_iterator( ft::vector_iterator< T > const & src ) : current ( src.current ) {
+			vector_const_iterator( ft::vector_iterator< T > const & src ) : current ( src.getCurrent() ) {
 
 				return ;
 			}

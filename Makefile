@@ -33,7 +33,7 @@ test:
 	./${NAME}_mine
 	./${NAME}_real > realOutput
 	./${NAME}_mine > myOutput
-	@-diff ./realOutput ./myOutput > log
+	diff --ignore-matching-lines="Testing namespace" ./realOutput ./myOutput > log
 
 all:
 	$(MAKE) -j $(NAME)
