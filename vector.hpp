@@ -59,11 +59,8 @@ namespace ft {
 			}
 
 			template< class InputIterator >
-			vector( ft::enable_if< !ft::is_integral< InputIterator >::value, InputIterator > first, InputIterator last, Allocator const & alloc = Allocator() ) : _alloc ( alloc ), _size ( 0 ), _capacity ( 0 ), _array ( NULL ) {
+			vector( typename ft::enable_if< !ft::is_integral< InputIterator >::value, InputIterator >::type first, InputIterator last, allocator_type const & alloc = allocator_type() ) : _alloc ( alloc ), _size ( std::distance( first, last ) ), _capacity ( _size ), _array ( _alloc.allocate( _size ) ) {
 
-				_size = std::distance( first, last );
-				_capacity = _size;
-				_array = alloc.allocate( _size );
 				for ( T * tmp = _array ; first != last ; ++first, ++tmp ) 
 					_alloc.construct( tmp, *first );
 				return ;
@@ -89,17 +86,11 @@ namespace ft {
 
 				if ( this != &x ) {
 
-					if ( _size < x._size ) {
-
+					if ( _size < x._size )
 						reserve( x._size );
-						resize( x._size );
-					}
-					else {
-
-						for (size_type i = 0 ; i < _size ; ++i )
-							_alloc.destroy( _array + i );
-					}
-					_size = x._size;
+					else
+						clear();
+					resize( x._size );
 					for ( size_type i = 0 ; i < _size ; ++i )
 						_alloc.construct( _array + i, *(x._array + i) );
 					
@@ -181,8 +172,10 @@ namespace ft {
 
 			void	resize( size_type sz, T c = T() ) {
 
-				if ( sz > size() )
+				if ( sz > size() ) {
+//					reserve( sz );
 					insert( end(), sz - size(), c);
+				}
 				else if (sz < size() )
 					erase( begin() + sz, end() );
 				return ;
@@ -315,8 +308,8 @@ namespace ft {
 					return ;
 				else if ( n > _capacity - _size ) {
 
-					if ( max_size() - _capacity >= _capacity && n <= ( _capacity * 2 ) - _size )
-						reserve( _capacity * 2 );
+					if ( max_size() - _size >= _size && n <= _size )
+						reserve( _size * 2 );
 					else
 						reserve( _size + n );
 					position = begin() + dist;
@@ -344,8 +337,8 @@ namespace ft {
 					return ;
 				else if ( n > _capacity - _size ) {
 
-					if ( max_size() - _capacity >= _capacity && n <= ( _capacity * 2 ) - _size )
-						reserve( _capacity * 2 );
+					if ( max_size() - _size >= _capacity && n <= _size )
+						reserve( _size * 2 );
 					else
 						reserve( _size + n );
 					position = begin() + dist;

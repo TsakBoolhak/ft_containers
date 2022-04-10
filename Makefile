@@ -23,12 +23,12 @@ ${NAME}:		 ${OBJS}
 #	make test
 
 test:
+	$(MAKE) fclean
 	$(MAKE) all
 	cp ${NAME} ${NAME}_mine
 	$(MAKE) clean
 	$(MAKE) all CFLAGS="-MMD -Wall -Wextra -Werror -std=c++98 -g3 -I. -D REAL_STD"
 	cp ${NAME} ${NAME}_real
-	$(MAKE) clean
 	./${NAME}_real
 	./${NAME}_mine
 	./${NAME}_real > realOutput
