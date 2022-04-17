@@ -298,7 +298,9 @@ namespace ft {
 			iterator	insert( iterator position, const T& x ) {
 
 				insert( position, 1, x );
-				return	iterator( begin() + ( position.get_ptr(), _array ) );
+//				difference_type i = std::distance( begin(), position );
+//				return	iterator( begin() + i );
+				return position;
 			}
 
 			void	insert( iterator position, size_type n, const T& x ) {
@@ -358,22 +360,19 @@ namespace ft {
 
 			iterator	erase( iterator position ) {
 
-				size_type dist = std::distance( begin(), position );
 				if ( position == end() || empty() )
 					return end();
-				_alloc.destroy( position.get_ptr() );
-				pointer	arrEnd = _array + _size;
-				pointer arrStart = _array + dist;
-				while ( arrEnd != arrStart ) {
-					_alloc.construct( arrEnd, *( arrEnd - 1 ) );
-					_alloc.destroy( arrEnd - 1 );
-					arrEnd--;
+				for ( iterator it = position ; it != end() ; ++it ) {
+					_alloc.destroy( &(*it) );
+					_alloc.construct( &(*it), *(it + 1) );
 				}
 				_size--;
+				_alloc.destroy( _array + _size);
+				return position;
 			}
 
 			iterator	erase( iterator first, iterator last ) {
-
+/*
 				size_type	dist = std::distance( begin(), first );
 				size_type	n = std::distance( first, last );
 				size_type	dist2 = std::distance( last, end() );
@@ -390,6 +389,21 @@ namespace ft {
 				}
 				_size -= n;
 				return first;
+				*/
+				iterator ret = first;
+				size_type	distFromBegin = std::distance( begin(), first);
+				size_type	toMove = std::distance( last, end() );;
+				size_type	dist = std::distance( first, last );
+				if ( dist == 0 )
+					return ret;
+				for ( ; first != last ; ++first )
+					_alloc.destroy( &(*first) );
+				for ( size_type i = 0 ; i != toMove ; ++i ) {
+					_alloc.construct( _array + distFromBegin + i, *( _array + distFromBegin + dist + i ) );
+					_alloc.destroy( _array + distFromBegin + dist + i );
+				}
+				_size -= dist;
+				return ret;
 			}
 
 			void	swap( vector< T, Allocator > &rhs ) {
@@ -428,7 +442,7 @@ namespace ft {
 
 		if ( x.size() != y.size() )
 			return false;
-		return ft::equal( x.begin(), x.end(), y.end() );
+		return ft::equal( x.begin(), x.end(), y.begin() );
 	}
 
 	template< class T, class Allocator >
