@@ -16,7 +16,7 @@ namespace ft {
 		public :
 
 			typedef T								value_type;
-			typedef std::ptrdiff_t						difference_type;
+			typedef std::ptrdiff_t					difference_type;
 			typedef T*								pointer;
 			typedef T&								reference;
 			typedef std::random_access_iterator_tag	iterator_category;
@@ -177,37 +177,37 @@ namespace ft {
 	};
 
 	template< typename T, typename U >
-	bool	operator==( vector_iterator< T > const & x, vector_iterator< U > const & y ) {
+	bool	operator==( ft::vector_const_iterator< T > const & x, vector_iterator< U > const & y ) {
 
 		return x.getCurrent() == y.getCurrent();
 	}
 
 	template< typename T, typename U >
-	bool	operator!=( vector_iterator< T > const & x, vector_iterator< U > const & y ) {
+	bool	operator!=( ft::vector_const_iterator< T > const & x, vector_iterator< U > const & y ) {
 
 		return x.getCurrent() != y.getCurrent();
 	}
 
 	template< typename T, typename U >
-	bool	operator<( vector_iterator< T > const & x, vector_iterator< U > const & y ) {
+	bool	operator<( ft::vector_const_iterator< T > const & x, vector_iterator< U > const & y ) {
 
 		return x.getCurrent() < y.getCurrent();
 	}
 
 	template< typename T, typename U >
-	bool	operator>( vector_iterator< T > const & x, vector_iterator< U > const & y ) {
+	bool	operator>( ft::vector_const_iterator< T > const & x, vector_iterator< U > const & y ) {
 
 		return x.getCurrent() > y.getCurrent();
 	}
 
 	template< typename T, typename U >
-	bool	operator<=( vector_iterator< T > const & x, vector_iterator< U > const & y ) {
+	bool	operator<=( ft::vector_const_iterator< T > const & x, vector_iterator< U > const & y ) {
 
 		return x.getCurrent() <= y.getCurrent();
 	}
 
 	template< typename T, typename U >
-	bool	operator>=( vector_iterator< T > const & x, vector_iterator< U > const & y ) {
+	bool	operator>=( ft::vector_const_iterator< T > const & x, vector_iterator< U > const & y ) {
 
 		return x.getCurrent() >= y.getCurrent();
 	}

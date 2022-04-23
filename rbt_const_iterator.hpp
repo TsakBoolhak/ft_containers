@@ -1,27 +1,27 @@
-#ifndef RBT_ITERATOR_HPP
-# define RBT_ITERATOR_HPP
+#ifndef RBT_CONST_ITERATOR_HPP
+# define RBT_CONST_ITERATOR_HPP
 
 # include <cstddef>
 # include <iterator>
-# include "rbt_const_iterator.hpp"
+# include "rbt_iterator.hpp"
 # include "rbt_node.hpp"
 
 namespace ft {
 
 	template< typename T >
-	class rbt_const_iterator;
+	class rbt_iterator;
 
 	template< typename T >
-	class rbt_iterator {
+	class rbt_const_iterator {
 
 		public :
 
-			typedef T									value_type;
+			typedef T const								value_type;
 			typedef std::ptrdiff_t						difference_type;
-			typedef T*									pointer;
-			typedef T&									reference;
+			typedef T const *							pointer;
+			typedef T const &							reference;
 			typedef std::bidirectionnal_iterator_tag	iterator_category;
-			typedef ft::node<T>							node;
+			typedef ft::Node<value_type>				Node;
 
 		protected :
 
@@ -30,17 +30,22 @@ namespace ft {
 
 		public :
 
-			rbt_iterator( Node * node = NULL, Node * root = NULL ) : _current ( node ), _root ( root ) {
+			rbt_const_iterator( Node * node = NULL, Node * root = NULL ) : _current ( node ), _root ( root ) {
 
 				return ;
 			}
 
-			rbt_iterator( rbt_iterator const & src ) : _current ( src.current ), _root ( src.root ) {
+			rbt_const_iterator( rbt_const_iterator const & src ) : _current ( src.current ), _root ( src.root ) {
 
 				return ;
 			}
 
-			~rbt_iterator() {
+			rbt_const_iterator( ft::rbt_iterator const & src ) : _current ( src.current ), _root ( src.root ) {
+
+				return ;
+			}
+
+			~rbt_const_iterator() {
 
 				return ;
 			}
@@ -50,12 +55,12 @@ namespace ft {
 				return this->_current;
 			}
 
-			Node *	getRoot() const {
+			Node *	getRoott() const {
 
 				return this->_root;
 			}
 
-			rbt_iterator &	operator=( rbt_iterator const & rhs ) {
+			rbt_const_iterator &	operator=( rbt_iterator const & rhs ) {
 
 				if ( this != &rhs ) {
 					this->_current = rhs._current;
@@ -64,7 +69,7 @@ namespace ft {
 				return *this;
 			}
 
-			rbt_iterator &	operator++() {
+			rbt_const_iterator &	operator++() {
 
 				if ( _current == NULL )
 					_current = min( _root );
@@ -84,14 +89,14 @@ namespace ft {
 				return *this;
 			}
 
-			rbt_iterator	operator++( int ) {
+			rbt_const_iterator	operator++( int ) {
 
-				rbt_iterator	tmp = *this;
+				rbt_const_iterator	tmp = *this;
 				++(*this);
 				return tmp;
 			}
 
-			rbt_iterator &	operator--() {
+			rbt_const_iterator &	operator--() {
 
 				if ( _current == NULL )
 					_current = min( _root );
@@ -111,9 +116,9 @@ namespace ft {
 				return *this;
 			}
 
-			rbt_iterator	operator--( int ) {
+			rbt_const_iterator	operator--( int ) {
 
-				rbt_iterator	tmp = *this;
+				rbt_const_iterator	tmp = *this;
 				--(*this);
 				return tmp;
 			}
@@ -128,12 +133,12 @@ namespace ft {
 				return _current->_value;
 			}
 
-			bool	operator==( ft::rbt_const_iterator< T > const & rhs ) const {
+			bool	operator==( rbt_const_iterator< T > const & rhs ) const {
 
 				return _current == rhs._current;
 			}
 
-			bool	operator!=( ft::rbt_const_iterator< T > const & rhs ) const {
+			bool	operator!=( rbt_const_iterator< T > const & rhs ) const {
 
 				return _current != rhs._current;
 			}
