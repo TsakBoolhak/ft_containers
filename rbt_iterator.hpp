@@ -20,8 +20,8 @@ namespace ft {
 			typedef std::ptrdiff_t						difference_type;
 			typedef T*									pointer;
 			typedef T&									reference;
-			typedef std::bidirectionnal_iterator_tag	iterator_category;
-			typedef ft::node<T>							node;
+			typedef std::bidirectional_iterator_tag		iterator_category;
+			typedef ft::Node<T>							Node;
 
 		protected :
 
@@ -69,7 +69,7 @@ namespace ft {
 				if ( _current == NULL )
 					_current = min( _root );
 				else if ( _current->_right )
-					_current = _current->_right;;
+					_current = _current->_right;
 				else if ( _current->_parent && _current == _current->_parent->_left )
 					_current = _current->_parent;
 				else if ( _current->_parent ) {
@@ -80,7 +80,7 @@ namespace ft {
 																		NULL;
 				}
 				else
-					current = NULL;
+					_current = NULL;
 				return *this;
 			}
 
@@ -96,10 +96,10 @@ namespace ft {
 				if ( _current == NULL )
 					_current = min( _root );
 				else if ( _current->_left )
-					_current = _current->_left;;
+					_current = _current->_left;
 				else if ( _current->_parent && _current == _current->_parent->_right )
 					_current = _current->_parent;
-				else if ( current->parent ) {
+				else if ( _current->parent ) {
 
 					while ( _current->_parent && _current == _current->_parent->_left )
 						_current = _current->_parent;
@@ -107,7 +107,7 @@ namespace ft {
 																		NULL;
 				}
 				else
-					current = NULL;
+					_current = NULL;
 				return *this;
 			}
 
@@ -138,9 +138,9 @@ namespace ft {
 				return _current != rhs._current;
 			}
 	};
-
+/*
 	template< typename T, typename U >
-	bool	operator==( ft::rbt_const_iterator< T > const & x, ft::rbt_const_iterator< U > const & y ) {
+	bool	operator==( ft::rbt_con_iterator< T > const & x, ft::rbt_const_iterator< U > const & y ) {
 
 		return x.getCurrent() == y.getCurrent();
 	}
@@ -150,7 +150,7 @@ namespace ft {
 
 		return x.getCurrent() != y.getCurrent();
 	}
-
+*/
 }
 
 #endif

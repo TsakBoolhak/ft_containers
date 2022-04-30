@@ -2,6 +2,7 @@
 # define RBT_NODE_HPP
 
 # include <memory>
+# include <cstddef>
 
 namespace ft {
 

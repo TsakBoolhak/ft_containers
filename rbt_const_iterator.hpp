@@ -20,7 +20,7 @@ namespace ft {
 			typedef std::ptrdiff_t						difference_type;
 			typedef T const *							pointer;
 			typedef T const &							reference;
-			typedef std::bidirectionnal_iterator_tag	iterator_category;
+			typedef std::bidirectional_iterator_tag	iterator_category;
 			typedef ft::Node<value_type>				Node;
 
 		protected :
@@ -35,12 +35,12 @@ namespace ft {
 				return ;
 			}
 
-			rbt_const_iterator( rbt_const_iterator const & src ) : _current ( src.current ), _root ( src.root ) {
+			rbt_const_iterator( rbt_const_iterator const & src ) : _current ( src._current ), _root ( src._root ) {
 
 				return ;
 			}
 
-			rbt_const_iterator( ft::rbt_iterator const & src ) : _current ( src.current ), _root ( src.root ) {
+			rbt_const_iterator( rbt_iterator<T> const & src ) : _current ( src._current ), _root ( src._root ) {
 
 				return ;
 			}
@@ -60,7 +60,7 @@ namespace ft {
 				return this->_root;
 			}
 
-			rbt_const_iterator &	operator=( rbt_iterator const & rhs ) {
+			rbt_const_iterator &	operator=( rbt_const_iterator const & rhs ) {
 
 				if ( this != &rhs ) {
 					this->_current = rhs._current;
@@ -74,7 +74,7 @@ namespace ft {
 				if ( _current == NULL )
 					_current = min( _root );
 				else if ( _current->_right )
-					_current = _current->_right;;
+					_current = _current->_right;
 				else if ( _current->_parent && _current == _current->_parent->_left )
 					_current = _current->_parent;
 				else if ( _current->_parent ) {
@@ -85,7 +85,7 @@ namespace ft {
 																		NULL;
 				}
 				else
-					current = NULL;
+					_current = NULL;
 				return *this;
 			}
 
@@ -101,10 +101,10 @@ namespace ft {
 				if ( _current == NULL )
 					_current = min( _root );
 				else if ( _current->_left )
-					_current = _current->_left;;
+					_current = _current->_left;
 				else if ( _current->_parent && _current == _current->_parent->_right )
 					_current = _current->_parent;
-				else if ( current->parent ) {
+				else if ( _current->parent ) {
 
 					while ( _current->_parent && _current == _current->_parent->_left )
 						_current = _current->_parent;
@@ -112,7 +112,7 @@ namespace ft {
 																		NULL;
 				}
 				else
-					current = NULL;
+					_current = NULL;
 				return *this;
 			}
 
