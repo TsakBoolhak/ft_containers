@@ -11,6 +11,12 @@ namespace ft {
 
 		public :
 
+			typedef enum e_color{
+
+				BLACK = 0,
+				RED = 1
+			} t_color;
+
 			typedef T						value_type;
 			typedef std::ptrdiff_t			difference_type;
 			typedef T*						pointer;
@@ -21,9 +27,10 @@ namespace ft {
 			Node *	_left;
 			Node *	_parent;
 			T		_value;
+			t_color	_color;
 
 
-			Node( T value = T (), Node * parent = NULL ) : _right ( NULL ), _left ( NULL ), _parent ( parent ), _value ( value ) {
+			Node( T value = T (), Node * parent = NULL ) : _right ( NULL ), _left ( NULL ), _parent ( parent ), _value ( value ), _color ( RED ) {
 
 					return ;
 				}

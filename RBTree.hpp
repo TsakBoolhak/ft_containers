@@ -32,10 +32,116 @@ namespace ft {
 		
 			Node *	_root;
 
+			typedef enum e_relativePos {
+
+				LEFT = 0,
+				RIGHT = 1
+			} t_relativePos
+
+			void	adopt( Node * newParent, Node *child, t_relativePos position ) {
+
+				if ( newParent == NULL )
+					return;
+				if ( position == LEFT )
+					newParent->_left = child;
+				else
+					newParent->_right = child;
+				if ( child == NULL )
+					return ;
+				else
+					child->_parent = newParent;
+
+				return;
+			}
+
+			void	leftRotate( Node * toRotate ) {
+
+				if ( toRotate == NULL || toRotate->_right == NULL )
+					return;
+
+				Node *	parent = toRotate->_parent;
+				Node *	child = toRotate->_right;
+
+				if (  child->_left != NULL ) {
+
+					adopt( toRotate, child->_left, RIGHT );
+				}
+				if ( parent == NULL ) {
+
+					_root = child;
+				}
+				else if ( parent->_left == toRotate ) {
+
+					adopt( parent, child, LEFT );
+				}
+				else {
+
+					adopt( parent, child, RIGHT );
+				}
+				adopt( child, toRotate, LEFT );
+
+				return;
+			}
+
+			void	rightRotate( Node *toRotate ) {
+
+				if ( toRotate == NULL || toRotate->_left == NULL )
+					return;
+
+				Node * parent = toRotate->_parent;
+				Node * child = toRotate->_right;
+
+				if ( child->_right != NULL ) {
+
+					adopt( toRotate, child->_right, LEFT );
+				}
+				if ( parent == NULL ) {
+
+					_root = child;
+				}
+				else if ( parent->_right == toRotate ) {
+
+					adopt( parent, child, RIGHT );
+				}
+				else {
+
+					adopt( parent, child, LEFT );
+				}
+				adopt( child, toRotate, RIGHT);
+
+				return;
+			}
+
+			void	leftRightRotate( Node *toRotate ) {
+
+				if ( toRotate == NULL || toRotate->_right == NULL || toRotate->_parent == NULL )
+					return ;
+
+				Node * parent = toRotate->_parent;
+
+				leftRotate( toRotate );
+				rightRotate( parent );
+
+				return ;
+			}
+
+			void	rightLeftRotate( Node * toRotate ) {
+
+				if ( toRotate == NULL || toRotate->_left == NULL || toRotate->_parent == NULL )
+					return ;
+
+				Node * parent = toRotate->_parent;
+
+				rightRotate( toRotate );
+				leftRotate( parent );
+
+				return ;
+			}
 		public :
 
 			RBTree( Node  * root = NULL ) : _root ( root ) {
 
+				this->_root->_color = BLACK;
 				return ;
 			}
 
