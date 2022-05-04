@@ -40,7 +40,7 @@ namespace ft {
 				return ;
 			}
 
-			rbt_const_iterator( rbt_iterator<T> const & src ) : _current ( src._current ), _root ( src._root ) {
+			rbt_const_iterator( ft::rbt_iterator<T> const & src ) : _current ( src.getCurrent() ), _root ( src.getRoot() ) {
 
 				return ;
 			}
@@ -55,7 +55,7 @@ namespace ft {
 				return this->_current;
 			}
 
-			Node *	getRoott() const {
+			Node *	getRoot() const {
 
 				return this->_root;
 			}
@@ -81,7 +81,7 @@ namespace ft {
 
 					while ( _current->_parent && _current == _current->_parent->_right )
 						_current = _current->_parent;
-					_current =  _current == _current->_parent->_left ?	_current->_parent :
+					_current = _current->_parent && _current == _current->_parent->_left ?	_current->_parent :
 																		NULL;
 				}
 				else
@@ -108,7 +108,7 @@ namespace ft {
 
 					while ( _current->_parent && _current == _current->_parent->_left )
 						_current = _current->_parent;
-					_current =  _current == _current->_parent->_right ?	_current->_parent :
+					_current = _current->_parent && _current == _current->_parent->_right ?	_current->_parent :
 																		NULL;
 				}
 				else

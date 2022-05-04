@@ -38,6 +38,63 @@ namespace ft {
 
 				return ;
 			}
+
+			Node *min() {
+
+				Node * tmp = this->_root;
+				
+				while ( tmp && tmp->_left )
+					tmp = tmp->_left;
+				return tmp;
+			}
+
+			Node *max() {
+
+				Node * tmp = this->_root;
+				while (tmp && tmp->_right)
+					tmp = tmp->_right;
+				return tmp;
+			}
+
+			iterator	begin() {
+
+				return iterator( this->min(), this->_root );
+			}
+
+			iterator	end() {
+
+				return iterator ( NULL, this->_root );
+			}
+
+			const_iterator	begin() const {
+
+				return const_iterator( this->min(), this->_root );
+			}
+
+			const_iterator	end() const {
+
+				return const_iterator( NULL, this->_root );
+			}
+
+			reverse_iterator	rbegin() {
+
+				return reverse_iterator( this->end() );
+			}
+
+			reverse_iterator	rend() {
+
+				return reverse_iterator( this->begin() );
+			}
+
+			const_reverse_iterator rbegin() const {
+
+				return const_reverse_iterator( this->end() );
+			}
+
+			const_reverse_iterator	rend() const {
+
+				return const_reverse_iterator( this->begin() );
+			}
 	};
 }
 

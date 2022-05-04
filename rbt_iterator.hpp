@@ -6,6 +6,7 @@
 # include "rbt_const_iterator.hpp"
 # include "rbt_node.hpp"
 
+#include <iostream>
 namespace ft {
 
 	template< typename T >
@@ -31,11 +32,10 @@ namespace ft {
 		public :
 
 			rbt_iterator( Node * node = NULL, Node * root = NULL ) : _current ( node ), _root ( root ) {
-
 				return ;
 			}
 
-			rbt_iterator( rbt_iterator const & src ) : _current ( src.current ), _root ( src.root ) {
+			rbt_iterator( rbt_iterator const & src ) : _current ( src._current ), _root ( src._root ) {
 
 				return ;
 			}
@@ -55,6 +55,22 @@ namespace ft {
 				return this->_root;
 			}
 
+			Node *min( Node *node ) {
+
+				Node * tmp = node;
+				while ( tmp && tmp->_left )
+					tmp = tmp->_left;
+				return tmp;
+			}
+
+			Node *	max( Node *node ) {
+
+				Node * tmp = node;
+				while (tmp && tmp->_right )
+					tmp = tmp->_right;
+				return tmp;
+			}
+
 			rbt_iterator &	operator=( rbt_iterator const & rhs ) {
 
 				if ( this != &rhs ) {
@@ -63,24 +79,35 @@ namespace ft {
 				}
 				return *this;
 			}
-
 			rbt_iterator &	operator++() {
 
-				if ( _current == NULL )
+				if ( _current == NULL ) {
+//					std::cout << "CURR IS NULL" << std::endl;
 					_current = min( _root );
-				else if ( _current->_right )
+				}
+
+				else if ( _current->_right ) {
+//					std::cout << "CURR HAS RIGHT CHILD" << std::endl;
 					_current = _current->_right;
-				else if ( _current->_parent && _current == _current->_parent->_left )
+				}
+
+				else if ( _current->_parent && _current == _current->_parent->_left ) {
+//					std::cout << "CURR HAS PARENT AND CURR IS ITS LEFT CHILD" << std::endl;
 					_current = _current->_parent;
+				}
+
 				else if ( _current->_parent ) {
+//					std::cout << "CURR HAS PARENT AND CURR IS ITS RIGHT CHILD" << std::endl;
 
 					while ( _current->_parent && _current == _current->_parent->_right )
 						_current = _current->_parent;
-					_current =  _current == _current->_parent->_left ?	_current->_parent :
-																		NULL;
+					_current = _current->_parent && _current == _current->_parent->_left ?	_current->_parent :
+					NULL;
 				}
-				else
+				else{
+//					std::cout << "CURR HAS NO PARENT " << std::endl;
 					_current = NULL;
+				}
 				return *this;
 			}
 
@@ -94,16 +121,16 @@ namespace ft {
 			rbt_iterator &	operator--() {
 
 				if ( _current == NULL )
-					_current = min( _root );
+					_current = max( _root );
 				else if ( _current->_left )
 					_current = _current->_left;
 				else if ( _current->_parent && _current == _current->_parent->_right )
 					_current = _current->_parent;
-				else if ( _current->parent ) {
+				else if ( _current->_parent ) {
 
 					while ( _current->_parent && _current == _current->_parent->_left )
 						_current = _current->_parent;
-					_current =  _current == _current->_parent->_right ?	_current->_parent :
+					_current = _current->_parent && _current == _current->_parent->_right ?	_current->_parent :
 																		NULL;
 				}
 				else
@@ -128,12 +155,12 @@ namespace ft {
 				return _current->_value;
 			}
 
-			bool	operator==( ft::rbt_const_iterator< T > const & rhs ) const {
+			bool	operator==( ft::rbt_iterator< T > const & rhs ) const {
 
 				return _current == rhs._current;
 			}
 
-			bool	operator!=( ft::rbt_const_iterator< T > const & rhs ) const {
+			bool	operator!=( ft::rbt_iterator< T > const & rhs ) const {
 
 				return _current != rhs._current;
 			}
