@@ -176,6 +176,62 @@ namespace ft {
 				return tmp;
 			}
 
+			void	insertFix( Node *toInsert ) {
+
+				while ( toInsert->_parent && toInsert->_parent->_color == Node::RED ) {
+
+					Node *parent = toInsert->_parent;
+					Node *grandParent = parent != NULL ?	parent->_parent :
+															NULL;
+
+					if ( grandParent && parent == grandParent->_left ) {
+						
+						if ( grandParent->_right && grandParent->_right->_color == Node::RED ) {
+
+							grandParent->_left->_color = Node::BLACK;
+							grandParent->_right->_color = Node::BLACK;
+							grandParent->_color = Node::RED;
+							toInsert = grandParent;
+						}
+						else if ( parent->_right && parent->_right == toInsert ) {
+
+							toInsert = parent;
+							leftRotate( toInsert );
+						}
+						if ( toInsert->_parent )
+							toInsert->_parent->_color = Node::BLACK;
+						if ( toInsert->_parent && toInsert->_parent->_parent ) {
+
+							toInsert->_parent->_parent->_color = Node::RED;
+							rightRotate( toInsert->_parent->_parent );
+						}
+					}
+					else {
+						
+						if ( grandParent->_left && grandParent->_left->_color == Node::RED ) {
+
+							grandParent->_left->_color = Node::BLACK;
+							grandParent->_right->_color = Node::BLACK;
+							grandParent->_color = Node::RED;
+							toInsert = grandParent;
+						}
+						else if ( parent->_left && parent->_left == toInsert ) {
+
+							toInsert = parent;
+							rightRotate( toInsert );
+						}
+						if ( toInsert->_parent )
+							toInsert->_parent->_color = Node::BLACK;
+						if ( toInsert->_parent && toInsert->_parent->_parent ) {
+
+							toInsert->_parent->_parent->_color = Node::RED;
+							leftRotate( toInsert->_parent->_parent );
+						}
+					}
+					_root->_color = Node::BLACK;
+				}
+			}
+
 			void	insert( T const & newValue ) {
 
 				Node *	toInsert = newNode( newValue, NULL );
@@ -204,6 +260,7 @@ namespace ft {
 
 					adopt(tmp, toInsert, RIGHT);
 				}
+				insertFix(toInsert);
 
 				return;
 			}
