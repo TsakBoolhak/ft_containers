@@ -24,19 +24,24 @@ namespace ft {
 			typedef typename Allocator::difference_type				difference_type;
 			typedef typename Allocator::pointer						pointer;
 			typedef typename Allocator::const_pointer				const_pointer;
-			typedef ft::reverse_iterator< iterator >		reverse_iterator;
-			typedef ft::reverse_iterator< const_iterator >	const_reverse_iterator;
+			typedef ft::reverse_iterator< iterator >				reverse_iterator;
+			typedef ft::reverse_iterator< const_iterator >			const_reverse_iterator;
 			typedef ft::Node<T>										Node;
+			typedef std::allocator<Node>							node_allocator_type;
 
 		protected :
 		
-			Node *	_root;
+			Node *				_root;
+			size_type			_size;
+			allocator_type		_alloc;
+			node_allocator_type	_nodeAlloc;
+			value_compare		_comp;
 
 			typedef enum e_relativePos {
 
 				LEFT = 0,
 				RIGHT = 1
-			} t_relativePos
+			} t_relativePos;
 
 			void	adopt( Node * newParent, Node *child, t_relativePos position ) {
 
@@ -139,9 +144,10 @@ namespace ft {
 			}
 		public :
 
-			RBTree( Node  * root = NULL ) : _root ( root ) {
+			RBTree( Node  * root = NULL, size_type size = 0 ) : _root ( root ), _size ( size ), _alloc ( allocator_type() ), _nodeAlloc ( node_allocator_type() ), _comp ( value_compare() ) {
 
-				this->_root->_color = BLACK;
+				if ( this->_root != NULL )
+					this->_root->_color = Node::BLACK;
 				return ;
 			}
 
@@ -160,6 +166,46 @@ namespace ft {
 				while (tmp && tmp->_right)
 					tmp = tmp->_right;
 				return tmp;
+			}
+
+			Node * newNode( T const & value, Node * parent ) {
+
+				Node *	tmp = _nodeAlloc.allocate( 1 );
+				_nodeAlloc.construct( tmp, Node( value, parent ) );
+
+				return tmp;
+			}
+
+			void	insert( T const & newValue ) {
+
+				Node *	toInsert = newNode( newValue, NULL );
+
+				if ( _root == NULL ) {
+
+					_root = toInsert;
+					_root->_color = Node::BLACK;
+					return ;
+				}
+
+				Node *tmp = _root;
+				Node *next = _comp( newValue, tmp->_value ) ?	tmp->_left :
+																tmp->_right;
+				while ( next != NULL ) {
+					
+					tmp = next;
+					next = _comp( newValue, tmp->_value ) ?	tmp->_left :
+															tmp->_right;
+				}
+				if ( _comp( newValue, tmp->_value ) ) {
+
+					adopt(tmp, toInsert, LEFT);
+				}
+				else {
+
+					adopt(tmp, toInsert, RIGHT);
+				}
+
+				return;
 			}
 
 			iterator	begin() {

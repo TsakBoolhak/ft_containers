@@ -82,22 +82,18 @@ namespace ft {
 			rbt_iterator &	operator++() {
 
 				if ( _current == NULL ) {
-//					std::cout << "CURR IS NULL" << std::endl;
 					_current = min( _root );
 				}
 
 				else if ( _current->_right ) {
-//					std::cout << "CURR HAS RIGHT CHILD" << std::endl;
-					_current = _current->_right;
+					_current = min( _current->_right );
 				}
 
 				else if ( _current->_parent && _current == _current->_parent->_left ) {
-//					std::cout << "CURR HAS PARENT AND CURR IS ITS LEFT CHILD" << std::endl;
 					_current = _current->_parent;
 				}
 
 				else if ( _current->_parent ) {
-//					std::cout << "CURR HAS PARENT AND CURR IS ITS RIGHT CHILD" << std::endl;
 
 					while ( _current->_parent && _current == _current->_parent->_right )
 						_current = _current->_parent;
@@ -105,7 +101,6 @@ namespace ft {
 					NULL;
 				}
 				else{
-//					std::cout << "CURR HAS NO PARENT " << std::endl;
 					_current = NULL;
 				}
 				return *this;
@@ -123,7 +118,7 @@ namespace ft {
 				if ( _current == NULL )
 					_current = max( _root );
 				else if ( _current->_left )
-					_current = _current->_left;
+					_current = max( _current->_left );
 				else if ( _current->_parent && _current == _current->_parent->_right )
 					_current = _current->_parent;
 				else if ( _current->_parent ) {
