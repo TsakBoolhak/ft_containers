@@ -61,28 +61,34 @@ namespace ft {
 
 			void	leftRotate( Node * toRotate ) {
 
-				if ( toRotate == NULL || toRotate->_right == NULL )
+				if ( toRotate == NULL )
 					return;
 
+				std::cout << "Left Rotating " << toRotate->_value << std::endl;
 				Node *	parent = toRotate->_parent;
 				Node *	child = toRotate->_right;
 
-				if (  child->_left != NULL ) {
-
+				if (  child ) {
+					std::cout << "LR step 1" << std::endl;
 					adopt( toRotate, child->_left, RIGHT );
 				}
 				if ( parent == NULL ) {
 
+					std::cout << "rotating root" << std::endl;
 					_root = child;
+					_root->_parent = NULL;
 				}
 				else if ( parent->_left == toRotate ) {
 
+					std::cout << "LR step 2" << std::endl;
 					adopt( parent, child, LEFT );
 				}
 				else {
 
+					std::cout << "LR step 2" << std::endl;
 					adopt( parent, child, RIGHT );
 				}
+					std::cout << "LR step 3" << std::endl;
 				adopt( child, toRotate, LEFT );
 
 				return;
@@ -90,28 +96,33 @@ namespace ft {
 
 			void	rightRotate( Node *toRotate ) {
 
-				if ( toRotate == NULL || toRotate->_left == NULL )
+				if ( toRotate == NULL )
 					return;
 
+				std::cout << "Rotating " << toRotate->_value << std::endl;
 				Node * parent = toRotate->_parent;
-				Node * child = toRotate->_right;
+				Node * child = toRotate->_left;
 
-				if ( child->_right != NULL ) {
+//				if ( child ) {
 
+					std::cout << "RR step 1" << std::endl;
 					adopt( toRotate, child->_right, LEFT );
-				}
+//				}
 				if ( parent == NULL ) {
 
 					_root = child;
 				}
-				else if ( parent->_right == toRotate ) {
+				else if ( parent && parent->_right == toRotate ) {
 
+					std::cout << "RR step 2" << std::endl;
 					adopt( parent, child, RIGHT );
 				}
 				else {
 
+					std::cout << "RR step 2" << std::endl;
 					adopt( parent, child, LEFT );
 				}
+				std::cout << "RR step 3" << std::endl;
 				adopt( child, toRotate, RIGHT);
 
 				return;
@@ -151,6 +162,11 @@ namespace ft {
 				return ;
 			}
 
+			Node * getRoot() const {
+
+				return this->_root;
+			}
+
 			Node *min() {
 
 				Node * tmp = this->_root;
@@ -178,64 +194,81 @@ namespace ft {
 
 			void	insertFix( Node *toInsert ) {
 
-				while ( toInsert->_parent && toInsert->_parent->_color == Node::RED ) {
+				Node *parent = toInsert->_parent;
+				Node *grandParent = parent != NULL ?	parent->_parent :
+														NULL;
+				while ( toInsert && toInsert->_parent && toInsert->_parent->_color == Node::RED ) {
 
-					Node *parent = toInsert->_parent;
-					Node *grandParent = parent != NULL ?	parent->_parent :
+					parent = toInsert->_parent;
+					grandParent = parent != NULL ?	parent->_parent :
 															NULL;
 
+					std::cout << "Fixing " << toInsert->_value << " Node and parent are both red." << std::endl;
 					if ( grandParent && parent == grandParent->_left ) {
 						
 						if ( grandParent->_right && grandParent->_right->_color == Node::RED ) {
 
+							std::cout << "Uncle of node is red - push blackness down from grandparent" << std::endl;
 							grandParent->_left->_color = Node::BLACK;
 							grandParent->_right->_color = Node::BLACK;
 							grandParent->_color = Node::RED;
 							toInsert = grandParent;
 						}
-						else if ( parent->_right && parent->_right == toInsert ) {
+						else {
+							if ( parent->_right && parent->_right == toInsert ) {
 
-							toInsert = parent;
-							leftRotate( toInsert );
-						}
-						if ( toInsert->_parent )
-							toInsert->_parent->_color = Node::BLACK;
-						if ( toInsert->_parent && toInsert->_parent->_parent ) {
+								std::cout << "Node is right child, parent is left child -- rotate" << std::endl;
+								toInsert = parent;
+								leftRotate( toInsert );
+							}
+							if ( toInsert->_parent )
+								toInsert->_parent->_color = Node::BLACK;
+							if ( toInsert->_parent && toInsert->_parent->_parent ) {
 
-							toInsert->_parent->_parent->_color = Node::RED;
-							rightRotate( toInsert->_parent->_parent );
+								toInsert->_parent->_parent->_color = Node::RED;
+								rightRotate( toInsert->_parent->_parent );
+							}
 						}
 					}
 					else {
 						
-						if ( grandParent->_left && grandParent->_left->_color == Node::RED ) {
+						if ( grandParent && grandParent->_left && grandParent->_left->_color == Node::RED ) {
 
+							std::cout << "Uncle of node is red - push blackness down from grandparent" << std::endl;
 							grandParent->_left->_color = Node::BLACK;
 							grandParent->_right->_color = Node::BLACK;
 							grandParent->_color = Node::RED;
 							toInsert = grandParent;
 						}
-						else if ( parent->_left && parent->_left == toInsert ) {
+						else {
+							if ( parent->_left && parent->_left == toInsert ) {
 
-							toInsert = parent;
-							rightRotate( toInsert );
-						}
-						if ( toInsert->_parent )
-							toInsert->_parent->_color = Node::BLACK;
-						if ( toInsert->_parent && toInsert->_parent->_parent ) {
+								toInsert = parent;
+								rightRotate( toInsert );
+							}
+							if ( toInsert->_parent )
+								toInsert->_parent->_color = Node::BLACK;
+							if ( toInsert->_parent && toInsert->_parent->_parent ) {
 
-							toInsert->_parent->_parent->_color = Node::RED;
-							leftRotate( toInsert->_parent->_parent );
+								std::cout << "MDR" << std::endl;
+								toInsert->_parent->_parent->_color = Node::RED;
+								leftRotate( toInsert->_parent->_parent );
+							}
 						}
 					}
-					_root->_color = Node::BLACK;
+					if ( _root && _root->_color == Node::RED ) {
+
+						std::cout << "Root of the tree is red. Color it black" << std::endl;
+						_root->_color = Node::BLACK;
+					}
 				}
 			}
 
-			void	insert( T const & newValue ) {
+			void	insertNode( T const & newValue ) {
 
 				Node *	toInsert = newNode( newValue, NULL );
 
+				std::cout << "inserting " << toInsert->_value << std::endl;
 				if ( _root == NULL ) {
 
 					_root = toInsert;
@@ -244,6 +277,10 @@ namespace ft {
 				}
 
 				Node *tmp = _root;
+				if ( _comp(newValue, tmp->_value) )
+					std::cout << newValue << " < " << tmp->_value << " Looking at left subtree" << std::endl;
+				else
+					std::cout << newValue << " >= " << tmp->_value << " Looking at right subtree" << std::endl;
 				Node *next = _comp( newValue, tmp->_value ) ?	tmp->_left :
 																tmp->_right;
 				while ( next != NULL ) {
@@ -251,7 +288,12 @@ namespace ft {
 					tmp = next;
 					next = _comp( newValue, tmp->_value ) ?	tmp->_left :
 															tmp->_right;
+					if ( _comp(newValue, tmp->_value) )
+						std::cout << newValue << " < " << tmp->_value << " Looking at left subtree" << std::endl;
+					else
+						std::cout << newValue << " >= " << tmp->_value << " Looking at right subtree" << std::endl;
 				}
+				std::cout << "inserting element" << std::endl;
 				if ( _comp( newValue, tmp->_value ) ) {
 
 					adopt(tmp, toInsert, LEFT);
@@ -264,6 +306,8 @@ namespace ft {
 
 				return;
 			}
+
+//			void	erase(  )
 
 			iterator	begin() {
 
