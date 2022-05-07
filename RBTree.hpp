@@ -184,13 +184,29 @@ namespace ft {
 				return tmp;
 			}
 
+			Node *min( Node *node ) {
+
+				Node * tmp = node;
+				while ( tmp && tmp->_left )
+					tmp = tmp->_left;
+				return tmp;
+			}
+
+			Node *	max( Node *node ) {
+
+				Node * tmp = node;
+				while (tmp && tmp->_right )
+					tmp = tmp->_right;
+				return tmp;
+			}
+
 			Node *	find( T const & value ) {
 
 				Node * tmp = _root;
 
 				while ( tmp && tmp->_value != value ) {
 
-					if ( _comp(newValue, tmp->_value) )
+					if ( _comp(value, tmp->_value) )
 						tmp = tmp->_left;
 					else
 						tmp = tmp->_right;
@@ -324,25 +340,125 @@ namespace ft {
 
 			void	transplant( Node * x, Node * y ){
 
+				if ( x == NULL )
+					return;
 				if ( x->_parent == NULL )
 					_root = y;
 				else if ( x->_parent->_left == x )
 					x->_parent->_left = y;
 				else
 					x->_parent->_right = y;
-				y->_parent = x->_parent;
+				if ( y )
+					y->_parent = x->_parent;
+			}
+
+			void	deleteFix( Node * x ) {
+
+				Node * sibling;
+
+				//std::cout << "Fixing deletion of " << x->_value << std::endl;
+				while ( x != _root && x->_color == Node::BLACK) {
+
+					if ( x->_parent->_left == x ) {
+
+						sibling = x->_parent->_right;
+						if ( sibling && sibling->_color == Node::RED ) {
+
+							sibling->_color = Node::BLACK;
+							x->_parent->_color = Node::RED;
+							leftRotate( x->_parent );
+							sibling = x->_parent != NULL ?	x->_parent->_right :
+															NULL;
+						}
+						if ( sibling == NULL || ( ( sibling->_left == NULL || sibling->_left->_color == Node::BLACK ) && ( sibling->_right == NULL || sibling->_right->_color == Node::BLACK ) ) ) {
+
+							if ( sibling != NULL )
+								sibling->_color = Node::RED;
+							x = x->_parent;
+						}
+						else {
+
+							if ( sibling->_right == NULL || sibling->_right->_color == Node::BLACK ) {
+
+								if ( sibling->_left != NULL )
+									sibling->_left->_color = Node::BLACK;
+								sibling->_color = Node::RED;
+								rightRotate(sibling);
+								sibling = x->_parent != NULL ?	x->_parent->_right :
+																NULL;
+							}
+							if (sibling != NULL) {
+
+								sibling->_color = x->_parent == NULL ?	Node::BLACK :
+																		x->_parent->_color;
+							}
+							//if ( x->_parent != NULL )
+								x->_parent->_color = Node::BLACK;
+							if ( sibling != NULL && sibling->_right != NULL )
+								sibling->_right->_color = Node::BLACK;
+							leftRotate(x->_parent);
+							x = _root;
+						}
+					}
+					else {
+
+						sibling = x->_parent->_left;
+						if ( sibling && sibling->_color == Node::RED ) {
+
+							sibling->_color = Node::BLACK;
+							x->_parent->_color = Node::RED;
+							rightRotate( x->_parent );
+							sibling = x->_parent != NULL ?	x->_parent->_left :
+															NULL;
+						}
+						if ( sibling == NULL || ( ( sibling->_left == NULL || sibling->_left->_color == Node::BLACK ) && ( sibling->_right == NULL || sibling->_right->_color == Node::BLACK ) ) ) {
+
+							if ( sibling != NULL )
+								sibling->_color = Node::RED;
+							x = x->_parent;
+						}
+						else {
+
+							if ( sibling->_left == NULL || sibling->_left->_color == Node::BLACK ) {
+
+								if ( sibling->_right != NULL )
+									sibling->_right->_color = Node::BLACK;
+								sibling->_color = Node::RED;
+								leftRotate(sibling);
+								sibling = x->_parent != NULL ?	x->_parent->_left :
+																NULL;
+							}
+							if (sibling != NULL) {
+
+								sibling->_color = x->_parent == NULL ?	Node::BLACK :
+																		x->_parent->_color;
+							}
+							//if ( x->_parent != NULL )
+								x->_parent->_color = Node::BLACK;
+							if ( sibling != NULL && sibling->_left != NULL )
+								sibling->_left->_color = Node::BLACK;
+							rightRotate(x->_parent);
+							x = _root;
+						}
+					}
+				}
 			}
 
 			void	deleteNode( T const & value ) {
+
+				std::cout << "asked to delete value " << value << std::endl;
 
 				Node *	toDelete = find( value );
 				Node *	x;
 				Node *	y;
 
+
 				if ( toDelete == NULL )
 					return ;
 
-				Node::t_color originalColor = toDelete->_color;
+				std::cout << "value found :" << toDelete->_value << std::endl;
+
+				typename Node::t_color originalColor = toDelete->_color;
 				if ( toDelete->_left == NULL ) {
 
 					x = toDelete->_right;
@@ -358,7 +474,7 @@ namespace ft {
 					y = min(toDelete->_right);
 					originalColor = y->_color;
 					x = y->_right;
-					if ( y->_parent = toDelete ) {
+					if ( y->_parent == toDelete ) {
 
 						x->_parent = y;
 					}
@@ -375,9 +491,10 @@ namespace ft {
 				}
 				_nodeAlloc.destroy( toDelete );
 				_nodeAlloc.deallocate( toDelete, 1);
-				if ( originalColor == Node::BLACK )
+				if ( x != NULL && originalColor == Node::BLACK )
 					deleteFix(x);
 				_size--;
+				std::cout << "lol" << std::endl;
 			}
 
 			iterator	begin() {
