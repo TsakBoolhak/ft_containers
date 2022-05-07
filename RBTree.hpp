@@ -184,6 +184,20 @@ namespace ft {
 				return tmp;
 			}
 
+			Node *	find( T const & value ) {
+
+				Node * tmp = _root;
+
+				while ( tmp && tmp->_value != value ) {
+
+					if ( _comp(newValue, tmp->_value) )
+						tmp = tmp->_left;
+					else
+						tmp = tmp->_right;
+				}
+				return tmp;
+			}
+
 			Node * newNode( T const & value, Node * parent ) {
 
 				Node *	tmp = _nodeAlloc.allocate( 1 );
@@ -303,11 +317,68 @@ namespace ft {
 					adopt(tmp, toInsert, RIGHT);
 				}
 				insertFix(toInsert);
+				_size++;
 
 				return;
 			}
 
-//			void	erase(  )
+			void	transplant( Node * x, Node * y ){
+
+				if ( x->_parent == NULL )
+					_root = y;
+				else if ( x->_parent->_left == x )
+					x->_parent->_left = y;
+				else
+					x->_parent->_right = y;
+				y->_parent = x->_parent;
+			}
+
+			void	deleteNode( T const & value ) {
+
+				Node *	toDelete = find( value );
+				Node *	x;
+				Node *	y;
+
+				if ( toDelete == NULL )
+					return ;
+
+				Node::t_color originalColor = toDelete->_color;
+				if ( toDelete->_left == NULL ) {
+
+					x = toDelete->_right;
+					transplant( toDelete, x);
+				}
+				else if ( toDelete->_right == NULL) {
+
+					x = toDelete->_left;
+					transplant(toDelete, x);
+				}
+				else {
+
+					y = min(toDelete->_right);
+					originalColor = y->_color;
+					x = y->_right;
+					if ( y->_parent = toDelete ) {
+
+						x->_parent = y;
+					}
+					else {
+
+						transplant( y, y->_right );
+						y->_right = toDelete->_right;
+						y->_right->_parent = y;
+					}
+					transplant( toDelete, y );
+					y->_left = toDelete->_left;
+					y->_left->_parent = y;
+					y->_color = toDelete->_color;
+				}
+				_nodeAlloc.destroy( toDelete );
+				_nodeAlloc.deallocate( toDelete, 1);
+				if ( originalColor == Node::BLACK )
+					deleteFix(x);
+				_size--;
+			}
 
 			iterator	begin() {
 
