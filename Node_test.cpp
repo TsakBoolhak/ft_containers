@@ -50,9 +50,9 @@ int	main() {
 	std::cout << "A" << std::endl;
 	tree.insertNode(1);
 	std::cout << "root = " << tree.getRoot()->_value << std::endl;
-	for ( ft::RBTree<int>::iterator it = tree.begin() ; it != tree.end() ; it++ ) {
+	for ( ft::RBTree<int>::const_iterator it = tree.begin() ; it != tree.end() ; it++ ) {
 		std::cout << *it << " color: ";
-		if (it.getCurrent()->_color == ft::Node<int>::RED)
+		if (it.getCurrent()->_color == ft::Node<const int>::RED)
 			std::cout << "RED";
 		else
 			std::cout << "BLACK";
@@ -60,9 +60,9 @@ int	main() {
 	}
 	tree.insertNode(1);
 	std::cout << "root = " << tree.getRoot()->_value << std::endl;
-	for ( ft::RBTree<int>::iterator it = tree.begin() ; it != tree.end() ; it++ ) {
+	for ( ft::RBTree<int>::const_iterator it = tree.begin() ; it != tree.end() ; it++ ) {
 		std::cout << *it << " color: ";
-		if (it.getCurrent()->_color == ft::Node<int>::RED)
+		if (it.getCurrent()->_color == ft::Node<const int>::RED)
 			std::cout << "RED";
 		else
 			std::cout << "BLACK";
@@ -71,9 +71,9 @@ int	main() {
 	std::cout << "B" << std::endl;
 	tree.insertNode(42);
 	std::cout << "root = " << tree.getRoot()->_value << std::endl;
-	for ( ft::RBTree<int>::iterator it = tree.begin() ; it != tree.end() ; it++ ) {
+	for ( ft::RBTree<int>::const_iterator it = tree.begin() ; it != tree.end() ; it++ ) {
 		std::cout << *it << " color: ";
-		if (it.getCurrent()->_color == ft::Node<int>::RED)
+		if (it.getCurrent()->_color == ft::Node<const int>::RED)
 			std::cout << "RED";
 		else
 			std::cout << "BLACK";
@@ -82,9 +82,9 @@ int	main() {
 	std::cout << "C" << std::endl;
 	tree.insertNode(-3);
 	std::cout << "root = " << tree.getRoot()->_value << std::endl;
-	for ( ft::RBTree<int>::iterator it = tree.begin() ; it != tree.end() ; it++ ) {
+	for ( ft::RBTree<int>::const_iterator it = tree.begin() ; it != tree.end() ; it++ ) {
 		std::cout << *it << " color: ";
-		if (it.getCurrent()->_color == ft::Node<int>::RED)
+		if (it.getCurrent()->_color == ft::Node<const int>::RED)
 			std::cout << "RED";
 		else
 			std::cout << "BLACK";
@@ -93,9 +93,9 @@ int	main() {
 	std::cout << "D" << std::endl;
 	tree.insertNode(10);
 	std::cout << "root = " << tree.getRoot()->_value << std::endl;
-	for ( ft::RBTree<int>::iterator it = tree.begin() ; it != tree.end() ; it++ ) {
+	for ( ft::RBTree<int>::const_iterator it = tree.begin() ; it != tree.end() ; it++ ) {
 		std::cout << *it << " color: ";
-		if (it.getCurrent()->_color == ft::Node<int>::RED)
+		if (it.getCurrent()->_color == ft::Node<const int>::RED)
 			std::cout << "RED";
 		else
 			std::cout << "BLACK";
@@ -103,9 +103,9 @@ int	main() {
 	}
 	tree.insertNode(11);
 	std::cout << "root = " << tree.getRoot()->_value << std::endl;
-	for ( ft::RBTree<int>::iterator it = tree.begin() ; it != tree.end() ; it++ ) {
+	for ( ft::RBTree<int>::const_iterator it = tree.begin() ; it != tree.end() ; it++ ) {
 		std::cout << *it << " color: ";
-		if (it.getCurrent()->_color == ft::Node<int>::RED)
+		if (it.getCurrent()->_color == ft::Node<const int>::RED)
 			std::cout << "RED";
 		else
 			std::cout << "BLACK";
@@ -113,9 +113,9 @@ int	main() {
 	}
 	tree.insertNode(12);
 	std::cout << "root = " << tree.getRoot()->_value << std::endl;
-	for ( ft::RBTree<int>::iterator it = tree.begin() ; it != tree.end() ; it++ ) {
+	for ( ft::RBTree<int>::const_iterator it = tree.begin() ; it != tree.end() ; it++ ) {
 		std::cout << *it << " color: ";
-		if (it.getCurrent()->_color == ft::Node<int>::RED)
+		if (it.getCurrent()->_color == ft::Node<const int>::RED)
 			std::cout << "RED";
 		else
 			std::cout << "BLACK";
@@ -123,9 +123,9 @@ int	main() {
 	}
 	tree.insertNode(13);
 	std::cout << "root = " << tree.getRoot()->_value << std::endl;
-	for ( ft::RBTree<int>::iterator it = tree.begin() ; it != tree.end() ; it++ ) {
+	for ( ft::RBTree<int>::const_iterator it = tree.begin() ; it != tree.end() ; it++ ) {
 		std::cout << *it << " color: ";
-		if (it.getCurrent()->_color == ft::Node<int>::RED)
+		if (it.getCurrent()->_color == ft::Node<const int>::RED)
 			std::cout << "RED";
 		else
 			std::cout << "BLACK";
@@ -133,9 +133,9 @@ int	main() {
 	}
 	tree.insertNode(14);
 	std::cout << "root = " << tree.getRoot()->_value << std::endl;
-	for ( ft::RBTree<int>::iterator it = tree.begin() ; it != tree.end() ; it++ ) {
+	for ( ft::RBTree<int>::const_iterator it = tree.begin() ; it != tree.end() ; it++ ) {
 		std::cout << *it << " color: ";
-		if (it.getCurrent()->_color == ft::Node<int>::RED)
+		if (it.getCurrent()->_color == ft::Node<const int>::RED)
 			std::cout << "RED";
 		else
 			std::cout << "BLACK";
@@ -143,9 +143,9 @@ int	main() {
 	}
 	tree.insertNode(100);
 	std::cout << "root = " << tree.getRoot()->_value << std::endl;
-	for ( ft::RBTree<int>::iterator it = tree.begin() ; it != tree.end() ; it++ ) {
+	for ( ft::RBTree<int>::const_iterator it = tree.begin() ; it != tree.end() ; it++ ) {
 		std::cout << *it << " color: ";
-		if (it.getCurrent()->_color == ft::Node<int>::RED)
+		if (it.getCurrent()->_color == ft::Node<const int>::RED)
 			std::cout << "RED";
 		else
 			std::cout << "BLACK";
@@ -153,9 +153,9 @@ int	main() {
 	}
 	tree.insertNode(101);
 	std::cout << "root = " << tree.getRoot()->_value << std::endl;
-	for ( ft::RBTree<int>::iterator it = tree.begin() ; it != tree.end() ; it++ ) {
+	for ( ft::RBTree<int>::const_iterator it = tree.begin() ; it != tree.end() ; it++ ) {
 		std::cout << *it << " color: ";
-		if (it.getCurrent()->_color == ft::Node<int>::RED)
+		if (it.getCurrent()->_color == ft::Node<const int>::RED)
 			std::cout << "RED";
 		else
 			std::cout << "BLACK";
@@ -163,9 +163,9 @@ int	main() {
 	}
 	tree.insertNode(102);
 	std::cout << "root = " << tree.getRoot()->_value << std::endl;
-	for ( ft::RBTree<int>::iterator it = tree.begin() ; it != tree.end() ; it++ ) {
+	for ( ft::RBTree<int>::const_iterator it = tree.begin() ; it != tree.end() ; it++ ) {
 		std::cout << *it << " color: ";
-		if (it.getCurrent()->_color == ft::Node<int>::RED)
+		if (it.getCurrent()->_color == ft::Node<const int>::RED)
 			std::cout << "RED";
 		else
 			std::cout << "BLACK";
@@ -173,9 +173,9 @@ int	main() {
 	}
 	tree.insertNode(103);
 	std::cout << "root = " << tree.getRoot()->_value << std::endl;
-	for ( ft::RBTree<int>::iterator it = tree.begin() ; it != tree.end() ; it++ ) {
+	for ( ft::RBTree<int>::const_iterator it = tree.begin() ; it != tree.end() ; it++ ) {
 		std::cout << *it << " color: ";
-		if (it.getCurrent()->_color == ft::Node<int>::RED)
+		if (it.getCurrent()->_color == ft::Node<const int>::RED)
 			std::cout << "RED";
 		else
 			std::cout << "BLACK";
@@ -183,9 +183,9 @@ int	main() {
 	}
 	tree.insertNode(104);
 	std::cout << "root = " << tree.getRoot()->_value << std::endl;
-	for ( ft::RBTree<int>::iterator it = tree.begin() ; it != tree.end() ; it++ ) {
+	for ( ft::RBTree<int>::const_iterator it = tree.begin() ; it != tree.end() ; it++ ) {
 		std::cout << *it << " color: ";
-		if (it.getCurrent()->_color == ft::Node<int>::RED)
+		if (it.getCurrent()->_color == ft::Node<const int>::RED)
 			std::cout << "RED";
 		else
 			std::cout << "BLACK";
@@ -193,9 +193,9 @@ int	main() {
 	}
 	tree.insertNode(105);
 	std::cout << "root = " << tree.getRoot()->_value << std::endl;
-	for ( ft::RBTree<int>::iterator it = tree.begin() ; it != tree.end() ; it++ ) {
+	for ( ft::RBTree<int>::const_iterator it = tree.begin() ; it != tree.end() ; it++ ) {
 		std::cout << *it << " color: ";
-		if (it.getCurrent()->_color == ft::Node<int>::RED)
+		if (it.getCurrent()->_color == ft::Node<const int>::RED)
 			std::cout << "RED";
 		else
 			std::cout << "BLACK";
@@ -203,9 +203,9 @@ int	main() {
 	}
 	tree.insertNode(106);
 	std::cout << "root = " << tree.getRoot()->_value << std::endl;
-	for ( ft::RBTree<int>::iterator it = tree.begin() ; it != tree.end() ; it++ ) {
+	for ( ft::RBTree<int>::const_iterator it = tree.begin() ; it != tree.end() ; it++ ) {
 		std::cout << *it << " color: ";
-		if (it.getCurrent()->_color == ft::Node<int>::RED)
+		if (it.getCurrent()->_color == ft::Node<const int>::RED)
 			std::cout << "RED";
 		else
 			std::cout << "BLACK";
@@ -213,9 +213,9 @@ int	main() {
 	}
 	tree.insertNode(107);
 	std::cout << "root = " << tree.getRoot()->_value << std::endl;
-	for ( ft::RBTree<int>::iterator it = tree.begin() ; it != tree.end() ; it++ ) {
+	for ( ft::RBTree<int>::const_iterator it = tree.begin() ; it != tree.end() ; it++ ) {
 		std::cout << *it << " color: ";
-		if (it.getCurrent()->_color == ft::Node<int>::RED)
+		if (it.getCurrent()->_color == ft::Node<const int>::RED)
 			std::cout << "RED";
 		else
 			std::cout << "BLACK";
@@ -223,9 +223,9 @@ int	main() {
 	}
 	tree.insertNode(108);
 	std::cout << "root = " << tree.getRoot()->_value << std::endl;
-	for ( ft::RBTree<int>::iterator it = tree.begin() ; it != tree.end() ; it++ ) {
+	for ( ft::RBTree<int>::const_iterator it = tree.begin() ; it != tree.end() ; it++ ) {
 		std::cout << *it << " color: ";
-		if (it.getCurrent()->_color == ft::Node<int>::RED)
+		if (it.getCurrent()->_color == ft::Node<const int>::RED)
 			std::cout << "RED";
 		else
 			std::cout << "BLACK";
@@ -233,9 +233,9 @@ int	main() {
 	}
 	tree.insertNode(109);
 	std::cout << "root = " << tree.getRoot()->_value << std::endl;
-	for ( ft::RBTree<int>::iterator it = tree.begin() ; it != tree.end() ; it++ ) {
+	for ( ft::RBTree<int>::const_iterator it = tree.begin() ; it != tree.end() ; it++ ) {
 		std::cout << *it << " color: ";
-		if (it.getCurrent()->_color == ft::Node<int>::RED)
+		if (it.getCurrent()->_color == ft::Node<const int>::RED)
 			std::cout << "RED";
 		else
 			std::cout << "BLACK";
@@ -245,9 +245,9 @@ int	main() {
 	tree.deleteNode(109);
 	std::cout << "F" << std::endl;
 	std::cout << "root = " << tree.getRoot()->_value << std::endl;
-	for ( ft::RBTree<int>::iterator it = tree.begin() ; it != tree.end() ; it++ ) {
+	for ( ft::RBTree<int>::const_iterator it = tree.begin() ; it != tree.end() ; it++ ) {
 		std::cout << *it << " color: ";
-		if (it.getCurrent()->_color == ft::Node<int>::RED)
+		if (it.getCurrent()->_color == ft::Node<const int>::RED)
 			std::cout << "RED";
 		else
 			std::cout << "BLACK";
@@ -255,9 +255,9 @@ int	main() {
 	}
 	tree.deleteNode(1011);
 	std::cout << "root = " << tree.getRoot()->_value << std::endl;
-	for ( ft::RBTree<int>::iterator it = tree.begin() ; it != tree.end() ; it++ ) {
+	for ( ft::RBTree<int>::const_iterator it = tree.begin() ; it != tree.end() ; it++ ) {
 		std::cout << *it << " color: ";
-		if (it.getCurrent()->_color == ft::Node<int>::RED)
+		if (it.getCurrent()->_color == ft::Node<const int>::RED)
 			std::cout << "RED";
 		else
 			std::cout << "BLACK";
@@ -265,9 +265,9 @@ int	main() {
 	}
 	tree.deleteNode(108);
 	std::cout << "root = " << tree.getRoot()->_value << std::endl;
-	for ( ft::RBTree<int>::iterator it = tree.begin() ; it != tree.end() ; it++ ) {
+	for ( ft::RBTree<int>::const_iterator it = tree.begin() ; it != tree.end() ; it++ ) {
 		std::cout << *it << " color: ";
-		if (it.getCurrent()->_color == ft::Node<int>::RED)
+		if (it.getCurrent()->_color == ft::Node<const int>::RED)
 			std::cout << "RED";
 		else
 			std::cout << "BLACK";
@@ -275,9 +275,9 @@ int	main() {
 	}
 	tree.deleteNode(107);
 	std::cout << "root = " << tree.getRoot()->_value << std::endl;
-	for ( ft::RBTree<int>::iterator it = tree.begin() ; it != tree.end() ; it++ ) {
+	for ( ft::RBTree<int>::const_iterator it = tree.begin() ; it != tree.end() ; it++ ) {
 		std::cout << *it << " color: ";
-		if (it.getCurrent()->_color == ft::Node<int>::RED)
+		if (it.getCurrent()->_color == ft::Node<const int>::RED)
 			std::cout << "RED";
 		else
 			std::cout << "BLACK";
@@ -285,9 +285,9 @@ int	main() {
 	}
 	tree.deleteNode(106);
 	std::cout << "root = " << tree.getRoot()->_value << std::endl;
-	for ( ft::RBTree<int>::iterator it = tree.begin() ; it != tree.end() ; it++ ) {
+	for ( ft::RBTree<int>::const_iterator it = tree.begin() ; it != tree.end() ; it++ ) {
 		std::cout << *it << " color: ";
-		if (it.getCurrent()->_color == ft::Node<int>::RED)
+		if (it.getCurrent()->_color == ft::Node<const int>::RED)
 			std::cout << "RED";
 		else
 			std::cout << "BLACK";
@@ -295,9 +295,9 @@ int	main() {
 	}
 	tree.deleteNode(105);
 	std::cout << "root = " << tree.getRoot()->_value << std::endl;
-	for ( ft::RBTree<int>::iterator it = tree.begin() ; it != tree.end() ; it++ ) {
+	for ( ft::RBTree<int>::const_iterator it = tree.begin() ; it != tree.end() ; it++ ) {
 		std::cout << *it << " color: ";
-		if (it.getCurrent()->_color == ft::Node<int>::RED)
+		if (it.getCurrent()->_color == ft::Node<const int>::RED)
 			std::cout << "RED";
 		else
 			std::cout << "BLACK";
@@ -305,9 +305,9 @@ int	main() {
 	}
 	tree.deleteNode(104);
 	std::cout << "root = " << tree.getRoot()->_value << std::endl;
-	for ( ft::RBTree<int>::iterator it = tree.begin() ; it != tree.end() ; it++ ) {
+	for ( ft::RBTree<int>::const_iterator it = tree.begin() ; it != tree.end() ; it++ ) {
 		std::cout << *it << " color: ";
-		if (it.getCurrent()->_color == ft::Node<int>::RED)
+		if (it.getCurrent()->_color == ft::Node<const int>::RED)
 			std::cout << "RED";
 		else
 			std::cout << "BLACK";
@@ -315,9 +315,9 @@ int	main() {
 	}
 	tree.deleteNode(103);
 	std::cout << "root = " << tree.getRoot()->_value << std::endl;
-	for ( ft::RBTree<int>::iterator it = tree.begin() ; it != tree.end() ; it++ ) {
+	for ( ft::RBTree<int>::const_iterator it = tree.begin() ; it != tree.end() ; it++ ) {
 		std::cout << *it << " color: ";
-		if (it.getCurrent()->_color == ft::Node<int>::RED)
+		if (it.getCurrent()->_color == ft::Node<const int>::RED)
 			std::cout << "RED";
 		else
 			std::cout << "BLACK";
@@ -326,9 +326,9 @@ int	main() {
 	tree.deleteNode(42);
 	std::cout << "root = " << tree.getRoot()->_value << std::endl;
 	tree.begin().getCurrent()->_color = ft::Node<int>::BLACK;
-	for ( ft::RBTree<int>::iterator it = tree.begin() ; it != tree.end() ; it++ ) {
+	for ( ft::RBTree<int>::const_iterator it = tree.begin() ; it != tree.end() ; it++ ) {
 		std::cout << *it << " color: ";
-		if (it.getCurrent()->_color == ft::Node<int>::RED)
+		if (it.getCurrent()->_color == ft::Node<const int>::RED)
 			std::cout << "RED";
 		else
 			std::cout << "BLACK";

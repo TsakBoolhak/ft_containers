@@ -200,7 +200,7 @@ namespace ft {
 				return tmp;
 			}
 
-			Node *	find( T const & value ) {
+			iterator	find( T const & value ) {
 
 				Node * tmp = _root;
 
@@ -211,7 +211,21 @@ namespace ft {
 					else
 						tmp = tmp->_right;
 				}
-				return tmp;
+				return iterator ( tmp );
+			}
+
+			const_iterator	find( T const & value ) const {
+
+				Node * tmp = _root;
+
+				while ( tmp && tmp->_value != value ) {
+
+					if ( _comp(value, tmp->_value) )
+						tmp = tmp->_left;
+					else
+						tmp = tmp->_right;
+				}
+				return const_iterator ( tmp );
 			}
 
 			Node * newNode( T const & value, Node * parent ) {
@@ -295,9 +309,6 @@ namespace ft {
 			}
 
 			void	insertNode( T const & newValue ) {
-
-//				if ( this->find( newValue ) != NULL )
-//					return ;
 
 				std::cout << "trying to insert " << newValue << std::endl;
 				if ( _root == NULL ) {
@@ -470,14 +481,14 @@ namespace ft {
 
 				std::cout << "asked to delete value " << value << std::endl;
 
-				Node *	toDelete = find( value );
 				Node *	x;
 				Node *	y;
 
-
-				if ( toDelete == NULL )
+				iterator it = find( value );
+				if ( it == this->end() )
 					return ;
 
+				Node *	toDelete = it.getCurrent();
 				Node *parent = toDelete->_parent;
 
 				std::cout << "value found :" << toDelete->_value << std::endl;

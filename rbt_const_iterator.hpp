@@ -60,6 +60,22 @@ namespace ft {
 				return this->_root;
 			}
 
+			Node *min( Node *node ) {
+
+				Node * tmp = node;
+				while ( tmp && tmp->_left )
+					tmp = tmp->_left;
+				return tmp;
+			}
+
+			Node *	max( Node *node ) {
+
+				Node * tmp = node;
+				while (tmp && tmp->_right )
+					tmp = tmp->_right;
+				return tmp;
+			}
+
 			rbt_const_iterator &	operator=( rbt_const_iterator const & rhs ) {
 
 				if ( this != &rhs ) {
