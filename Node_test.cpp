@@ -58,6 +58,16 @@ int	main() {
 			std::cout << "BLACK";
 		std::cout << std::endl;
 	}
+	tree.insertNode(1);
+	std::cout << "root = " << tree.getRoot()->_value << std::endl;
+	for ( ft::RBTree<int>::iterator it = tree.begin() ; it != tree.end() ; it++ ) {
+		std::cout << *it << " color: ";
+		if (it.getCurrent()->_color == ft::Node<int>::RED)
+			std::cout << "RED";
+		else
+			std::cout << "BLACK";
+		std::cout << std::endl;
+	}
 	std::cout << "B" << std::endl;
 	tree.insertNode(42);
 	std::cout << "root = " << tree.getRoot()->_value << std::endl;

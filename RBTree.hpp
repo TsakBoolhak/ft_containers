@@ -296,12 +296,13 @@ namespace ft {
 
 			void	insertNode( T const & newValue ) {
 
-				Node *	toInsert = newNode( newValue, NULL );
+//				if ( this->find( newValue ) != NULL )
+//					return ;
 
-				std::cout << "inserting " << toInsert->_value << std::endl;
+				std::cout << "trying to insert " << newValue << std::endl;
 				if ( _root == NULL ) {
 
-					_root = toInsert;
+					_root = newNode( newValue, NULL );
 					_root->_color = Node::BLACK;
 					return ;
 				}
@@ -311,6 +312,8 @@ namespace ft {
 					std::cout << newValue << " < " << tmp->_value << " Looking at left subtree" << std::endl;
 				else
 					std::cout << newValue << " >= " << tmp->_value << " Looking at right subtree" << std::endl;
+				if ( tmp->_value == newValue )
+					return ;
 				Node *next = _comp( newValue, tmp->_value ) ?	tmp->_left :
 																tmp->_right;
 				while ( next != NULL ) {
@@ -318,11 +321,16 @@ namespace ft {
 					tmp = next;
 					next = _comp( newValue, tmp->_value ) ?	tmp->_left :
 															tmp->_right;
+					if ( tmp->_value == newValue )
+						return ;
 					if ( _comp(newValue, tmp->_value) )
 						std::cout << newValue << " < " << tmp->_value << " Looking at left subtree" << std::endl;
 					else
 						std::cout << newValue << " >= " << tmp->_value << " Looking at right subtree" << std::endl;
 				}
+				if ( tmp->_value == newValue )
+					return ;
+				Node *	toInsert = newNode( newValue, NULL );
 				std::cout << "inserting element" << std::endl;
 				if ( _comp( newValue, tmp->_value ) ) {
 
