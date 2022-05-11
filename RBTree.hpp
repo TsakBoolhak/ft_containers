@@ -352,29 +352,40 @@ namespace ft {
 					y->_parent = x->_parent;
 			}
 
-			void	deleteFix( Node * x ) {
+			void	deleteFix( Node * x, Node* parent ) {
 
 				Node * sibling;
 
-				//std::cout << "Fixing deletion of " << x->_value << std::endl;
-				while ( x != _root && x->_color == Node::BLACK) {
+				std::cout << "Fixing deletion of ";
+				if (x != NULL)
+					std::cout << x->_value << std::endl;
+				else
+					std::cout << "null" << std::endl;
+				while ( x != _root &&  (x == NULL || x->_color == Node::BLACK) ) {
 
-					if ( x->_parent->_left == x ) {
+					if (x != NULL) {
+						std::cout << "x = " << x->_value << std::endl;
+						parent = x->_parent;
+					}
+					std::cout << "parent = " << parent->_value << std::endl;
+					if (parent->_parent == NULL)
+						std::cout << "parent is root?" <<std::endl;
+					if ( parent->_left == x ) {
 
-						sibling = x->_parent->_right;
+						sibling = parent->_right;
 						if ( sibling && sibling->_color == Node::RED ) {
 
 							sibling->_color = Node::BLACK;
-							x->_parent->_color = Node::RED;
-							leftRotate( x->_parent );
-							sibling = x->_parent != NULL ?	x->_parent->_right :
+							parent->_color = Node::RED;
+							leftRotate(parent );
+							sibling = parent != NULL ?	parent->_right :
 															NULL;
 						}
 						if ( sibling == NULL || ( ( sibling->_left == NULL || sibling->_left->_color == Node::BLACK ) && ( sibling->_right == NULL || sibling->_right->_color == Node::BLACK ) ) ) {
 
 							if ( sibling != NULL )
 								sibling->_color = Node::RED;
-							x = x->_parent;
+							x = parent;
 						}
 						else {
 
@@ -384,38 +395,39 @@ namespace ft {
 									sibling->_left->_color = Node::BLACK;
 								sibling->_color = Node::RED;
 								rightRotate(sibling);
-								sibling = x->_parent != NULL ?	x->_parent->_right :
+								sibling = parent != NULL ?	parent->_right :
 																NULL;
 							}
 							if (sibling != NULL) {
 
-								sibling->_color = x->_parent == NULL ?	Node::BLACK :
-																		x->_parent->_color;
+								sibling->_color = parent == NULL ?	Node::BLACK :
+																		parent->_color;
 							}
 							//if ( x->_parent != NULL )
-								x->_parent->_color = Node::BLACK;
+								parent->_color = Node::BLACK;
 							if ( sibling != NULL && sibling->_right != NULL )
 								sibling->_right->_color = Node::BLACK;
-							leftRotate(x->_parent);
+							leftRotate(parent);
 							x = _root;
 						}
 					}
 					else {
 
-						sibling = x->_parent->_left;
+						sibling = parent->_left;
 						if ( sibling && sibling->_color == Node::RED ) {
 
 							sibling->_color = Node::BLACK;
-							x->_parent->_color = Node::RED;
-							rightRotate( x->_parent );
-							sibling = x->_parent != NULL ?	x->_parent->_left :
+							parent->_color = Node::RED;
+							rightRotate( parent );
+							sibling = parent != NULL ?	parent->_left :
 															NULL;
 						}
 						if ( sibling == NULL || ( ( sibling->_left == NULL || sibling->_left->_color == Node::BLACK ) && ( sibling->_right == NULL || sibling->_right->_color == Node::BLACK ) ) ) {
 
 							if ( sibling != NULL )
 								sibling->_color = Node::RED;
-							x = x->_parent;
+							x = parent;
+							std::cout << "PUTA MADRE" << std::endl;
 						}
 						else {
 
@@ -425,23 +437,25 @@ namespace ft {
 									sibling->_right->_color = Node::BLACK;
 								sibling->_color = Node::RED;
 								leftRotate(sibling);
-								sibling = x->_parent != NULL ?	x->_parent->_left :
+								sibling = parent != NULL ?	parent->_left :
 																NULL;
 							}
 							if (sibling != NULL) {
 
-								sibling->_color = x->_parent == NULL ?	Node::BLACK :
-																		x->_parent->_color;
+								sibling->_color = parent == NULL ?	Node::BLACK :
+																		parent->_color;
 							}
 							//if ( x->_parent != NULL )
-								x->_parent->_color = Node::BLACK;
+								parent->_color = Node::BLACK;
 							if ( sibling != NULL && sibling->_left != NULL )
 								sibling->_left->_color = Node::BLACK;
-							rightRotate(x->_parent);
+							rightRotate(parent);
 							x = _root;
 						}
 					}
 				}
+				if (x != NULL)
+					x->_color = Node::BLACK;
 			}
 
 			void	deleteNode( T const & value ) {
@@ -455,6 +469,8 @@ namespace ft {
 
 				if ( toDelete == NULL )
 					return ;
+
+				Node *parent = toDelete->_parent;
 
 				std::cout << "value found :" << toDelete->_value << std::endl;
 
@@ -476,10 +492,11 @@ namespace ft {
 					x = y->_right;
 					if ( y->_parent == toDelete ) {
 
-						x->_parent = y;
+						parent = y;
 					}
 					else {
 
+						parent = y->_parent;
 						transplant( y, y->_right );
 						y->_right = toDelete->_right;
 						y->_right->_parent = y;
@@ -491,8 +508,8 @@ namespace ft {
 				}
 				_nodeAlloc.destroy( toDelete );
 				_nodeAlloc.deallocate( toDelete, 1);
-				if ( x != NULL && originalColor == Node::BLACK )
-					deleteFix(x);
+				if ( /* x != NULL && */ originalColor == Node::BLACK )
+					deleteFix(x, parent);
 				_size--;
 				std::cout << "lol" << std::endl;
 			}
