@@ -1,7 +1,7 @@
 # ft_containers
 School project which objective is to reproduce some of C++ containers (vector, stack, map and set) and some other standard c++ stuff such as iterator_traits, reverse_iterators, enable_if, is_integral, equal, lexicographical_compare, std::pair and std::make_pair
 
-TO DO in my RBT class and/or in map :
+TO DO in my RBT class:
 
 ✔️iterator begin();
 
@@ -42,11 +42,11 @@ TO DO in my RBT class and/or in map :
 ❌allocator_type get_allocator() const;
 
 
-❌pair<iterator,bool> insert (const value_type& val);   (just need to have a correct return value instead of void)
+✔️pair<iterator,bool> insert (const value_type& val);
 
-❌iterator insert (iterator position, const value_type& val);
+✔️iterator insert (iterator position, const value_type& val);
 
-❌void insert (InputIterator first, InputIterator last);
+✔️void insert (InputIterator first, InputIterator last);
 
 
 ❌key_compare key_comp() const;
@@ -82,6 +82,3 @@ TO DO in my RBT class and/or in map :
 ❌iterator upper_bound (const key_type& k);
 
 ❌const_iterator upper_bound (const key_type& k) const;
-
-
-❌value_compare value_comp() const;
