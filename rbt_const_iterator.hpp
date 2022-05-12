@@ -20,8 +20,8 @@ namespace ft {
 			typedef std::ptrdiff_t						difference_type;
 			typedef T const *							pointer;
 			typedef T const &							reference;
-			typedef std::bidirectional_iterator_tag	iterator_category;
-			typedef ft::Node<value_type>				Node;
+			typedef std::bidirectional_iterator_tag		iterator_category;
+			typedef ft::Node<T>							Node;
 
 		protected :
 
@@ -40,7 +40,7 @@ namespace ft {
 				return ;
 			}
 
-			rbt_const_iterator( ft::rbt_iterator<T> const & src ) : _current ( src.getCurrent() ), _root ( src.getRoot() ) {
+			rbt_const_iterator( rbt_iterator<T> const & src ) : _current ( src.getCurrent() ), _root ( src.getRoot() ) {
 
 				return ;
 			}

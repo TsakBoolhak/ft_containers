@@ -64,31 +64,31 @@ namespace ft {
 				if ( toRotate == NULL )
 					return;
 
-				std::cout << "Left Rotating " << toRotate->_value << std::endl;
+//				std::cout << "Left Rotating " << toRotate->_value << std::endl;
 				Node *	parent = toRotate->_parent;
 				Node *	child = toRotate->_right;
 
 				if (  child ) {
-					std::cout << "LR step 1" << std::endl;
+//					std::cout << "LR step 1" << std::endl;
 					adopt( toRotate, child->_left, RIGHT );
 				}
 				if ( parent == NULL ) {
 
-					std::cout << "rotating root" << std::endl;
+//					std::cout << "rotating root" << std::endl;
 					_root = child;
 					_root->_parent = NULL;
 				}
 				else if ( parent->_left == toRotate ) {
 
-					std::cout << "LR step 2" << std::endl;
+//					std::cout << "LR step 2" << std::endl;
 					adopt( parent, child, LEFT );
 				}
 				else {
 
-					std::cout << "LR step 2" << std::endl;
+//					std::cout << "LR step 2" << std::endl;
 					adopt( parent, child, RIGHT );
 				}
-					std::cout << "LR step 3" << std::endl;
+//					std::cout << "LR step 3" << std::endl;
 				adopt( child, toRotate, LEFT );
 
 				return;
@@ -99,13 +99,13 @@ namespace ft {
 				if ( toRotate == NULL )
 					return;
 
-				std::cout << "Rotating " << toRotate->_value << std::endl;
+//				std::cout << "Rotating " << toRotate->_value << std::endl;
 				Node * parent = toRotate->_parent;
 				Node * child = toRotate->_left;
 
 //				if ( child ) {
 
-					std::cout << "RR step 1" << std::endl;
+//					std::cout << "RR step 1" << std::endl;
 					adopt( toRotate, child->_right, LEFT );
 //				}
 				if ( parent == NULL ) {
@@ -114,15 +114,15 @@ namespace ft {
 				}
 				else if ( parent && parent->_right == toRotate ) {
 
-					std::cout << "RR step 2" << std::endl;
+//					std::cout << "RR step 2" << std::endl;
 					adopt( parent, child, RIGHT );
 				}
 				else {
 
-					std::cout << "RR step 2" << std::endl;
+//					std::cout << "RR step 2" << std::endl;
 					adopt( parent, child, LEFT );
 				}
-				std::cout << "RR step 3" << std::endl;
+//				std::cout << "RR step 3" << std::endl;
 				adopt( child, toRotate, RIGHT);
 
 				return;
@@ -247,12 +247,12 @@ namespace ft {
 					grandParent = parent != NULL ?	parent->_parent :
 															NULL;
 
-					std::cout << "Fixing " << toInsert->_value << " Node and parent are both red." << std::endl;
+//					std::cout << "Fixing " << toInsert->_value << " Node and parent are both red." << std::endl;
 					if ( grandParent && parent == grandParent->_left ) {
 						
 						if ( grandParent->_right && grandParent->_right->_color == Node::RED ) {
 
-							std::cout << "Uncle of node is red - push blackness down from grandparent" << std::endl;
+//							std::cout << "Uncle of node is red - push blackness down from grandparent" << std::endl;
 							grandParent->_left->_color = Node::BLACK;
 							grandParent->_right->_color = Node::BLACK;
 							grandParent->_color = Node::RED;
@@ -261,7 +261,7 @@ namespace ft {
 						else {
 							if ( parent->_right && parent->_right == toInsert ) {
 
-								std::cout << "Node is right child, parent is left child -- rotate" << std::endl;
+//								std::cout << "Node is right child, parent is left child -- rotate" << std::endl;
 								toInsert = parent;
 								leftRotate( toInsert );
 							}
@@ -278,7 +278,7 @@ namespace ft {
 						
 						if ( grandParent && grandParent->_left && grandParent->_left->_color == Node::RED ) {
 
-							std::cout << "Uncle of node is red - push blackness down from grandparent" << std::endl;
+//							std::cout << "Uncle of node is red - push blackness down from grandparent" << std::endl;
 							grandParent->_left->_color = Node::BLACK;
 							grandParent->_right->_color = Node::BLACK;
 							grandParent->_color = Node::RED;
@@ -294,7 +294,7 @@ namespace ft {
 								toInsert->_parent->_color = Node::BLACK;
 							if ( toInsert->_parent && toInsert->_parent->_parent ) {
 
-								std::cout << "MDR" << std::endl;
+//								std::cout << "MDR" << std::endl;
 								toInsert->_parent->_parent->_color = Node::RED;
 								leftRotate( toInsert->_parent->_parent );
 							}
@@ -302,7 +302,7 @@ namespace ft {
 					}
 					if ( _root && _root->_color == Node::RED ) {
 
-						std::cout << "Root of the tree is red. Color it black" << std::endl;
+//						std::cout << "Root of the tree is red. Color it black" << std::endl;
 						_root->_color = Node::BLACK;
 					}
 				}
@@ -310,7 +310,7 @@ namespace ft {
 
 			void	insertNode( T const & newValue ) {
 
-				std::cout << "trying to insert " << newValue << std::endl;
+//				std::cout << "trying to insert " << newValue << std::endl;
 				if ( _root == NULL ) {
 
 					_root = newNode( newValue, NULL );
@@ -319,10 +319,10 @@ namespace ft {
 				}
 
 				Node *tmp = _root;
-				if ( _comp(newValue, tmp->_value) )
-					std::cout << newValue << " < " << tmp->_value << " Looking at left subtree" << std::endl;
-				else
-					std::cout << newValue << " >= " << tmp->_value << " Looking at right subtree" << std::endl;
+//				if ( _comp(newValue, tmp->_value) )
+//					std::cout << newValue << " < " << tmp->_value << " Looking at left subtree" << std::endl;
+//				else
+//					std::cout << newValue << " >= " << tmp->_value << " Looking at right subtree" << std::endl;
 				if ( tmp->_value == newValue )
 					return ;
 				Node *next = _comp( newValue, tmp->_value ) ?	tmp->_left :
@@ -334,15 +334,15 @@ namespace ft {
 															tmp->_right;
 					if ( tmp->_value == newValue )
 						return ;
-					if ( _comp(newValue, tmp->_value) )
-						std::cout << newValue << " < " << tmp->_value << " Looking at left subtree" << std::endl;
-					else
-						std::cout << newValue << " >= " << tmp->_value << " Looking at right subtree" << std::endl;
+//					if ( _comp(newValue, tmp->_value) )
+//						std::cout << newValue << " < " << tmp->_value << " Looking at left subtree" << std::endl;
+//					else
+//						std::cout << newValue << " >= " << tmp->_value << " Looking at right subtree" << std::endl;
 				}
 				if ( tmp->_value == newValue )
 					return ;
 				Node *	toInsert = newNode( newValue, NULL );
-				std::cout << "inserting element" << std::endl;
+//				std::cout << "inserting element" << std::endl;
 				if ( _comp( newValue, tmp->_value ) ) {
 
 					adopt(tmp, toInsert, LEFT);
@@ -375,20 +375,20 @@ namespace ft {
 
 				Node * sibling;
 
-				std::cout << "Fixing deletion of ";
-				if (x != NULL)
-					std::cout << x->_value << std::endl;
-				else
-					std::cout << "null" << std::endl;
+//				std::cout << "Fixing deletion of ";
+//				if (x != NULL)
+//					std::cout << x->_value << std::endl;
+//				else
+//					std::cout << "null" << std::endl;
 				while ( x != _root &&  (x == NULL || x->_color == Node::BLACK) ) {
 
 					if (x != NULL) {
-						std::cout << "x = " << x->_value << std::endl;
+//						std::cout << "x = " << x->_value << std::endl;
 						parent = x->_parent;
 					}
-					std::cout << "parent = " << parent->_value << std::endl;
-					if (parent->_parent == NULL)
-						std::cout << "parent is root?" <<std::endl;
+//					std::cout << "parent = " << parent->_value << std::endl;
+//					if (parent->_parent == NULL)
+//						std::cout << "parent is root?" <<std::endl;
 					if ( parent->_left == x ) {
 
 						sibling = parent->_right;
@@ -446,7 +446,7 @@ namespace ft {
 							if ( sibling != NULL )
 								sibling->_color = Node::RED;
 							x = parent;
-							std::cout << "PUTA MADRE" << std::endl;
+//							std::cout << "PUTA MADRE" << std::endl;
 						}
 						else {
 
@@ -479,7 +479,7 @@ namespace ft {
 
 			void	deleteNode( T const & value ) {
 
-				std::cout << "asked to delete value " << value << std::endl;
+//				std::cout << "asked to delete value " << value << std::endl;
 
 				Node *	x;
 				Node *	y;
@@ -491,7 +491,7 @@ namespace ft {
 				Node *	toDelete = it.getCurrent();
 				Node *parent = toDelete->_parent;
 
-				std::cout << "value found :" << toDelete->_value << std::endl;
+//				std::cout << "value found :" << toDelete->_value << std::endl;
 
 				typename Node::t_color originalColor = toDelete->_color;
 				if ( toDelete->_left == NULL ) {
@@ -530,7 +530,7 @@ namespace ft {
 				if ( /* x != NULL && */ originalColor == Node::BLACK )
 					deleteFix(x, parent);
 				_size--;
-				std::cout << "lol" << std::endl;
+//				std::cout << "lol" << std::endl;
 			}
 
 			iterator	begin() {
