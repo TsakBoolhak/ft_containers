@@ -5,6 +5,7 @@
 # include "rbt_const_iterator.hpp"
 # include "rbt_node.hpp"
 # include "reverse_iterator.hpp"
+# include "pair.hpp"
 
 namespace ft {
 
@@ -308,14 +309,31 @@ namespace ft {
 				}
 			}
 
-			void	insertNode( T const & newValue ) {
+			template< class InputIterator >
+			void	insert( InputIterator first, InputIterator last) {
+
+				for ( ; first != last ; ++first ) {
+
+					insert( *first );
+				}
+				return;
+			}
+
+			iterator	insert( iterator position, T const & newValue ) {
+
+				(void)position;
+				return insertNode( newValue ).first;
+				
+			}
+
+			ft::pair<iterator, bool>	insert( T const & newValue ) {
 
 //				std::cout << "trying to insert " << newValue << std::endl;
 				if ( _root == NULL ) {
 
 					_root = newNode( newValue, NULL );
 					_root->_color = Node::BLACK;
-					return ;
+					return ft::make_pair( iterator( _root ), true );
 				}
 
 				Node *tmp = _root;
@@ -324,7 +342,7 @@ namespace ft {
 //				else
 //					std::cout << newValue << " >= " << tmp->_value << " Looking at right subtree" << std::endl;
 				if ( tmp->_value == newValue )
-					return ;
+					return ft::make_pair( iterator( tmp ), false );
 				Node *next = _comp( newValue, tmp->_value ) ?	tmp->_left :
 																tmp->_right;
 				while ( next != NULL ) {
@@ -333,14 +351,14 @@ namespace ft {
 					next = _comp( newValue, tmp->_value ) ?	tmp->_left :
 															tmp->_right;
 					if ( tmp->_value == newValue )
-						return ;
+						return ft::make_pair( iterator( tmp ), false );
 //					if ( _comp(newValue, tmp->_value) )
 //						std::cout << newValue << " < " << tmp->_value << " Looking at left subtree" << std::endl;
 //					else
 //						std::cout << newValue << " >= " << tmp->_value << " Looking at right subtree" << std::endl;
 				}
 				if ( tmp->_value == newValue )
-					return ;
+					return ft::make_pair( iterator( tmp ), false );
 				Node *	toInsert = newNode( newValue, NULL );
 //				std::cout << "inserting element" << std::endl;
 				if ( _comp( newValue, tmp->_value ) ) {
@@ -354,7 +372,7 @@ namespace ft {
 				insertFix(toInsert);
 				_size++;
 
-				return;
+				return ft::make_pair( iterator( toInsert ), true );
 			}
 
 			void	transplant( Node * x, Node * y ){
@@ -477,7 +495,7 @@ namespace ft {
 					x->_color = Node::BLACK;
 			}
 
-			void	deleteNode( T const & value ) {
+			void	erase( T const & value ) {
 
 //				std::cout << "asked to delete value " << value << std::endl;
 
