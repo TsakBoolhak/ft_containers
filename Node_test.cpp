@@ -334,6 +334,8 @@ int	main() {
 			std::cout << "BLACK";
 		std::cout << std::endl;
 	}
+	std::cout << "lower_bound( -2 ) : " << *(tree.lower_bound(-2)) << std::endl;
+	std::cout << "lower_bound( -3 ) : " << *(tree.lower_bound(-3)) << std::endl;
 	tree.clear();
 //	std::cout << std::endl;
 //	for ( ft::RBTree<int>::reverse_iterator it = tree.rbegin() ; it != tree.rend() ; it++ )

@@ -280,6 +280,86 @@ namespace ft {
 				return const_iterator ( tmp );
 			}
 
+			iterator lower_bound( T const & value ) {
+
+				if ( _root == NULL )
+					return end();
+				else if ( value == _root->_value ) {
+
+					return iterator( _root );
+				}
+				else if ( value > _root->_value) {
+
+					reverse_iterator it = rbegin();
+					for ( reverse_iterator ite = rend() ; it != ite ; ++it ) {
+
+						if ( *it == value )
+							return iterator( it.base() );
+						else if ( _comp( *it, value ) ) {
+							return iterator( (++it).base() );
+						}
+					}
+				}
+				else {
+
+					iterator it = begin();
+					for ( iterator ite = end() ; it != ite ; ++it ) {
+
+						if ( _comp( *it, value ) == 0 )
+							return it;
+					}
+				}
+				return end();
+			}
+
+			const_iterator lower_bound( T const & value ) const {
+
+				if ( _root == NULL )
+					return end();
+				else if ( value == _root->_value ) {
+
+					return const_iterator( _root );
+				}
+				else if ( value > _root->_value) {
+
+					const_reverse_iterator it = rbegin();
+					for ( const_reverse_iterator ite = rend() ; it != ite ; ++it ) {
+
+						if ( *it == value )
+							return const_iterator( it.base() );
+						else if ( _comp( *it, value ) ) {
+							return const_iterator( (++it).base() );
+						}
+					}
+				}
+				else {
+
+					const_iterator it = begin();
+					for ( const_iterator ite = end() ; it != ite ; ++it ) {
+
+						if ( _comp( *it, value ) == 0 )
+							return it;
+					}
+				}
+				return end();
+			}
+
+			iterator	upper_bound( T const & value ) {
+
+				iterator it = lower_bound(value);
+				if ( it != end() && *it == value )
+					it++;
+				return it;
+			}
+
+			const_iterator	upper_bound( T const & value ) const {
+
+				const_iterator it = lower_bound(value);
+				if ( it != end() && *it == value )
+					it++;
+				return it;
+			}
+
 			Node * newNode( T const & value, Node * parent ) {
 
 				Node *	tmp = _nodeAlloc.allocate( 1 );
