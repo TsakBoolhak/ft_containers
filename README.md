@@ -27,11 +27,11 @@ TO DO in my RBT class:
 ❌pair<iterator,iterator>             equal_range (const key_type& k);
 
 
-❌void erase (iterator position);
+✔️void erase (iterator position);
 
-❌size_type erase (const key_type& k);
+✔️size_type erase (const key_type& k);
 
-❌void erase (iterator first, iterator last);
+✔️void erase (iterator first, iterator last);
 
 
 ✔️iterator find (const key_type& k);
@@ -49,7 +49,7 @@ TO DO in my RBT class:
 ✔️void insert (InputIterator first, InputIterator last);
 
 
-❌key_compare key_comp() const;
+✔️key_compare key_comp() const;
 
 
 ❌iterator lower_bound (const key_type& k);
@@ -73,7 +73,7 @@ TO DO in my RBT class:
 ✔️const_reverse_iterator rend() const;
 
 
-❌size_type size() const;
+✔️size_type size() const;
 
 
 ❌void swap (map& x);
