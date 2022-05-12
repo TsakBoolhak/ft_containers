@@ -156,10 +156,8 @@ namespace ft {
 			}
 		public :
 
-			RBTree( Node  * root = NULL, size_type size = 0 ) : _root ( root ), _size ( size ), _alloc ( allocator_type() ), _nodeAlloc ( node_allocator_type() ), _comp ( value_compare() ) {
+			RBTree() : _root ( NULL ), _size ( 0 ), _alloc ( allocator_type() ), _nodeAlloc ( node_allocator_type() ), _comp ( value_compare() ) {
 
-				if ( this->_root != NULL )
-					this->_root->_color = Node::BLACK;
 				return ;
 			}
 
@@ -199,6 +197,43 @@ namespace ft {
 				while (tmp && tmp->_right )
 					tmp = tmp->_right;
 				return tmp;
+			}
+
+			void	clearRecursive( Node * node ) {
+
+				if ( node && node->_left )
+					clearRecursive( node->_left );
+				if ( node && node->_right )
+					clearRecursive( node->_right);
+				if ( node ) {
+
+					_nodeAlloc.destroy( node );
+					_nodeAlloc.deallocate( node, 1);
+				}
+			}
+
+			void	clear() {
+
+				clearRecursive( _root );
+				_size = 0;
+				_root = NULL;
+			}
+
+			size_type	count( T const & value ) const {
+
+				if ( find( value ) == this->end() )
+					return 0;
+				return 1;
+			}
+
+			bool	empty() const {
+
+				return (_size== 0);
+			}
+
+			allocator_type	get_allocator() const {
+
+				return this->_alloc;
 			}
 
 			iterator	find( T const & value ) {
