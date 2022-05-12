@@ -9,13 +9,13 @@
 
 namespace ft {
 
-	template < class T, class Value_Compare = std::less<T>, class Allocator = std::allocator< T > >
+	template < class T, class Key_Compare = std::less<T>, class Allocator = std::allocator< T > >
 	class RBTree {
 
 		public :
 
 			typedef T												value_type;
-			typedef Value_Compare									value_compare;
+			typedef Key_Compare										key_compare;
 			typedef Allocator										allocator_type;
 			typedef typename Allocator::reference					reference;
 			typedef typename Allocator::const_reference				const_reference;
@@ -28,7 +28,7 @@ namespace ft {
 			typedef ft::reverse_iterator< iterator >				reverse_iterator;
 			typedef ft::reverse_iterator< const_iterator >			const_reverse_iterator;
 			typedef ft::Node<T>										Node;
-			typedef std::allocator<Node>							node_allocator_type;
+			typedef std::allocator<Node>								node_allocator_type;
 
 		protected :
 		
@@ -36,7 +36,7 @@ namespace ft {
 			size_type			_size;
 			allocator_type		_alloc;
 			node_allocator_type	_nodeAlloc;
-			value_compare		_comp;
+			key_compare		_comp;
 
 			typedef enum e_relativePos {
 
@@ -156,9 +156,15 @@ namespace ft {
 			}
 		public :
 
-			RBTree() : _root ( NULL ), _size ( 0 ), _alloc ( allocator_type() ), _nodeAlloc ( node_allocator_type() ), _comp ( value_compare() ) {
+			RBTree() : _root ( NULL ), _size ( 0 ), _alloc ( allocator_type() ), _nodeAlloc ( node_allocator_type() ), _comp ( key_compare() ) {
 
 				return ;
+			}
+
+			~RBTree() {
+
+				this->clear();
+				return;
 			}
 
 			Node * getRoot() const {
@@ -234,6 +240,16 @@ namespace ft {
 			allocator_type	get_allocator() const {
 
 				return this->_alloc;
+			}
+
+			key_compare	key_comp() const {
+
+				return this->_comp;
+			}
+
+			size_type	size() const {
+
+				return this->_size;
 			}
 
 			iterator	find( T const & value ) {
@@ -530,7 +546,21 @@ namespace ft {
 					x->_color = Node::BLACK;
 			}
 
-			void	erase( T const & value ) {
+			void	erase( iterator position ) {
+
+				erase( *position );
+				return;
+			}
+
+			void	erase( iterator first, iterator last ) {
+
+				for ( ; first != last ; ++first ) {
+
+					erase( *first );
+				}
+			}
+
+			size_type	erase( T const & value ) {
 
 //				std::cout << "asked to delete value " << value << std::endl;
 
@@ -539,7 +569,7 @@ namespace ft {
 
 				iterator it = find( value );
 				if ( it == this->end() )
-					return ;
+					return 0;
 
 				Node *	toDelete = it.getCurrent();
 				Node *parent = toDelete->_parent;
@@ -584,6 +614,7 @@ namespace ft {
 					deleteFix(x, parent);
 				_size--;
 //				std::cout << "lol" << std::endl;
+				return 1;
 			}
 
 			iterator	begin() {

@@ -334,6 +334,7 @@ int	main() {
 			std::cout << "BLACK";
 		std::cout << std::endl;
 	}
+	tree.clear();
 //	std::cout << std::endl;
 //	for ( ft::RBTree<int>::reverse_iterator it = tree.rbegin() ; it != tree.rend() ; it++ )
 //		std::cout << *it << std::endl;
