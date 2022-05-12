@@ -8,13 +8,13 @@ TO DO in my RBT class:
 ✔️const_iterator begin() const;
 
 
-❌void clear();
+✔️void clear();
 
 
-❌size_type count (const key_type& k) const;
+✔️size_type count (const key_type& k) const;
 
 
-❌bool empty() const;
+✔️bool empty() const;
 
 
 ✔️iterator end();
@@ -39,7 +39,7 @@ TO DO in my RBT class:
 ✔️const_iterator find (const key_type& k) const;
 
 
-❌allocator_type get_allocator() const;
+✔️allocator_type get_allocator() const;
 
 
 ✔️pair<iterator,bool> insert (const value_type& val);
