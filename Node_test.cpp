@@ -1,6 +1,7 @@
 # include "rbt_node.hpp"
 #include "RBTree.hpp"
 #include "rbt_node.hpp"
+#include "pair.hpp"
 # include <iostream>
 
 int	main() {
@@ -336,6 +337,14 @@ int	main() {
 	}
 	std::cout << "lower_bound( -2 ) : " << *(tree.lower_bound(-2)) << std::endl;
 	std::cout << "lower_bound( -3 ) : " << *(tree.lower_bound(-3)) << std::endl;
+	{
+		ft::pair< ft::RBTree<int>::iterator, ft::RBTree<int>::iterator > range = tree.equal_range(-3);
+		std::cout << "equal_range( -3 ).first : " << *(range.first) <<  " equal_range( -3 ).second : " << *(range.second) << std::endl;
+	}
+	{
+		ft::pair< ft::RBTree<int>::const_iterator, ft::RBTree<int>::const_iterator > range = tree.equal_range(-3);
+		std::cout << "equal_range( -3 ).first : " << *(range.first) <<  " equal_range( -3 ).second : " << *(range.second) << std::endl;
+	}
 	tree.clear();
 //	std::cout << std::endl;
 //	for ( ft::RBTree<int>::reverse_iterator it = tree.rbegin() ; it != tree.rend() ; it++ )

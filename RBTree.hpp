@@ -360,6 +360,24 @@ namespace ft {
 				return it;
 			}
 
+			ft::pair< iterator, iterator >	equal_range( T const & value ) {
+
+				iterator low = lower_bound(value);
+				iterator up = low;
+				if ( up != end() && *up == value )
+					up++;
+				return make_pair( low, up );
+			}
+
+			ft::pair< const_iterator, const_iterator >	equal_range( T const & value ) const {
+
+				const_iterator low = lower_bound(value);
+				const_iterator up = low;
+				if ( up != end() && *up == value )
+					up++;
+				return make_pair( low, up );
+			}
+
 			Node * newNode( T const & value, Node * parent ) {
 
 				Node *	tmp = _nodeAlloc.allocate( 1 );
