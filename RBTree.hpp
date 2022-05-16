@@ -154,6 +154,12 @@ namespace ft {
 
 				return ;
 			}
+
+			bool	isEqual( T const & x, T const & y) {
+
+				return _comp(x, y) == _comp(y, x);
+			}
+
 		public :
 
 			RBTree() : _root ( NULL ), _size ( 0 ), _alloc ( allocator_type() ), _nodeAlloc ( node_allocator_type() ), _comp ( key_compare() ) {
@@ -167,9 +173,28 @@ namespace ft {
 				return;
 			}
 
+			RBTree &	operator=( RBTree const & rhs ) {
+
+				clear();
+				insert(rhs.begin(), rhs.end());
+				return *this;
+			}
+
 			Node * getRoot() const {
 
 				return this->_root;
+			}
+
+			void	setRoot( Node *newRoot ) {
+
+				_root = newRoot;
+				return;
+			}
+
+			void	setSize( size_type newSize ) {
+
+				_size = newSize;
+				return ;
 			}
 
 			Node *min() {
@@ -256,7 +281,7 @@ namespace ft {
 
 				Node * tmp = _root;
 
-				while ( tmp && tmp->_value != value ) {
+				while ( tmp && !isEqual(tmp->value, value) ) {
 
 					if ( _comp(value, tmp->_value) )
 						tmp = tmp->_left;
@@ -270,7 +295,7 @@ namespace ft {
 
 				Node * tmp = _root;
 
-				while ( tmp && tmp->_value != value ) {
+				while ( tmp && !isEqual(tmp->value, value) ) {
 
 					if ( _comp(value, tmp->_value) )
 						tmp = tmp->_left;
@@ -284,11 +309,11 @@ namespace ft {
 
 				if ( _root == NULL )
 					return end();
-				else if ( value == _root->_value ) {
+				else if ( isEqual(_root->value, value) ) {
 
 					return iterator( _root );
 				}
-				else if ( value > _root->_value) {
+				else if ( _comp(_root->value, value) ) {
 
 					reverse_iterator it = rbegin();
 					for ( reverse_iterator ite = rend() ; it != ite ; ++it ) {
@@ -316,11 +341,11 @@ namespace ft {
 
 				if ( _root == NULL )
 					return end();
-				else if ( value == _root->_value ) {
+				else if ( isEqual(_root->value, value) ) {
 
 					return const_iterator( _root );
 				}
-				else if ( value > _root->_value) {
+				else if ( _comp(_root->value, value) ) {
 
 					const_reverse_iterator it = rbegin();
 					for ( const_reverse_iterator ite = rend() ; it != ite ; ++it ) {
@@ -347,7 +372,7 @@ namespace ft {
 			iterator	upper_bound( T const & value ) {
 
 				iterator it = lower_bound(value);
-				if ( it != end() && *it == value )
+				if ( it != end() && isEqual( *it, value ) )
 					it++;
 				return it;
 			}
@@ -355,7 +380,7 @@ namespace ft {
 			const_iterator	upper_bound( T const & value ) const {
 
 				const_iterator it = lower_bound(value);
-				if ( it != end() && *it == value )
+				if ( it != end() && isEqual( *it, value ) )
 					it++;
 				return it;
 			}
@@ -364,7 +389,7 @@ namespace ft {
 
 				iterator low = lower_bound(value);
 				iterator up = low;
-				if ( up != end() && *up == value )
+				if ( up != end() && isEqual( *up, value ) )
 					up++;
 				return make_pair( low, up );
 			}
@@ -373,7 +398,7 @@ namespace ft {
 
 				const_iterator low = lower_bound(value);
 				const_iterator up = low;
-				if ( up != end() && *up == value )
+				if ( up != end() && isEqual( *up, value ) )
 					up++;
 				return make_pair( low, up );
 			}
@@ -713,6 +738,22 @@ namespace ft {
 				_size--;
 //				std::cout << "lol" << std::endl;
 				return 1;
+			}
+
+			void	swap( RBTree & rhs ) {
+
+				if ( this != &rhs ) {
+					Node *		rootTmp = _root;
+					size_type	sizeTmp = _size;
+
+					_root = rhs._root;
+					_size() = rhs._size();
+
+					rhs._root = rootTmp;
+					rhs._size = sizeTmp;
+				}
+
+				return;
 			}
 
 			iterator	begin() {
