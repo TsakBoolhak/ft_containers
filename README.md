@@ -22,9 +22,9 @@ TO DO in my RBT class:
 ✔️const_iterator end() const;
 
 
-❌pair<const_iterator,const_iterator> equal_range (const key_type& k) const;
+✔️pair<const_iterator,const_iterator> equal_range (const key_type& k) const;
 
-❌pair<iterator,iterator>             equal_range (const key_type& k);
+✔️pair<iterator,iterator>             equal_range (const key_type& k);
 
 
 ✔️void erase (iterator position);
@@ -52,9 +52,9 @@ TO DO in my RBT class:
 ✔️key_compare key_comp() const;
 
 
-❌iterator lower_bound (const key_type& k);
+✔️iterator lower_bound (const key_type& k);
 
-❌const_iterator lower_bound (const key_type& k) const;
+✔️const_iterator lower_bound (const key_type& k) const;
 
 
 ❌size_type max_size() const;
@@ -79,6 +79,6 @@ TO DO in my RBT class:
 ❌void swap (map& x);
 
 
-❌iterator upper_bound (const key_type& k);
+✔️iterator upper_bound (const key_type& k);
 
-❌const_iterator upper_bound (const key_type& k) const;
+✔️const_iterator upper_bound (const key_type& k) const;
