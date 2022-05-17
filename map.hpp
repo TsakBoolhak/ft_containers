@@ -194,7 +194,7 @@ namespace ft {
 			size_type	erase( key_type const & x ) {
 
 				iterator it = find( x );
-				if (it == end() )
+				if ( it == end() )
 					return 0;
 				else
 					return _tree.erase(it.getCurrent());
@@ -202,9 +202,11 @@ namespace ft {
 
 			void	erase( iterator first, iterator last ) {
 
-				for ( ; first != last ; ++first ) {
+				for ( ; first != last ; ) {
 
-					erase( first );
+					iterator tmp = first;
+					first++;
+					erase( tmp );
 				}
 				return ;
 			}
@@ -310,6 +312,7 @@ namespace ft {
 							return it;
 					}
 				}
+				std::cout << "LOL" << std::endl;
 				return _tree.end();
 			}
 
@@ -334,6 +337,8 @@ namespace ft {
 						}
 						else if ( _keyComp( it->first, x ) ) {
 							it--;
+							if (it == rend())
+								it++;
 							return const_iterator(it.base());
 						}
 					}
@@ -347,6 +352,7 @@ namespace ft {
 							return it;
 					}
 				}
+				std::cout << "LOL" << std::endl;
 				return _tree.end();
 			}
 

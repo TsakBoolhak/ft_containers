@@ -552,16 +552,22 @@ namespace ft {
 				typename Node::t_color originalColor = toDelete->_color;
 				if ( toDelete->_left == NULL ) {
 
+					if (toDelete == _root)
+						std::cout << "root is about to be deleted ans it has NO LEFT CHILD" << std::endl;
 					x = toDelete->_right;
 					transplant( toDelete, x);
 				}
 				else if ( toDelete->_right == NULL) {
 
+					if (toDelete == _root)
+						std::cout << "root is about to be deleted ans it has NO RIGHT CHILD" << std::endl;
 					x = toDelete->_left;
 					transplant(toDelete, x);
 				}
 				else {
 
+					if (toDelete == _root)
+						std::cout << "root is about to be deleted ans it has BOTH CHILD" << std::endl;
 					y = min(toDelete->_right);
 					originalColor = y->_color;
 					x = y->_right;
