@@ -109,7 +109,7 @@ namespace ft {
 			rbt_iterator	operator++( int ) {
 
 				rbt_iterator	tmp = *this;
-				++(*this);
+				operator++();
 				return tmp;
 			}
 
@@ -136,7 +136,7 @@ namespace ft {
 			rbt_iterator	operator--( int ) {
 
 				rbt_iterator	tmp = *this;
-				--(*this);
+				operator--();
 				return tmp;
 			}
 

@@ -90,7 +90,7 @@ namespace ft {
 				if ( _current == NULL )
 					_current = min( _root );
 				else if ( _current->_right )
-					_current = _current->_right;
+					_current = min(_current->_right);
 				else if ( _current->_parent && _current == _current->_parent->_left )
 					_current = _current->_parent;
 				else if ( _current->_parent ) {
@@ -108,16 +108,16 @@ namespace ft {
 			rbt_const_iterator	operator++( int ) {
 
 				rbt_const_iterator	tmp = *this;
-				++(*this);
+				operator++();
 				return tmp;
 			}
 
 			rbt_const_iterator &	operator--() {
 
-				if ( _current == NULL )
-					_current = min( _root );
+				if ( _current == NULL && _root )
+					_current = max( _root );
 				else if ( _current->_left )
-					_current = _current->_left;
+					_current = max(_current->_left);
 				else if ( _current->_parent && _current == _current->_parent->_right )
 					_current = _current->_parent;
 				else if ( _current->_parent ) {
@@ -135,7 +135,7 @@ namespace ft {
 			rbt_const_iterator	operator--( int ) {
 
 				rbt_const_iterator	tmp = *this;
-				--(*this);
+				operator--();
 				return tmp;
 			}
 

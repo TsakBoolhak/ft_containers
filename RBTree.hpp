@@ -364,7 +364,7 @@ namespace ft {
 			iterator	insert( iterator position, T const & newValue ) {
 
 				(void)position;
-				return insertNode( newValue ).first;
+				return insert( newValue ).first;
 				
 			}
 
@@ -375,6 +375,7 @@ namespace ft {
 
 					_root = newNode( newValue, NULL );
 					_root->_color = Node::BLACK;
+					_size++;
 					return ft::make_pair( iterator( _root ), true );
 				}
 
@@ -383,7 +384,7 @@ namespace ft {
 //					std::cout << newValue << " < " << tmp->_value << " Looking at left subtree" << std::endl;
 //				else
 //					std::cout << newValue << " >= " << tmp->_value << " Looking at right subtree" << std::endl;
-				if ( tmp->_value == newValue )
+				if ( isEqual(tmp->_value, newValue ) )
 					return ft::make_pair( iterator( tmp ), false );
 				Node *next = _comp( newValue, tmp->_value ) ?	tmp->_left :
 																tmp->_right;
@@ -392,14 +393,14 @@ namespace ft {
 					tmp = next;
 					next = _comp( newValue, tmp->_value ) ?	tmp->_left :
 															tmp->_right;
-					if ( tmp->_value == newValue )
+					if ( isEqual(tmp->_value, newValue ) )
 						return ft::make_pair( iterator( tmp ), false );
 //					if ( _comp(newValue, tmp->_value) )
 //						std::cout << newValue << " < " << tmp->_value << " Looking at left subtree" << std::endl;
 //					else
 //						std::cout << newValue << " >= " << tmp->_value << " Looking at right subtree" << std::endl;
 				}
-				if ( tmp->_value == newValue )
+				if ( isEqual(tmp->_value, newValue ) )
 					return ft::make_pair( iterator( tmp ), false );
 				Node *	toInsert = newNode( newValue, NULL );
 //				std::cout << "inserting element" << std::endl;
@@ -537,32 +538,13 @@ namespace ft {
 					x->_color = Node::BLACK;
 			}
 
-			void	erase( iterator position ) {
-
-				erase( *position );
-				return;
-			}
-
-			void	erase( iterator first, iterator last ) {
-
-				for ( ; first != last ; ++first ) {
-
-					erase( *first );
-				}
-			}
-
-			size_type	erase( T const & value ) {
+			size_type	erase( Node *toDelete ) {
 
 //				std::cout << "asked to delete value " << value << std::endl;
 
 				Node *	x;
 				Node *	y;
 
-				iterator it = find( value );
-				if ( it == this->end() )
-					return 0;
-
-				Node *	toDelete = it.getCurrent();
 				Node *parent = toDelete->_parent;
 
 //				std::cout << "value found :" << toDelete->_value << std::endl;

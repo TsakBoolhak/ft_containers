@@ -86,7 +86,7 @@ namespace ft {
 				return ;
 			}
 
-			map( map< Key, T, Compare, Allocator> const & x ) : _tree ( x._tree ), _alloc ( x._alloc ), _keyComp ( x._keyComp ) {
+			map( map< Key, T, Compare, Allocator> const & x ) : _alloc ( x._alloc ), _keyComp ( x._keyComp ), _tree ( x._tree ) {
 
 				return ;
 			}
@@ -187,23 +187,32 @@ namespace ft {
 
 			void	erase( iterator position ) {
 
-				return _tree.erase( position );
+				erase( position->first );
+				return;
 			}
 
 			size_type	erase( key_type const & x ) {
 
-				return _tree.erase(x);
+				iterator it = find( x );
+				if (it == end() )
+					return 0;
+				else
+					return _tree.erase(it.getCurrent());
 			}
 
 			void	erase( iterator first, iterator last ) {
 
-				return _tree.erase(first, last);
+				for ( ; first != last ; ++first ) {
+
+					erase( first );
+				}
+				return ;
 			}
 
 			void	swap( map< Key, T, Compare, Allocator > & rhs ) {
 
 				if ( this != &rhs ) {
-					Node *		rootTmp = _tree.getRoot;
+					Node *		rootTmp = _tree.getRoot();
 					size_type	sizeTmp = _tree.size();
 
 					_tree.setRoot(rhs._tree.getRoot());
@@ -250,11 +259,11 @@ namespace ft {
 
 			const_iterator	find( key_type const & x ) const {
 
-				Node * tmp = _tree.root;
+				Node * tmp = _tree.getRoot();
 
-				while ( tmp && !isEqual(tmp->value.first, x) ) {
+				while ( tmp && !isEqual(tmp->_value.first, x) ) {
 
-					if ( _comp(x, tmp->_value.first) )
+					if ( _keyComp(x, tmp->_value.first) )
 						tmp = tmp->_left;
 					else
 						tmp = tmp->_right;
@@ -282,10 +291,13 @@ namespace ft {
 					reverse_iterator it = _tree.rbegin();
 					for ( reverse_iterator ite = _tree.rend() ; it != ite ; ++it ) {
 
-						if ( isEqual( it->first, x ) )
+						if ( isEqual( it->first, x ) ){
+							it++;
 							return iterator( it.base() );
+						}
 						else if ( _keyComp( it->first, x ) ) {
-							return iterator( (++it).base() );
+							--it;
+							return iterator(it.base());
 						}
 					}
 				}
@@ -294,7 +306,7 @@ namespace ft {
 					iterator it = _tree.begin();
 					for ( iterator ite = _tree.end() ; it != ite ; ++it ) {
 
-						if ( _keyComp( it->first, x ) == 0 )
+						if ( isEqual( it->first, x ) || _keyComp( x, it->first ) )
 							return it;
 					}
 				}
@@ -310,14 +322,19 @@ namespace ft {
 					return const_iterator( _tree.getRoot() );
 				}
 				else if ( _keyComp(_tree.getRoot()->_value.first, x) ) {
+//					std::cout << "x is higher" << std::endl;
 
 					const_reverse_iterator it = _tree.rbegin();
-					for ( const_reverse_iterator ite = _tree.rend() ; it != ite ; ++it ) {
+					for ( const_reverse_iterator ite = _tree.rend() ; it != ite ; it++ ) {
 
-						if ( isEqual( it->first, x ) )
+						if ( isEqual( it->first, x ) ) {
+//							std::cout << "x found" << std::endl;
+							it++;
 							return const_iterator( it.base() );
+						}
 						else if ( _keyComp( it->first, x ) ) {
-							return const_iterator( (++it).base() );
+							it--;
+							return const_iterator(it.base());
 						}
 					}
 				}
@@ -326,7 +343,7 @@ namespace ft {
 					const_iterator it = _tree.begin();
 					for ( const_iterator ite = _tree.end() ; it != ite ; ++it ) {
 
-						if ( _keyComp( it->first, x ) == 0 )
+						if ( isEqual( it->first, x ) || _keyComp( x, it->first ) )
 							return it;
 					}
 				}
