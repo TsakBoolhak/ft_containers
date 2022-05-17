@@ -3,6 +3,7 @@
 #include <utility>
 #include <string>
 #include <map>
+#include "pair.hpp"
 
 int main() {
 
@@ -15,10 +16,10 @@ int main() {
 
 	ft::map< int, std::string > mine;
 
-	mine.insert( std::pair< int, std::string > ( 42, "lol" ) );
-//	ft::map<int, std::string>::iterator ite = mine.find(42);
-//	if ( ite != mine.end() )
-//		std::cout << "key: " << ite->first << " value : " << ite->second << std::endl;
+	mine.insert( ft::make_pair< int, std::string > ( 42, "lol" ) );
+	ft::map<int, std::string>::iterator ite = mine.find(42);
+	if ( ite != mine.end() )
+		std::cout << "key: " << ite->first << " value : " << ite->second << std::endl;
 	return 0;
 
 }

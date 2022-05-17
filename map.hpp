@@ -22,7 +22,7 @@ namespace ft {
 
 			typedef Key										key_type;
 			typedef T										mapped_type;
-			typedef ft::pair< const Key, T >						value_type;
+			typedef ft::pair< Key, T >						value_type;
 			typedef Compare									key_compare;
 			typedef Allocator								allocator_type;
 			typedef typename Allocator::reference			reference;
@@ -46,6 +46,7 @@ namespace ft {
 
 				public :
 
+					value_compare() : comp () {}
 					bool	operator()( value_type const & x, value_type const  & y ) const {
 
 						return comp( x.first, y.first );
@@ -64,6 +65,11 @@ namespace ft {
 			allocator_type	_alloc;
 			key_compare		_keyComp;
 			RBTree			_tree;
+
+			bool	isEqual( Key const & x, Key const & y) {
+
+				return _keyComp(x, y) == _keyComp(y, x);
+			}
 
 		public :
 
@@ -227,14 +233,33 @@ namespace ft {
 			}
 
 //	map operations
+
 			iterator	find( key_type const & x ) {
 
-				return _tree.find( x ) ;
+				Node * tmp = _tree.getRoot();
+
+				while ( tmp && !isEqual(tmp->_value.first, x) ) {
+
+					if ( _keyComp(x, tmp->_value.first) )
+						tmp = tmp->_left;
+					else
+						tmp = tmp->_right;
+				}
+				return iterator ( tmp );
 			}
 
 			const_iterator	find( key_type const & x ) const {
 
-				return _tree.find(x) ;
+				Node * tmp = _tree.root;
+
+				while ( tmp && !isEqual(tmp->value.first, x) ) {
+
+					if ( _comp(x, tmp->_value.first) )
+						tmp = tmp->_left;
+					else
+						tmp = tmp->_right;
+				}
+				return const_iterator ( tmp );
 			}
 
 			size_type	count( key_type const & x ) const {
@@ -244,12 +269,66 @@ namespace ft {
 
 			iterator	lower_bound( key_type const & x ) {
 
-				return _tree.lower_bound(x);
+				if ( _tree.getRoot() == NULL )
+					return _tree.end();
+				else if ( isEqual(_tree.getRoot()->value.first, x) ) {
+
+					return iterator( _tree.getRoot() );
+				}
+				else if ( _comp(_tree.getRoot()->value, x) ) {
+
+					reverse_iterator it = _tree.rbegin();
+					for ( reverse_iterator ite = _tree.rend() ; it != ite ; ++it ) {
+
+						if ( isEqual(*it, x ) )
+							return iterator( it.base() );
+						else if ( _comp( *it, x ) ) {
+							return iterator( (++it).base() );
+						}
+					}
+				}
+				else {
+
+					iterator it = _tree.begin();
+					for ( iterator ite = _tree.end() ; it != ite ; ++it ) {
+
+						if ( _comp( *it, x ) == 0 )
+							return it;
+					}
+				}
+				return _tree.end();
 			}
 
 			const_iterator	lower_bound( key_type const & x ) const {
 
-				return _tree.lower_bound(x);
+				if ( _tree.root == NULL )
+					return _tree.end();
+				else if ( isEqual(_tree.getRoot()->value.first, x) ) {
+
+					return const_iterator( _tree.getRoot() );
+				}
+				else if ( _comp(_tree.getRoot->value, x) ) {
+
+					const_reverse_iterator it = _tree.rbegin();
+					for ( const_reverse_iterator ite = _tree.rend() ; it != ite ; ++it ) {
+
+						if ( *it == x )
+							return const_iterator( it.base() );
+						else if ( _comp( *it, x ) ) {
+							return const_iterator( (++it).base() );
+						}
+					}
+				}
+				else {
+
+					const_iterator it = _tree.begin();
+					for ( const_iterator ite = _tree.end() ; it != ite ; ++it ) {
+
+						if ( _comp( *it, x ) == 0 )
+							return it;
+					}
+				}
+				return _tree.end();
 			}
 
 			iterator	upper_bound( key_type const & x ) {
