@@ -155,7 +155,7 @@ namespace ft {
 				return ;
 			}
 
-			bool	isEqual( T const & x, T const & y) {
+			bool	isEqual( T const & x, T const & y) const {
 
 				return _comp(x, y) == _comp(y, x);
 			}
@@ -197,7 +197,7 @@ namespace ft {
 				return ;
 			}
 
-			Node *min() {
+			Node *min() const {
 
 				Node * tmp = this->_root;
 				
@@ -206,7 +206,7 @@ namespace ft {
 				return tmp;
 			}
 
-			Node *max() {
+			Node *max() const {
 
 				Node * tmp = this->_root;
 				while (tmp && tmp->_right)
@@ -214,7 +214,7 @@ namespace ft {
 				return tmp;
 			}
 
-			Node *min( Node *node ) {
+			Node *min( Node *node ) const {
 
 				Node * tmp = node;
 				while ( tmp && tmp->_left )
@@ -222,7 +222,7 @@ namespace ft {
 				return tmp;
 			}
 
-			Node *	max( Node *node ) {
+			Node *	max( Node *node ) const {
 
 				Node * tmp = node;
 				while (tmp && tmp->_right )
@@ -250,12 +250,6 @@ namespace ft {
 				_root = NULL;
 			}
 
-			size_type	count( T const & value ) const {
-
-				if ( find( value ) == this->end() )
-					return 0;
-				return 1;
-			}
 
 			bool	empty() const {
 
@@ -275,41 +269,6 @@ namespace ft {
 			size_type	size() const {
 
 				return this->_size;
-			}
-
-
-			iterator	upper_bound( T const & value ) {
-
-				iterator it = lower_bound(value);
-				if ( it != end() && isEqual( *it, value ) )
-					it++;
-				return it;
-			}
-
-			const_iterator	upper_bound( T const & value ) const {
-
-				const_iterator it = lower_bound(value);
-				if ( it != end() && isEqual( *it, value ) )
-					it++;
-				return it;
-			}
-
-			ft::pair< iterator, iterator >	equal_range( T const & value ) {
-
-				iterator low = lower_bound(value);
-				iterator up = low;
-				if ( up != end() && isEqual( *up, value ) )
-					up++;
-				return make_pair( low, up );
-			}
-
-			ft::pair< const_iterator, const_iterator >	equal_range( T const & value ) const {
-
-				const_iterator low = lower_bound(value);
-				const_iterator up = low;
-				if ( up != end() && isEqual( *up, value ) )
-					up++;
-				return make_pair( low, up );
 			}
 
 			Node * newNode( T const & value, Node * parent ) {
@@ -667,7 +626,7 @@ namespace ft {
 
 			iterator	begin() {
 
-				return iterator( this->min(), this->_root );
+				return iterator( min(), this->_root );
 			}
 
 			iterator	end() {
@@ -677,7 +636,7 @@ namespace ft {
 
 			const_iterator	begin() const {
 
-				return const_iterator( this->min(), this->_root );
+				return const_iterator( min(), this->_root );
 			}
 
 			const_iterator	end() const {

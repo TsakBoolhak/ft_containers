@@ -14,7 +14,7 @@
 
 namespace ft {
 
-	template< class Key, class T, class Compare = std::less< Key >, class Allocator = std::allocator< ft::pair< Key, T> > >
+	template< class Key, class T, class Compare = std::less< Key >, class Allocator = std::allocator< ft::pair< const Key, T> > >
 
 	class map {
 
@@ -22,7 +22,7 @@ namespace ft {
 
 			typedef Key										key_type;
 			typedef T										mapped_type;
-			typedef ft::pair< Key, T >						value_type;
+			typedef ft::pair< const Key, T >						value_type;
 			typedef Compare									key_compare;
 			typedef Allocator								allocator_type;
 			typedef typename Allocator::reference			reference;
@@ -66,7 +66,7 @@ namespace ft {
 			key_compare		_keyComp;
 			RBTree			_tree;
 
-			bool	isEqual( Key const & x, Key const & y) {
+			bool	isEqual( Key const & x, Key const & y) const {
 
 				return _keyComp(x, y) == _keyComp(y, x);
 			}
@@ -159,7 +159,7 @@ namespace ft {
 
 			size_type	max_size() const {
 
-				return std::allocator<Node> ().max_size;
+				return std::allocator<Node> ().max_size();
 			}
 
 //	elements access
@@ -227,7 +227,7 @@ namespace ft {
 				return _keyComp;
 			}
 
-			value_compare	value_cop() const {
+			value_compare	value_comp() const {
 
 				return value_compare( _keyComp ) ;
 			}
@@ -264,25 +264,27 @@ namespace ft {
 
 			size_type	count( key_type const & x ) const {
 
-				return _tree.count(x) ;
+				if ( find( x ) == this->end() )
+					return 0;
+				return 1;
 			}
 
 			iterator	lower_bound( key_type const & x ) {
 
 				if ( _tree.getRoot() == NULL )
 					return _tree.end();
-				else if ( isEqual(_tree.getRoot()->value.first, x) ) {
+				else if ( isEqual(_tree.getRoot()->_value.first, x) ) {
 
 					return iterator( _tree.getRoot() );
 				}
-				else if ( _comp(_tree.getRoot()->value, x) ) {
+				else if ( _keyComp(_tree.getRoot()->_value.first, x) ) {
 
 					reverse_iterator it = _tree.rbegin();
 					for ( reverse_iterator ite = _tree.rend() ; it != ite ; ++it ) {
 
-						if ( isEqual(*it, x ) )
+						if ( isEqual( it->first, x ) )
 							return iterator( it.base() );
-						else if ( _comp( *it, x ) ) {
+						else if ( _keyComp( it->first, x ) ) {
 							return iterator( (++it).base() );
 						}
 					}
@@ -292,7 +294,7 @@ namespace ft {
 					iterator it = _tree.begin();
 					for ( iterator ite = _tree.end() ; it != ite ; ++it ) {
 
-						if ( _comp( *it, x ) == 0 )
+						if ( _keyComp( it->first, x ) == 0 )
 							return it;
 					}
 				}
@@ -301,20 +303,20 @@ namespace ft {
 
 			const_iterator	lower_bound( key_type const & x ) const {
 
-				if ( _tree.root == NULL )
+				if ( _tree.getRoot() == NULL )
 					return _tree.end();
-				else if ( isEqual(_tree.getRoot()->value.first, x) ) {
+				else if ( isEqual(_tree.getRoot()->_value.first, x) ) {
 
 					return const_iterator( _tree.getRoot() );
 				}
-				else if ( _comp(_tree.getRoot->value, x) ) {
+				else if ( _keyComp(_tree.getRoot()->_value.first, x) ) {
 
 					const_reverse_iterator it = _tree.rbegin();
 					for ( const_reverse_iterator ite = _tree.rend() ; it != ite ; ++it ) {
 
-						if ( *it == x )
+						if ( isEqual( it->first, x ) )
 							return const_iterator( it.base() );
-						else if ( _comp( *it, x ) ) {
+						else if ( _keyComp( it->first, x ) ) {
 							return const_iterator( (++it).base() );
 						}
 					}
@@ -324,7 +326,7 @@ namespace ft {
 					const_iterator it = _tree.begin();
 					for ( const_iterator ite = _tree.end() ; it != ite ; ++it ) {
 
-						if ( _comp( *it, x ) == 0 )
+						if ( _keyComp( it->first, x ) == 0 )
 							return it;
 					}
 				}
@@ -333,22 +335,36 @@ namespace ft {
 
 			iterator	upper_bound( key_type const & x ) {
 
-				return _tree.upper_bound(x);
+				iterator it = lower_bound(x);
+				if ( it != end() && isEqual( it->first, x ) )
+					it++;
+				return it;
 			}
 
 			const_iterator	upper_bound( key_type const & x ) const {
 
-				return _tree.upper_bound(x);
+				const_iterator it = lower_bound(x);
+				if ( it != end() && isEqual( it->first, x ) )
+					it++;
+				return it;
 			}
 
 			ft::pair< iterator, iterator >	equal_range( key_type const & x ) {
 
-				return _tree.equal_range(x);
+				iterator low = lower_bound(x);
+				iterator up = low;
+				if ( up != end() && isEqual( up->first, x ) )
+					up++;
+				return ft::make_pair( low, up );
 			}
 
 			ft::pair< const_iterator, const_iterator >	equal_range( key_type const & x ) const {
 
-				return _tree.equal_range(x);
+				const_iterator low = lower_bound(x);
+				const_iterator up = low;
+				if ( up != end() && isEqual( up->first, x ) )
+					up++;
+				return ft::make_pair( low, up );
 			}
 	};
 

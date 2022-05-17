@@ -45,7 +45,7 @@ namespace ft {
 				return ;
 			}
 
-			Node *	getCurrent() const {
+			Node * 	getCurrent() const {
 
 				return this->_current;
 			}
@@ -55,7 +55,7 @@ namespace ft {
 				return this->_root;
 			}
 
-			Node *min( Node *node ) {
+			Node *min( Node *node ) const {
 
 				Node * tmp = node;
 				while ( tmp && tmp->_left )
@@ -63,7 +63,7 @@ namespace ft {
 				return tmp;
 			}
 
-			Node *	max( Node *node ) {
+			Node *	max( Node *node ) const {
 
 				Node * tmp = node;
 				while (tmp && tmp->_right )
@@ -140,12 +140,12 @@ namespace ft {
 				return tmp;
 			}
 
-			pointer	operator->() {
+			pointer	operator->() const {
 
 				return &(_current->_value);
 			}
 
-			reference	operator*() {
+			reference	operator*() const {
 
 				return _current->_value;
 			}

@@ -60,7 +60,7 @@ namespace ft {
 				return this->_root;
 			}
 
-			Node *min( Node *node ) {
+			Node *min( Node *node ) const {
 
 				Node * tmp = node;
 				while ( tmp && tmp->_left )
@@ -68,7 +68,7 @@ namespace ft {
 				return tmp;
 			}
 
-			Node *	max( Node *node ) {
+			Node *	max( Node *node ) const {
 
 				Node * tmp = node;
 				while (tmp && tmp->_right )
@@ -120,7 +120,7 @@ namespace ft {
 					_current = _current->_left;
 				else if ( _current->_parent && _current == _current->_parent->_right )
 					_current = _current->_parent;
-				else if ( _current->parent ) {
+				else if ( _current->_parent ) {
 
 					while ( _current->_parent && _current == _current->_parent->_left )
 						_current = _current->_parent;
@@ -139,12 +139,12 @@ namespace ft {
 				return tmp;
 			}
 
-			pointer	operator->() {
+			pointer	operator->() const {
 
 				return &(_current->_value);
 			}
 
-			reference	operator*() {
+			reference	operator*() const{
 
 				return _current->_value;
 			}
