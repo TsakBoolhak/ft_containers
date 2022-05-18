@@ -364,7 +364,8 @@ namespace ft {
 					return end();
 				for ( iterator it = position ; it != end() ; ++it ) {
 					_alloc.destroy( &(*it) );
-					_alloc.construct( &(*it), *(it + 1) );
+					if (it + 1 !=  end())
+						_alloc.construct( &(*it), *(it + 1) );
 				}
 				_size--;
 				_alloc.destroy( _array + _size);

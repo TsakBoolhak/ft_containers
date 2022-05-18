@@ -86,8 +86,9 @@ namespace ft {
 				return ;
 			}
 
-			map( map< Key, T, Compare, Allocator> const & x ) : _alloc ( x._alloc ), _keyComp ( x._keyComp ), _tree ( x._tree ) {
+			map( map< Key, T, Compare, Allocator> const & x ) : _alloc ( x._alloc ), _keyComp ( x._keyComp ) {
 
+				insert(x.begin(), x.end());
 				return ;
 			}
 
@@ -415,29 +416,31 @@ namespace ft {
 	template< class Key, class T, class Compare, class Allocator >
 	bool	operator>( map< Key, T, Compare, Allocator > const & x, map< Key, T, Compare, Allocator> const & y ) {
 
-		return x > y;
+		return !(x <= y);
 	}
 
 	template< class Key, class T, class Compare, class Allocator >
 	bool	operator>=( map< Key, T, Compare, Allocator > const & x, map< Key, T, Compare, Allocator> const & y ) {
 
-		return !( y < x );
+		return !( x < y );
 	}
 
 	template< class Key, class T, class Compare, class Allocator >
 	bool	operator<=( map< Key, T, Compare, Allocator > const & x, map< Key, T, Compare, Allocator> const & y ) {
 
-		return !( x < y );
+		return !( y < x );
 	}
 
+}
+
+namespace std {
 // specialized algorithms
 	template< class Key, class T, class Compare, class Allocator >
-	void	swap( map< Key, T, Compare, Allocator > & x, map< Key, T, Compare, Allocator > & y ) {
+	void	swap( ft::map< Key, T, Compare, Allocator > & x, ft::map< Key, T, Compare, Allocator > & y ) {
 
 		x.swap(y);
 		return ;
 	}
-
 }
 
 #endif
