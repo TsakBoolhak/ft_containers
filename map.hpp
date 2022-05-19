@@ -299,7 +299,11 @@ namespace ft {
 							return iterator( it.base() );
 						}
 						else if ( _keyComp( it->first, x ) ) {
-							--it;
+//							--it;
+//							if (it == rend()){
+//								std::cout << "CACA test" << std::endl;
+//								it++;
+//								}
 							return iterator(it.base());
 						}
 					}
@@ -313,7 +317,6 @@ namespace ft {
 							return it;
 					}
 				}
-				std::cout << "LOL" << std::endl;
 				return _tree.end();
 			}
 
@@ -337,9 +340,9 @@ namespace ft {
 							return const_iterator( it.base() );
 						}
 						else if ( _keyComp( it->first, x ) ) {
-							it--;
-							if (it == rend())
-								it++;
+//							it--;
+//							if (it == rend())
+//								it++;
 							return const_iterator(it.base());
 						}
 					}
