@@ -92,7 +92,7 @@ namespace ft {
 					this->clear();
 					_alloc.deallocate( _array, _capacity );
 					_size = x._size;
-					_capacity = x._capacity;
+					_capacity = x._size;
 					_array = _alloc.allocate(_capacity);
 					for ( size_type i = 0 ; i < _size ; ++i )
 						_alloc.construct( _array + i, *(x._array + i) );
@@ -197,7 +197,7 @@ namespace ft {
 			void	reserve( size_type n ) {
 
 				if ( n > max_size() )
-					throw std::length_error("vector::resize");
+					throw std::length_error("vector::reserve");
 				if ( n >_capacity ) {
 
 					pointer	newArray = _alloc.allocate( n );
