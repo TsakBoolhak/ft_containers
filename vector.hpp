@@ -59,10 +59,14 @@ namespace ft {
 			}
 
 			template< class InputIterator >
-			vector( typename ft::enable_if< !ft::is_integral< InputIterator >::value, InputIterator >::type first, InputIterator last, allocator_type const & alloc = allocator_type() ) : _alloc ( alloc ), _size ( std::distance( first, last ) ), _capacity ( _size ), _array ( _alloc.allocate( _size ) ) {
+			vector( typename ft::enable_if< !ft::is_integral< InputIterator >::value, InputIterator >::type first, InputIterator last, allocator_type const & alloc = allocator_type() ) : _alloc ( alloc ), _size ( 0 ), _capacity ( 0 ), _array ( NULL ) {
 
-				for ( T * tmp = _array ; first != last ; ++first, ++tmp ) 
-					_alloc.construct( tmp, *first );
+				_size = std::distance( first, last );
+				_capacity = _size;
+				_array = _alloc.allocate(_size);
+
+				for ( size_type i = 0 ; i < _size ; ++i, ++first ) 
+					_alloc.construct( _array + i, *first );
 				return ;
 			}
 
@@ -76,8 +80,7 @@ namespace ft {
 
 			~vector() {
 
-				for (size_type i = 0 ; i < _size ; ++i )
-					_alloc.destroy( _array + i );
+				this->clear();
 				_alloc.deallocate( _array, _capacity );
 				return ;
 			}
@@ -86,11 +89,11 @@ namespace ft {
 
 				if ( this != &x ) {
 
-					if ( _size < x._size )
-						reserve( x._size );
-					else
-						clear();
-					resize( x._size );
+					this->clear();
+					_alloc.deallocate( _array, _capacity );
+					_size = x._size;
+					_capacity = x._capacity;
+					_array = _alloc.allocate(_capacity);
 					for ( size_type i = 0 ; i < _size ; ++i )
 						_alloc.construct( _array + i, *(x._array + i) );
 					
@@ -194,7 +197,7 @@ namespace ft {
 			void	reserve( size_type n ) {
 
 				if ( n > max_size() )
-					throw std::length_error("_M_default_append");
+					throw std::length_error("vector::resize");
 				if ( n >_capacity ) {
 
 					pointer	newArray = _alloc.allocate( n );
@@ -278,10 +281,7 @@ namespace ft {
 					reserve( 1 );
 				else if ( _size == _capacity ) {
 
-					if ( max_size() - _capacity >= _capacity )
-						reserve( _capacity * 2 );
-					else
-						reserve( _capacity + 1 );
+					reserve( _capacity * 2 );
 				}
 				_alloc.construct( _array + _size, x );
 				_size++;
@@ -297,10 +297,10 @@ namespace ft {
 
 			iterator	insert( iterator position, const T& x ) {
 
+				difference_type i = std::distance( begin(), position );
 				insert( position, 1, x );
-//				difference_type i = std::distance( begin(), position );
-//				return	iterator( begin() + i );
-				return position;
+				return	iterator( begin() + i );
+//				return position;
 			}
 
 			void	insert( iterator position, size_type n, const T& x ) {
@@ -364,11 +364,11 @@ namespace ft {
 					return end();
 				for ( iterator it = position ; it != end() ; ++it ) {
 					_alloc.destroy( &(*it) );
-					if (it + 1 !=  end())
+					if (it !=  end() - 1)
 						_alloc.construct( &(*it), *(it + 1) );
 				}
 				_size--;
-				_alloc.destroy( _array + _size);
+				//_alloc.destroy( _array + _size);
 				return position;
 			}
 
