@@ -11,6 +11,7 @@
 # include "reverse_iterator.hpp"
 # include "equal.hpp"
 # include "lexicographical_compare.hpp"
+# include "iterator_traits.hpp"
 
 namespace ft {
 

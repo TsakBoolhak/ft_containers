@@ -140,12 +140,12 @@ namespace ft {
 				return *(current + index);
 			}
 
-			pointer	operator->() {
+			pointer	operator->() const {
 
 				return current;
 			}
 
-			reference	operator*() {
+			reference	operator*() const {
 
 				return *current;
 			}
