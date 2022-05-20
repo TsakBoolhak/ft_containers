@@ -7,6 +7,7 @@
 # include "is_integral.hpp"
 # include "equal.hpp"
 # include "lexicographical_compare.hpp"
+# include "iterator_traits.hpp"
 # include <memory>
 # include <iterator>
 # include <stdexcept>
@@ -59,7 +60,7 @@ namespace ft {
 			}
 
 			template< class InputIterator >
-			vector( typename ft::enable_if< !ft::is_integral< InputIterator >::value, InputIterator >::type first, InputIterator last, allocator_type const & alloc = allocator_type() ) : _alloc ( alloc ), _size ( 0 ), _capacity ( 0 ), _array ( NULL ) {
+			vector( InputIterator first, InputIterator last, allocator_type const & alloc = allocator_type(), typename ft::enable_if< !ft::is_integral< InputIterator >::value, bool >::type = true ) : _alloc ( alloc ), _size ( 0 ), _capacity ( 0 ), _array ( NULL ) {
 
 				_size = std::distance( first, last );
 				_capacity = _size;
@@ -103,7 +104,7 @@ namespace ft {
 			}
 
 			template< class InputIterator >
-			void	assign( typename ft::enable_if< !ft::is_integral< InputIterator >::value, InputIterator >::type first, InputIterator last ) {
+			void	assign( InputIterator first, InputIterator last, typename ft::enable_if< !ft::is_integral< InputIterator >::value, bool >::type = true ) {
 				
 				erase( begin(), end() );
 				insert( begin(), first, last ) ;
@@ -331,7 +332,7 @@ namespace ft {
 			}
 
 			template< class InputIterator >
-			void	insert( iterator position, typename ft::enable_if< !ft::is_integral< InputIterator >::value, InputIterator >::type first, InputIterator last ) {
+			void	insert( iterator position, InputIterator first, InputIterator last, typename ft::enable_if< !ft::is_integral< InputIterator >::value, bool >::type = true ) {
 
 				size_type	dist = std::distance( begin(), position );
 				size_type	n = std::distance( first, last );
@@ -346,16 +347,18 @@ namespace ft {
 						reserve( _size + n );
 					position = begin() + dist;
 				}
-				pointer	arrEnd = _array + _size + n - 1;
-				pointer arrStart = _array + dist + n - 1;
-				while ( arrEnd != arrStart ) {
-					_alloc.construct( arrEnd, *( arrEnd - n ) );
-					_alloc.destroy( arrEnd - n );
-					arrEnd--;
+//				pointer	arrEnd = _array + _size + n - 1;
+//				pointer arrStart = _array + dist + n - 1;
+//				while ( arrEnd != arrStart ) {
+//					_alloc.construct( arrEnd, *( arrEnd - n ) );
+//					_alloc.destroy( arrEnd - n );
+//					arrEnd--;
+//				}
+//				_size += n;
+				for ( size_type i = 0 ; i < n ; ++i, ++first ){
+					insert(begin() + dist + i, *(first));
 				}
-				_size += n;
-				for ( size_type i = 0 ; i < n ; ++i )
-					_alloc.construct( _array + dist + i, *(first++) );
+//					_alloc.construct( _array + dist + i, *(first++) );
 				return ;
 			}
 

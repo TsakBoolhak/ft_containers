@@ -135,7 +135,7 @@ namespace ft {
 				return *this;
 			}
 
-			reference	operator[]( int index ) {
+			reference	operator[]( int index ) const {
 
 				return *(current + index);
 			}
