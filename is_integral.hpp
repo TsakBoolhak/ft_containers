@@ -33,18 +33,6 @@ namespace ft {
 		static bool const value = true;
 	};
 
-/*	template <>
-	struct is_integral_base< char16_t > {
-
-		static bool const value = true;
-	};
-
-	template <>
-	struct is_integral_base< char32_t > {
-
-		static bool const value = true;
-	};*/
-
 	template <>
 	struct is_integral_base< wchar_t > {
 

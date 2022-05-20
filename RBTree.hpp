@@ -44,6 +44,60 @@ namespace ft {
 				RIGHT = 1
 			} t_relativePos;
 
+			Node *min() const {
+
+				Node * tmp = this->_root;
+				
+				while ( tmp && tmp->_left )
+					tmp = tmp->_left;
+				return tmp;
+			}
+
+			Node *max() const {
+
+				Node * tmp = this->_root;
+				while (tmp && tmp->_right)
+					tmp = tmp->_right;
+				return tmp;
+			}
+
+			Node *min( Node *node ) const {
+
+				Node * tmp = node;
+				while ( tmp && tmp->_left )
+					tmp = tmp->_left;
+				return tmp;
+			}
+
+			Node *	max( Node *node ) const {
+
+				Node * tmp = node;
+				while (tmp && tmp->_right )
+					tmp = tmp->_right;
+				return tmp;
+			}
+
+			void	clearRecursive( Node * node ) {
+
+				if ( node && node->_left )
+					clearRecursive( node->_left );
+				if ( node && node->_right )
+					clearRecursive( node->_right);
+				if ( node ) {
+
+					_nodeAlloc.destroy( node );
+					_nodeAlloc.deallocate( node, 1);
+				}
+			}
+
+			Node * newNode( T const & value, Node * parent ) {
+
+				Node *	tmp = _nodeAlloc.allocate( 1 );
+				_nodeAlloc.construct( tmp, Node( value, parent ) );
+
+				return tmp;
+			}
+
 			void	adopt( Node * newParent, Node *child, t_relativePos position ) {
 
 				if ( newParent == NULL )
@@ -62,38 +116,22 @@ namespace ft {
 
 			void	leftRotate( Node * toRotate ) {
 
-				if ( toRotate == NULL ) {
-
-					std::cout << "trying to rotate NULL" << std::endl;
-
+				if ( toRotate == NULL )
 					return;
-					}
 
-//				std::cout << "Left Rotating " << toRotate->_value << std::endl;
 				Node *	parent = toRotate->_parent;
 				Node *	child = toRotate->_right;
 
-				if (  child ) {
-//					std::cout << "LR step 1" << std::endl;
-					adopt( toRotate, child->_left, RIGHT );
-				}
+				adopt( toRotate, child->_left, RIGHT );
 				if ( parent == NULL ) {
 
-//					std::cout << "rotating root" << std::endl;
 					_root = child;
 					_root->_parent = NULL;
 				}
-				else if ( parent->_left == toRotate ) {
-
-//					std::cout << "LR step 2" << std::endl;
+				else if ( parent->_left == toRotate )
 					adopt( parent, child, LEFT );
-				}
-				else {
-
-//					std::cout << "LR step 2" << std::endl;
+				else
 					adopt( parent, child, RIGHT );
-				}
-//					std::cout << "LR step 3" << std::endl;
 				adopt( child, toRotate, LEFT );
 
 				return;
@@ -101,64 +139,198 @@ namespace ft {
 
 			void	rightRotate( Node *toRotate ) {
 
-				if ( toRotate == NULL ){
-//					std::cout << "trying to rotate NULL" << std::endl;
-					return;}
+				if ( toRotate == NULL )
+					return;
 
-//				std::cout << "Rotating " << toRotate->_value << std::endl;
 				Node * parent = toRotate->_parent;
 				Node * child = toRotate->_left;
 
-//				if ( child ) {
-
-//					std::cout << "RR step 1" << std::endl;
-					adopt( toRotate, child->_right, LEFT );
-//				}
+				adopt( toRotate, child->_right, LEFT );
 				if ( parent == NULL ) {
 
 					_root = child;
 					_root->_parent = NULL;
 				}
-				else if ( parent && parent->_right == toRotate ) {
-
-//					std::cout << "RR step 2" << std::endl;
+				else if ( parent && parent->_right == toRotate )
 					adopt( parent, child, RIGHT );
-				}
-				else {
-
-//					std::cout << "RR step 2" << std::endl;
+				else
 					adopt( parent, child, LEFT );
-				}
-//				std::cout << "RR step 3" << std::endl;
 				adopt( child, toRotate, RIGHT);
 
 				return;
 			}
 
-			void	leftRightRotate( Node *toRotate ) {
+			void	transplant( Node * x, Node * y ){
 
-				if ( toRotate == NULL || toRotate->_right == NULL || toRotate->_parent == NULL )
-					return ;
+				if ( x == NULL )
+					return;
+				if ( x->_parent == NULL )
+					_root = y;
+				else if ( x->_parent->_left == x )
+					x->_parent->_left = y;
+				else
+					x->_parent->_right = y;
 
-				Node * parent = toRotate->_parent;
-
-				leftRotate( toRotate );
-				rightRotate( parent );
+				if ( y )
+					y->_parent = x->_parent;
 
 				return ;
 			}
 
-			void	rightLeftRotate( Node * toRotate ) {
+			void	insertFix( Node *toInsert ) {
 
-				if ( toRotate == NULL || toRotate->_left == NULL || toRotate->_parent == NULL )
-					return ;
+				Node *parent = toInsert->_parent;
+				Node *grandParent = parent != NULL ?	parent->_parent :
+														NULL;
+				while ( toInsert && toInsert->_parent && toInsert->_parent->_color == Node::RED ) {
 
-				Node * parent = toRotate->_parent;
+					parent = toInsert->_parent;
+					grandParent = parent != NULL ?	parent->_parent :
+													NULL;
 
-				rightRotate( toRotate );
-				leftRotate( parent );
+					if ( grandParent && parent == grandParent->_left ) {
+						
+						if ( grandParent->_right && grandParent->_right->_color == Node::RED ) {
 
-				return ;
+							grandParent->_left->_color = Node::BLACK;
+							grandParent->_right->_color = Node::BLACK;
+							grandParent->_color = Node::RED;
+							toInsert = grandParent;
+						}
+						else {
+							if ( parent->_right && parent->_right == toInsert ) {
+
+								toInsert = parent;
+								leftRotate( toInsert );
+							}
+							if ( toInsert->_parent )
+								toInsert->_parent->_color = Node::BLACK;
+							if ( toInsert->_parent && toInsert->_parent->_parent ) 
+								toInsert->_parent->_parent->_color = Node::RED;
+							if ( toInsert->_parent) 
+								rightRotate( toInsert->_parent->_parent );
+						}
+					}
+					else {
+						
+						if ( grandParent && grandParent->_left && grandParent->_left->_color == Node::RED ) {
+
+							grandParent->_left->_color = Node::BLACK;
+							grandParent->_right->_color = Node::BLACK;
+							grandParent->_color = Node::RED;
+							toInsert = grandParent;
+						}
+						else {
+							if ( parent->_left && parent->_left == toInsert ) {
+
+								toInsert = parent;
+								rightRotate( toInsert );
+							}
+							if ( toInsert->_parent )
+								toInsert->_parent->_color = Node::BLACK;
+							if ( toInsert->_parent && toInsert->_parent->_parent )
+								toInsert->_parent->_parent->_color = Node::RED;
+							if ( toInsert->_parent) 
+								leftRotate( toInsert->_parent->_parent );
+						}
+					}
+				}
+				if ( _root && _root->_color == Node::RED )
+					_root->_color = Node::BLACK;
+			}
+
+			void	deleteFix( Node * x, Node* parent ) {
+
+				Node * sibling;
+
+				while ( x != _root &&  (x == NULL || x->_color == Node::BLACK) ) {
+
+					if (x != NULL)
+						parent = x->_parent;
+					if ( parent->_left == x ) {
+
+						sibling = parent->_right;
+						if ( sibling && sibling->_color == Node::RED ) {
+
+							sibling->_color = Node::BLACK;
+							parent->_color = Node::RED;
+							leftRotate(parent );
+							sibling = parent != NULL ?	parent->_right :
+															NULL;
+						}
+						if ( sibling == NULL || ( ( sibling->_left == NULL || sibling->_left->_color == Node::BLACK ) && ( sibling->_right == NULL || sibling->_right->_color == Node::BLACK ) ) ) {
+
+							if ( sibling != NULL )
+								sibling->_color = Node::RED;
+							x = parent;
+						}
+						else {
+
+							if ( sibling->_right == NULL || sibling->_right->_color == Node::BLACK ) {
+
+								if ( sibling->_left != NULL )
+									sibling->_left->_color = Node::BLACK;
+								sibling->_color = Node::RED;
+								rightRotate(sibling);
+								sibling = parent != NULL ?	parent->_right :
+																NULL;
+							}
+							if (sibling != NULL) {
+
+								sibling->_color = parent == NULL ?	Node::BLACK :
+																	parent->_color;
+							}
+							parent->_color = Node::BLACK;
+							if ( sibling != NULL && sibling->_right != NULL )
+								sibling->_right->_color = Node::BLACK;
+							leftRotate(parent);
+							x = _root;
+							x->_parent = NULL;
+						}
+					}
+					else {
+
+						sibling = parent->_left;
+						if ( sibling && sibling->_color == Node::RED ) {
+
+							sibling->_color = Node::BLACK;
+							parent->_color = Node::RED;
+							rightRotate( parent );
+							sibling = parent->_left;
+						}
+						if ( sibling == NULL || ( ( sibling->_left == NULL || sibling->_left->_color == Node::BLACK ) && ( sibling->_right == NULL || sibling->_right->_color == Node::BLACK ) ) ) {
+
+							if ( sibling != NULL )
+								sibling->_color = Node::RED;
+							x = parent;
+						}
+						else {
+
+							if ( sibling->_left == NULL || sibling->_left->_color == Node::BLACK ) {
+
+								if ( sibling->_right != NULL )
+									sibling->_right->_color = Node::BLACK;
+								sibling->_color = Node::RED;
+								leftRotate(sibling);
+								sibling = parent != NULL ?	parent->_left :
+															NULL;
+							}
+							if (sibling != NULL) {
+
+								sibling->_color = parent == NULL ?	Node::BLACK :
+																	parent->_color;
+							}
+							parent->_color = Node::BLACK;
+							if ( sibling != NULL && sibling->_left != NULL )
+								sibling->_left->_color = Node::BLACK;
+							rightRotate(parent);
+							x = _root;
+							x->_parent = NULL;
+						}
+					}
+				}
+				if (x != NULL)
+					x->_color = Node::BLACK;
 			}
 
 			bool	isEqual( T const & x, T const & y) const {
@@ -203,51 +375,6 @@ namespace ft {
 				return ;
 			}
 
-			Node *min() const {
-
-				Node * tmp = this->_root;
-				
-				while ( tmp && tmp->_left ) //invalid read here
-					tmp = tmp->_left;
-				return tmp;
-			}
-
-			Node *max() const {
-
-				Node * tmp = this->_root;
-				while (tmp && tmp->_right)
-					tmp = tmp->_right;
-				return tmp;
-			}
-
-			Node *min( Node *node ) const {
-
-				Node * tmp = node;
-				while ( tmp && tmp->_left )
-					tmp = tmp->_left;
-				return tmp;
-			}
-
-			Node *	max( Node *node ) const {
-
-				Node * tmp = node;
-				while (tmp && tmp->_right )
-					tmp = tmp->_right;
-				return tmp;
-			}
-
-			void	clearRecursive( Node * node ) {
-
-				if ( node && node->_left )
-					clearRecursive( node->_left );
-				if ( node && node->_right )
-					clearRecursive( node->_right);
-				if ( node ) {
-
-					_nodeAlloc.destroy( node );
-					_nodeAlloc.deallocate( node, 1);
-				}
-			}
 
 			void	clear() {
 
@@ -262,108 +389,17 @@ namespace ft {
 				return (_size== 0);
 			}
 
-			allocator_type	get_allocator() const {
-
-				return this->_alloc;
-			}
-
-			key_compare	key_comp() const {
-
-				return this->_comp;
-			}
-
 			size_type	size() const {
 
 				return this->_size;
 			}
 
-			Node * newNode( T const & value, Node * parent ) {
-
-				Node *	tmp = _nodeAlloc.allocate( 1 );
-				_nodeAlloc.construct( tmp, Node( value, parent ) );
-
-				return tmp;
-			}
-
-			void	insertFix( Node *toInsert ) {
-
-				Node *parent = toInsert->_parent;
-				Node *grandParent = parent != NULL ?	parent->_parent :
-														NULL;
-//				if (parent)
-//					std::cout << " parent " << static_cast<ft::pair< int, std::string > >(parent->_value).first <<  " color " << parent->_color << std::endl;
-//				if (grandParent)
-//					std::cout << " grandParent " << static_cast<ft::pair< int, std::string > >(grandParent->_value).first <<  " color " << grandParent->_color << std::endl;
-				while ( toInsert && toInsert->_parent && toInsert->_parent->_color == Node::RED ) {
-
-					parent = toInsert->_parent;
-					grandParent = parent != NULL ?	parent->_parent :
-															NULL;
-
-//					std::cout << "Fixing " << toInsert->_value << " Node and parent are both red." << std::endl;
-					if ( grandParent && parent == grandParent->_left ) {
-						
-						if ( grandParent->_right && grandParent->_right->_color == Node::RED ) {
-
-//							std::cout << "Uncle of node is red - push blackness down from grandparent" << std::endl;
-							grandParent->_left->_color = Node::BLACK;
-							grandParent->_right->_color = Node::BLACK;
-							grandParent->_color = Node::RED;
-							toInsert = grandParent;
-						}
-						else {
-							if ( parent->_right && parent->_right == toInsert ) {
-
-//								std::cout << "Node is right child, parent is left child -- rotate" << std::endl;
-								toInsert = parent;
-								leftRotate( toInsert );
-							}
-							if ( toInsert->_parent )
-								toInsert->_parent->_color = Node::BLACK;
-							if ( toInsert->_parent && toInsert->_parent->_parent ) 
-								toInsert->_parent->_parent->_color = Node::RED;
-							if ( toInsert->_parent) 
-								rightRotate( toInsert->_parent->_parent );
-						}
-					}
-					else {
-						
-						if ( grandParent && grandParent->_left && grandParent->_left->_color == Node::RED ) {
-
-//							std::cout << "Uncle of node is red - push blackness down from grandparent" << std::endl;
-							grandParent->_left->_color = Node::BLACK;
-							grandParent->_right->_color = Node::BLACK;
-							grandParent->_color = Node::RED;
-							toInsert = grandParent;
-						}
-						else {
-							if ( parent->_left && parent->_left == toInsert ) {
-
-								toInsert = parent;
-								rightRotate( toInsert );
-							}
-							if ( toInsert->_parent )
-								toInsert->_parent->_color = Node::BLACK;
-							if ( toInsert->_parent && toInsert->_parent->_parent )
-								toInsert->_parent->_parent->_color = Node::RED;
-							if ( toInsert->_parent) 
-								leftRotate( toInsert->_parent->_parent );
-						}
-					}
-				}
-				if ( _root && _root->_color == Node::RED ) {
-					_root->_color = Node::BLACK;
-				}
-			}
-
 			template< class InputIterator >
 			void	insert( InputIterator first, InputIterator last) {
 
-				for ( ; first != last ; ++first ) {
-
+				for ( ; first != last ; ++first )
 					insert( *first );
-				}
-				return;
+				return ;
 			}
 
 			iterator	insert( iterator position, T const & newValue ) {
@@ -375,7 +411,6 @@ namespace ft {
 
 			ft::pair<iterator, bool>	insert( T const & newValue ) {
 
-//				std::cout << "trying to insert " << newValue << std::endl;
 				if ( _root == NULL ) {
 
 					_root = newNode( newValue, NULL );
@@ -383,21 +418,11 @@ namespace ft {
 					_size++;
 					return ft::make_pair( iterator( _root ), true );
 				}
-//				std::cout << " root: " << static_cast<ft::pair< int, std::string > >(_root->_value).first << std::endl;
-//				if (_root->_parent != NULL) {
-//					std::cout << "BEFORE INSERT PROBLEMO" << std::endl;
-//					std::cout << " root: " << static_cast<ft::pair< int, std::string > >(_root->_value).first << std::endl;
-//					std::cout << " root parent :s : " << static_cast<ft::pair< int, std::string > >(_root->_parent->_value).first << std::endl;
-//					std::cout << " newValue " << static_cast<ft::pair< int, std::string > >(newValue).first << std::endl;
-//				}
 
 				Node *tmp = _root;
-//				if ( _comp(newValue, tmp->_value) )
-//					std::cout << newValue << " < " << tmp->_value << " Looking at left subtree" << std::endl;
-//				else
-//					std::cout << newValue << " >= " << tmp->_value << " Looking at right subtree" << std::endl;
 				if ( isEqual(tmp->_value, newValue ) )
 					return ft::make_pair( iterator( tmp ), false );
+
 				Node *next = _comp( newValue, tmp->_value ) ?	tmp->_left :
 																tmp->_right;
 				while ( next != NULL ) {
@@ -407,203 +432,36 @@ namespace ft {
 															tmp->_right;
 					if ( isEqual(tmp->_value, newValue ) )
 						return ft::make_pair( iterator( tmp ), false );
-//					if ( _comp(newValue, tmp->_value) )
-//						std::cout << newValue << " < " << tmp->_value << " Looking at left subtree" << std::endl;
-//					else
-//						std::cout << newValue << " >= " << tmp->_value << " Looking at right subtree" << std::endl;
 				}
 				if ( isEqual(tmp->_value, newValue ) )
 					return ft::make_pair( iterator( tmp ), false );
+
 				Node *	toInsert = newNode( newValue, NULL );
-//				std::cout << "inserting element" << std::endl;
-				if ( _comp( newValue, tmp->_value ) ) {
-
+				if ( _comp( newValue, tmp->_value ) )
 					adopt(tmp, toInsert, LEFT);
-				}
-				else {
-
+				else
 					adopt(tmp, toInsert, RIGHT);
-				}
-//				if (_root->_parent != NULL) {
-//					std::cout << "BEFORE FIX PROBLEMO" << std::endl;
-//					std::cout << " root: " << static_cast<ft::pair< int, std::string > >(_root->_value).first << " color " << _root->_color << std::endl;
-//					std::cout << " root parent :s : " << static_cast<ft::pair< int, std::string > >(_root->_parent->_value).first << " color " << _root->_parent->_color << std::endl;
-//					std::cout << " newValue " << static_cast<ft::pair< int, std::string > >(toInsert->_value).first <<  " color " << toInsert->_color << std::endl;
-//				}
 				insertFix(toInsert);
-//				if (_root->_parent != NULL) {
-//					std::cout << "AFTER INSERT PROBLEMO" << std::endl;
-//					std::cout << " root: " << static_cast<ft::pair< int, std::string > >(_root->_value).first <<  " color " << _root->_color << std::endl;
-//					std::cout << " root parent :s : " << static_cast<ft::pair< int, std::string > >(_root->_parent->_value).first <<  " color " << _root->_parent->_color << std::endl;
-//					std::cout << " newValue " << static_cast<ft::pair< int, std::string > >(toInsert->_value).first <<  " color " << toInsert->_color << std::endl;
-//				}
 				_size++;
 
 				return ft::make_pair( iterator( toInsert ), true );
 			}
 
-			void	transplant( Node * x, Node * y ){
-
-				if ( x == NULL ) {
-//					std::cout << "trying to transplant NULL" << std::endl;
-					return;
-					}
-				if ( x->_parent == NULL ){
-//					std::cout << "changing root" << std::endl;
-					_root = y;}
-				else if ( x->_parent->_left == x ) {
-//					std::cout << "transplant left" << std::endl;
-//					std::cout << "x : " << static_cast<ft::pair< int, std::string > >(x->_value).second <<  "color " << x->_color << std::endl;
-//					std::cout << "x parent: " << static_cast<ft::pair< int, std::string > >(x->_parent->_value).second <<  "color " << x->_color << std::endl;
-					x->_parent->_left = y;}
-				else {
-//					std::cout << "transplant right" << std::endl;
-//					std::cout << "x : " << static_cast<ft::pair< int, std::string > >(x->_value).second <<  "color " << x->_color << std::endl;
-//					std::cout << "x parent: " << static_cast<ft::pair< int, std::string > >(x->_parent->_value).second <<  "color " << x->_color << std::endl;
-					x->_parent->_right = y;
-					}
-				if ( y )
-					y->_parent = x->_parent;
-//				else
-//					std::cout << "transplant no y" << std::endl;
-
-			}
-
-			void	deleteFix( Node * x, Node* parent ) {
-
-				Node * sibling;
-
-//				std::cout << "Fixing deletion of ";
-//				if (x != NULL)
-//					std::cout << x->_value << std::endl;
-//				else
-//					std::cout << "null" << std::endl;
-				while ( x != _root &&  (x == NULL || x->_color == Node::BLACK) ) {
-
-					if (x != NULL) {
-//						std::cout << "x = " << x->_value << std::endl;
-						parent = x->_parent;
-					}
-//					std::cout << "parent = " << parent->_value << std::endl;
-//					if (parent->_parent == NULL)
-//						std::cout << "parent is root?" <<std::endl;
-					if ( parent->_left == x ) {
-
-						sibling = parent->_right;
-						if ( sibling && sibling->_color == Node::RED ) {
-
-							sibling->_color = Node::BLACK;
-							parent->_color = Node::RED;
-							leftRotate(parent );
-							sibling = parent != NULL ?	parent->_right :
-															NULL;
-						}
-						if ( sibling == NULL || ( ( sibling->_left == NULL || sibling->_left->_color == Node::BLACK ) && ( sibling->_right == NULL || sibling->_right->_color == Node::BLACK ) ) ) {
-
-							if ( sibling != NULL )
-								sibling->_color = Node::RED;
-							x = parent;
-						}
-						else {
-
-							if ( sibling->_right == NULL || sibling->_right->_color == Node::BLACK ) {
-
-								if ( sibling->_left != NULL )
-									sibling->_left->_color = Node::BLACK;
-								sibling->_color = Node::RED;
-								rightRotate(sibling);
-								sibling = parent != NULL ?	parent->_right :
-																NULL;
-							}
-							if (sibling != NULL) {
-
-								sibling->_color = parent == NULL ?	Node::BLACK :
-																		parent->_color;
-							}
-							//if ( x->_parent != NULL )
-								parent->_color = Node::BLACK;
-							if ( sibling != NULL && sibling->_right != NULL )
-								sibling->_right->_color = Node::BLACK;
-							leftRotate(parent);
-							x = _root;
-							x->_parent = NULL;
-						}
-					}
-					else {
-
-						sibling = parent->_left;
-						if ( sibling && sibling->_color == Node::RED ) {
-
-							sibling->_color = Node::BLACK;
-							parent->_color = Node::RED;
-							rightRotate( parent );
-							sibling = parent->_left;
-						}
-						if ( sibling == NULL || ( ( sibling->_left == NULL || sibling->_left->_color == Node::BLACK ) && ( sibling->_right == NULL || sibling->_right->_color == Node::BLACK ) ) ) {
-
-							if ( sibling != NULL )
-								sibling->_color = Node::RED;
-							x = parent;
-//							std::cout << "PUTA MADRE" << std::endl;
-						}
-						else {
-
-							if ( sibling->_left == NULL || sibling->_left->_color == Node::BLACK ) {
-
-								if ( sibling->_right != NULL )
-									sibling->_right->_color = Node::BLACK;
-								sibling->_color = Node::RED;
-								leftRotate(sibling);
-								sibling = parent != NULL ?	parent->_left :
-																NULL;
-							}
-							if (sibling != NULL) {
-
-								sibling->_color = parent == NULL ?	Node::BLACK :
-																		parent->_color;
-							}
-							//if ( x->_parent != NULL )
-								parent->_color = Node::BLACK;
-							if ( sibling != NULL && sibling->_left != NULL )
-								sibling->_left->_color = Node::BLACK;
-							rightRotate(parent);
-							x = _root;
-							x->_parent = NULL;
-						}
-					}
-				}
-				if (x != NULL)
-					x->_color = Node::BLACK;
-			}
-
 			size_type	erase( Node *toDelete ) {
-
-//				std::cout << "asked to delete value " << value << std::endl;
 
 				Node *	x;
 				Node *	y;
 
 				Node *parent = toDelete->_parent;
 
-//				if (_root->_parent != NULL) {
-//					std::cout << "BEFORE DELETE PROBLEMO" << std::endl;
-//					std::cout << " root: " << static_cast<ft::pair< int, std::string > >(_root->_value).second << std::endl;
-//					std::cout << " root parent :s : " << static_cast<ft::pair< int, std::string > >(_root->_parent->_value).second << std::endl;
-//				}
-//				std::cout << "value found :" << toDelete->_value << std::endl;
-
 				typename Node::t_color originalColor = toDelete->_color;
 				if ( toDelete->_left == NULL ) {
 
-//					if (toDelete == _root)
-//						std::cout << "root is about to be deleted and it has NO LEFT CHILD" << std::endl;
 					x = toDelete->_right;
 					transplant( toDelete, x);
 				}
 				else if ( toDelete->_right == NULL) {
 
-//					if (toDelete == _root)
-//						std::cout << "root is about to be deleted and it has NO RIGHT CHILD" << std::endl;
 					x = toDelete->_left;
 					transplant(toDelete, x);
 				}
@@ -612,11 +470,8 @@ namespace ft {
 					y = min(toDelete->_right);
 					originalColor = y->_color;
 					x = y->_right;
-					if ( y->_parent == toDelete ) {
-//						std::cout << "prout" << std::endl;
-
+					if ( y->_parent == toDelete )
 						parent = y;
-					}
 					else {
 
 						parent = y->_parent;
@@ -628,49 +483,14 @@ namespace ft {
 					y->_left = toDelete->_left;
 					y->_left->_parent = y;
 					y->_color = toDelete->_color;
-//					if (toDelete == _root) {
-//						std::cout << "root is about to be deleted and it has BOTH CHILD" << std::endl;
-//						std::cout << "root : " << static_cast<ft::pair< int, std::string > >(_root->_value).second << "color " << _root->_color << std::endl;
-//						std::cout << "left child : " << static_cast<ft::pair< int, std::string > >(_root->_left->_value).second << "color " << _root->_left->_color << std::endl;
-//						std::cout << "right child : " << static_cast<ft::pair< int, std::string > >(_root->_right->_value).second <<  "color " << _root->_right->_color << std::endl;
-//						std::cout << "parent : " << static_cast<ft::pair< int, std::string > >(parent->_value).second <<  "color " << parent->_color << std::endl;
-//						std::cout << "x : " << static_cast<ft::pair< int, std::string > >(x->_value).second <<  "color " << x->_color << std::endl;
-//						}
 				}
 				_nodeAlloc.destroy( toDelete );
 				_nodeAlloc.deallocate( toDelete, 1);
 
-				if ( /* x != NULL && */ originalColor == Node::BLACK )
+				if ( originalColor == Node::BLACK )
 					deleteFix(x, parent);
 				_size--;
-//				if (_root->_parent != NULL) {
-//					std::cout << "AFTER DELETE PROBLEMO" << std::endl;
-//					std::cout << " root: " << static_cast<ft::pair< int, std::string > >(_root->_value).second << std::endl;
-//					std::cout << " root parent :s : " << static_cast<ft::pair< int, std::string > >(_root->_parent->_value).second << std::endl;
-//				}
-//				if ( _root == NULL )
-//					std::cout << "root is NULL" << std::endl;
-//				else if (_root == toDelete)
-//					std::cout << "root didnt change" << std::endl;
-			//	std::cout << "root : " << static_cast<ft::pair< int, std::string > >(_root->_value).second << "color " << _root->_color << std::endl;
-//				std::cout << "lol" << std::endl;
 				return 1;
-			}
-
-			void	swap( RBTree & rhs ) {
-
-				if ( this != &rhs ) {
-					Node *		rootTmp = _root;
-					size_type	sizeTmp = _size;
-
-					_root = rhs._root;
-					_size() = rhs._size();
-
-					rhs._root = rootTmp;
-					rhs._size = sizeTmp;
-				}
-
-				return;
 			}
 
 			iterator	begin() {
@@ -685,7 +505,7 @@ namespace ft {
 
 			const_iterator	begin() const {
 
-				return const_iterator( min(), this->_root ); //invalid read here
+				return const_iterator( min(), this->_root );
 			}
 
 			const_iterator	end() const {

@@ -15,10 +15,10 @@ namespace ft {
 
 		public :
 
-			typedef T const						value_type;
-			typedef std::ptrdiff_t				difference_type;
-			typedef T const	*					pointer;
-			typedef T const	&					reference;
+			typedef T const							value_type;
+			typedef std::ptrdiff_t					difference_type;
+			typedef T const	*						pointer;
+			typedef T const	&						reference;
 			typedef std::random_access_iterator_tag	iterator_category;
 
 		protected :

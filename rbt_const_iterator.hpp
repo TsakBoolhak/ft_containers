@@ -71,7 +71,7 @@ namespace ft {
 			Node *	max( Node *node ) const {
 
 				Node * tmp = node;
-				while (tmp && tmp->_right )
+				while ( tmp && tmp->_right )
 					tmp = tmp->_right;
 				return tmp;
 			}
@@ -79,6 +79,7 @@ namespace ft {
 			rbt_const_iterator &	operator=( rbt_const_iterator const & rhs ) {
 
 				if ( this != &rhs ) {
+
 					this->_current = rhs._current;
 					this->_root = rhs._root;
 				}
@@ -98,7 +99,7 @@ namespace ft {
 					while ( _current->_parent && _current == _current->_parent->_right )
 						_current = _current->_parent;
 					_current = _current->_parent && _current == _current->_parent->_left ?	_current->_parent :
-																		NULL;
+																							NULL;
 				}
 				else
 					_current = NULL;
@@ -117,7 +118,7 @@ namespace ft {
 				if ( _current == NULL && _root )
 					_current = max( _root );
 				else if ( _current->_left )
-					_current = max(_current->_left);
+					_current = max( _current->_left );
 				else if ( _current->_parent && _current == _current->_parent->_right )
 					_current = _current->_parent;
 				else if ( _current->_parent ) {
@@ -125,7 +126,7 @@ namespace ft {
 					while ( _current->_parent && _current == _current->_parent->_left )
 						_current = _current->_parent;
 					_current = _current->_parent && _current == _current->_parent->_right ?	_current->_parent :
-																		NULL;
+																							NULL;
 				}
 				else
 					_current = NULL;
@@ -141,7 +142,7 @@ namespace ft {
 
 			pointer	operator->() const {
 
-				return &(_current->_value);
+				return &( _current->_value );
 			}
 
 			reference	operator*() const{

@@ -20,14 +20,14 @@ namespace ft {
 		}
 
 		template< class U, class V >
-		pair( const pair< U, V > &p ) : first ( p.first ), second ( p.second) {
+		pair( const pair< U, V > &p ) : first ( p.first ), second ( p.second ) {
 
 			return;
 		}
 
 		pair &	operator=( const pair & other ) {
 
-			if (this != &other) {
+			if ( this != &other ) {
 
 				this->first = other.first;
 				this->second = other.second;

@@ -26,9 +26,9 @@ namespace ft {
 			typedef typename Allocator::const_reference		const_reference;
 			typedef ft::vector_iterator< T >				iterator;
 			typedef ft::vector_const_iterator< T >			const_iterator;
-			typedef typename Allocator::size_type					size_type;
-			typedef typename Allocator::difference_type				difference_type;
-			typedef T								value_type;
+			typedef typename Allocator::size_type			size_type;
+			typedef typename Allocator::difference_type		difference_type;
+			typedef T										value_type;
 			typedef Allocator								allocator_type;
 			typedef typename Allocator::pointer				pointer;
 			typedef typename Allocator::const_pointer		const_pointer;
@@ -177,10 +177,8 @@ namespace ft {
 
 			void	resize( size_type sz, T c = T() ) {
 
-				if ( sz > size() ) {
-//					reserve( sz );
+				if ( sz > size() )
 					insert( end(), sz - size(), c);
-				}
 				else if (sz < size() )
 					erase( begin() + sz, end() );
 				return ;
@@ -302,7 +300,6 @@ namespace ft {
 				difference_type i = std::distance( begin(), position );
 				insert( position, 1, x );
 				return	iterator( begin() + i );
-//				return position;
 			}
 
 			void	insert( iterator position, size_type n, const T& x ) {
@@ -347,18 +344,8 @@ namespace ft {
 						reserve( _size + n );
 					position = begin() + dist;
 				}
-//				pointer	arrEnd = _array + _size + n - 1;
-//				pointer arrStart = _array + dist + n - 1;
-//				while ( arrEnd != arrStart ) {
-//					_alloc.construct( arrEnd, *( arrEnd - n ) );
-//					_alloc.destroy( arrEnd - n );
-//					arrEnd--;
-//				}
-//				_size += n;
-				for ( size_type i = 0 ; i < n ; ++i, ++first ){
+				for ( size_type i = 0 ; i < n ; ++i, ++first )
 					insert(begin() + dist + i, *(first));
-				}
-//					_alloc.construct( _array + dist + i, *(first++) );
 				return ;
 			}
 
@@ -372,31 +359,13 @@ namespace ft {
 						_alloc.construct( &(*it), *(it + 1) );
 				}
 				_size--;
-				//_alloc.destroy( _array + _size);
 				return position;
 			}
 
 			iterator	erase( iterator first, iterator last ) {
-/*
-				size_type	dist = std::distance( begin(), first );
-				size_type	n = std::distance( first, last );
-				size_type	dist2 = std::distance( last, end() );
 
-				if ( n <= 0 )
-					return end();
-				pointer	arrEnd = _array + dist + n - 1;
-				pointer arrStart = _array + dist;
-				for ( size_type i = 0 ; arrStart != arrEnd ; arrStart++, i++) {
-
-					_alloc.destroy( arrStart );
-					if ( i < dist2 )
-						_alloc.construct( arrStart, *( arrEnd + i ) );
-				}
-				_size -= n;
-				return first;
-				*/
 				iterator ret = first;
-				size_type	distFromBegin = std::distance( begin(), first);
+				size_type	distFromBegin = std::distance( begin(), first );
 				size_type	toMove = std::distance( last, end() );;
 				size_type	dist = std::distance( first, last );
 				if ( dist == 0 )
@@ -404,7 +373,7 @@ namespace ft {
 				for ( ; first != last ; ++first )
 					_alloc.destroy( &(*first) );
 				for ( size_type i = 0 ; i != toMove ; ++i ) {
-					_alloc.construct( _array + distFromBegin + i, *( _array + distFromBegin + dist + i ) );
+					_alloc.construct( _array + distFromBegin + i, *(_array + distFromBegin + dist + i) );
 					_alloc.destroy( _array + distFromBegin + dist + i );
 				}
 				_size -= dist;
@@ -479,10 +448,13 @@ namespace ft {
 
 		return !(x > y);
 	}
+}
 
 /* specialized algorithms */
+namespace std {
+
 	template< class T, class Allocator >
-	void	swap( vector< T, Allocator>& x, vector< T, Allocator >& y ) {
+	void	swap( ft::vector< T, Allocator>& x, ft::vector< T, Allocator >& y ) {
 
 		x.swap( y );
 		return ;

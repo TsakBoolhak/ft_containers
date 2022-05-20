@@ -47,7 +47,7 @@ namespace ft {
 
 			void	push( const value_type & x ) {
 
-				c.push_back(x);
+				c.push_back( x );
 			}
 
 			void	pop() {
@@ -55,32 +55,32 @@ namespace ft {
 				c.pop_back();
 			}
 
-			friend bool	operator==( stack< T, Container > const & x, stack< T, Container > const & y) {
+			friend bool	operator==( stack< T, Container > const & x, stack< T, Container > const & y ) {
 
 				return x.c == y.c;
 			}
 
-			friend bool	operator!=( stack< T, Container > const & x, stack< T, Container > const & y) {
+			friend bool	operator!=( stack< T, Container > const & x, stack< T, Container > const & y ) {
 
 				return x.c != y.c;
 			}
 
-			friend bool	operator<=( stack< T, Container > const & x, stack< T, Container > const & y) {
+			friend bool	operator<=( stack< T, Container > const & x, stack< T, Container > const & y ) {
 
 				return x.c <= y.c;
 			}
 
-			friend bool	operator>=( stack< T, Container > const & x, stack< T, Container > const & y) {
+			friend bool	operator>=( stack< T, Container > const & x, stack< T, Container > const & y ) {
 
 				return x.c >= y.c;
 			}
 
-			friend bool	operator<( stack< T, Container > const & x, stack< T, Container > const & y) {
+			friend bool	operator<( stack< T, Container > const & x, stack< T, Container > const & y ) {
 
 				return x.c < y.c;
 			}
 
-			friend bool	operator>( stack< T, Container > const & x, stack< T, Container > const & y) {
+			friend bool	operator>( stack< T, Container > const & x, stack< T, Container > const & y ) {
 
 				return x.c > y.c;
 			}

@@ -23,7 +23,7 @@ namespace ft {
 
 			typedef Key										key_type;
 			typedef T										mapped_type;
-			typedef ft::pair< const Key, T >						value_type;
+			typedef ft::pair< const Key, T >				value_type;
 			typedef Compare									key_compare;
 			typedef Allocator								allocator_type;
 			typedef typename Allocator::reference			reference;
@@ -40,7 +40,7 @@ namespace ft {
 				protected :
 
 					Compare	comp;
-					value_compare( Compare c  ) : comp ( c ) {
+					value_compare( Compare c ) : comp ( c ) {
 
 						return ;
 					}
@@ -67,15 +67,15 @@ namespace ft {
 			key_compare		_keyComp;
 			RBTree			_tree;
 
-			bool	isEqual( Key const & x, Key const & y) const {
+			bool	isEqual( Key const & x, Key const & y ) const {
 
-				return _keyComp(x, y) == _keyComp(y, x);
+				return _keyComp( x, y ) == _keyComp( y, x );
 			}
 
 		public :
 
 //	construct/copy/destroy
-			explicit	map( Compare const & comp = Compare(), Allocator const & alloc = Allocator() ) : _alloc ( alloc ), _keyComp (comp) {
+			explicit	map( Compare const & comp = Compare(), Allocator const & alloc = Allocator() ) : _alloc ( alloc ), _keyComp ( comp ) {
 
 				return ;
 			}
@@ -89,7 +89,7 @@ namespace ft {
 
 			map( map< Key, T, Compare, Allocator> const & x ) : _alloc ( x._alloc ), _keyComp ( x._keyComp ) {
 
-				insert(x.begin(), x.end());
+				insert( x.begin(), x.end() );
 				return ;
 			}
 
@@ -167,24 +167,24 @@ namespace ft {
 //	elements access
 			T&	operator[]( key_type const & x ) {
 
-				return insert(ft::make_pair( x, T () )).first->second;
+				return insert( ft::make_pair( x, T () ) ).first->second;
 			}
 
 //	modifiers
 			ft::pair< iterator, bool >	insert( value_type const & x ) {
 
-				return _tree.insert(x);
+				return _tree.insert( x );
 			}
 
 			iterator	insert( iterator position, value_type const & x ) {
 
-				return _tree.insert( position, x);
+				return _tree.insert( position, x );
 			}
 
 			template< class InputIterator >
 			void	insert( InputIterator first, InputIterator last ) {
 
-				return _tree.insert(first, last);
+				return _tree.insert( first, last );
 			}
 
 			void	erase( iterator position ) {
@@ -199,7 +199,7 @@ namespace ft {
 				if ( it == end() )
 					return 0;
 				else
-					return _tree.erase(it.getCurrent());
+					return _tree.erase( it.getCurrent() );
 			}
 
 			void	erase( iterator first, iterator last ) {
@@ -219,7 +219,7 @@ namespace ft {
 					Node *		rootTmp = _tree.getRoot();
 					size_type	sizeTmp = _tree.size();
 
-					_tree.setRoot(rhs._tree.getRoot());
+					_tree.setRoot( rhs._tree.getRoot() );
 					_tree.setSize( rhs._tree.size());
 
 					rhs._tree.setRoot( rootTmp );
@@ -245,15 +245,20 @@ namespace ft {
 				return value_compare( _keyComp ) ;
 			}
 
+			allocator_type	get_allocator() const {
+
+				return _alloc;
+			}
+
 //	map operations
 
 			iterator	find( key_type const & x ) {
 
 				Node * tmp = _tree.getRoot();
 
-				while ( tmp && !isEqual(tmp->_value.first, x) ) {
+				while ( tmp && !isEqual( tmp->_value.first, x ) ) {
 
-					if ( _keyComp(x, tmp->_value.first) )
+					if ( _keyComp( x, tmp->_value.first ) )
 						tmp = tmp->_left;
 					else
 						tmp = tmp->_right;
@@ -265,9 +270,9 @@ namespace ft {
 
 				Node * tmp = _tree.getRoot();
 
-				while ( tmp && !isEqual(tmp->_value.first, x) ) {
+				while ( tmp && !isEqual( tmp->_value.first, x ) ) {
 
-					if ( _keyComp(x, tmp->_value.first) )
+					if ( _keyComp( x, tmp->_value.first ) )
 						tmp = tmp->_left;
 					else
 						tmp = tmp->_right;
@@ -286,27 +291,20 @@ namespace ft {
 
 				if ( _tree.getRoot() == NULL )
 					return _tree.end();
-				else if ( isEqual(_tree.getRoot()->_value.first, x) ) {
-
+				else if ( isEqual( _tree.getRoot()->_value.first, x ) )
 					return iterator( _tree.getRoot() );
-				}
 				else if ( _keyComp(_tree.getRoot()->_value.first, x) ) {
 
 					reverse_iterator it = _tree.rbegin();
 					for ( reverse_iterator ite = _tree.rend() ; it != ite ; ++it ) {
 
 						if ( isEqual( it->first, x ) ){
+
 							it++;
 							return iterator( it.base() );
 						}
-						else if ( _keyComp( it->first, x ) ) {
-//							--it;
-//							if (it == rend()){
-//								std::cout << "CACA test" << std::endl;
-//								it++;
-//								}
-							return iterator(it.base());
-						}
+						else if ( _keyComp( it->first, x ) )
+							return iterator( it.base() );
 					}
 				}
 				else {
@@ -325,27 +323,20 @@ namespace ft {
 
 				if ( _tree.getRoot() == NULL )
 					return _tree.end();
-				else if ( isEqual(_tree.getRoot()->_value.first, x) ) {
-
+				else if ( isEqual(_tree.getRoot()->_value.first, x) )
 					return const_iterator( _tree.getRoot() );
-				}
 				else if ( _keyComp(_tree.getRoot()->_value.first, x) ) {
-//					std::cout << "x is higher" << std::endl;
 
 					const_reverse_iterator it = _tree.rbegin();
 					for ( const_reverse_iterator ite = _tree.rend() ; it != ite ; it++ ) {
 
 						if ( isEqual( it->first, x ) ) {
-//							std::cout << "x found" << std::endl;
+
 							it++;
 							return const_iterator( it.base() );
 						}
-						else if ( _keyComp( it->first, x ) ) {
-//							it--;
-//							if (it == rend())
-//								it++;
+						else if ( _keyComp( it->first, x ) )
 							return const_iterator(it.base());
-						}
 					}
 				}
 				else {
@@ -357,7 +348,6 @@ namespace ft {
 							return it;
 					}
 				}
-				std::cout << "LOL" << std::endl;
 				return _tree.end();
 			}
 
@@ -420,7 +410,7 @@ namespace ft {
 	template< class Key, class T, class Compare, class Allocator >
 	bool	operator>( map< Key, T, Compare, Allocator > const & x, map< Key, T, Compare, Allocator> const & y ) {
 
-		return !(x <= y);
+		return !( x <= y );
 	}
 
 	template< class Key, class T, class Compare, class Allocator >
@@ -437,12 +427,12 @@ namespace ft {
 
 }
 
-namespace std {
 // specialized algorithms
+namespace std {
 	template< class Key, class T, class Compare, class Allocator >
 	void	swap( ft::map< Key, T, Compare, Allocator > & x, ft::map< Key, T, Compare, Allocator > & y ) {
 
-		x.swap(y);
+		x.swap( y );
 		return ;
 	}
 }

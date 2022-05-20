@@ -6,7 +6,6 @@
 # include "rbt_const_iterator.hpp"
 # include "rbt_node.hpp"
 
-#include <iostream>
 namespace ft {
 
 	template< typename T >
@@ -74,11 +73,13 @@ namespace ft {
 			rbt_iterator &	operator=( rbt_iterator const & rhs ) {
 
 				if ( this != &rhs ) {
+
 					this->_current = rhs._current;
 					this->_root = rhs._root;
 				}
 				return *this;
 			}
+
 			rbt_iterator &	operator++() {
 
 				if ( _current == NULL ) {
@@ -98,7 +99,7 @@ namespace ft {
 					while ( _current->_parent && _current == _current->_parent->_right )
 						_current = _current->_parent;
 					_current = _current->_parent && _current == _current->_parent->_left ?	_current->_parent :
-					NULL;
+																							NULL;
 				}
 				else{
 					_current = NULL;
@@ -126,7 +127,7 @@ namespace ft {
 					while ( _current->_parent && _current == _current->_parent->_left )
 						_current = _current->_parent;
 					_current = _current->_parent && _current == _current->_parent->_right ?	_current->_parent :
-																		NULL;
+																							NULL;
 				}
 				else
 					_current = NULL;
@@ -160,19 +161,6 @@ namespace ft {
 				return _current != rhs._current;
 			}
 	};
-/*
-	template< typename T, typename U >
-	bool	operator==( ft::rbt_con_iterator< T > const & x, ft::rbt_const_iterator< U > const & y ) {
-
-		return x.getCurrent() == y.getCurrent();
-	}
-
-	template< typename T, typename U >
-	bool	operator!=( ft::rbt_const_iterator< T > const & x, ft::rbt_const_iterator< U > const & y ) {
-
-		return x.getCurrent() != y.getCurrent();
-	}
-*/
 }
 
 #endif

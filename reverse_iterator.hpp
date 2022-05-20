@@ -17,7 +17,7 @@ namespace ft {
 			typedef typename traits::value_type			value_type;
 			typedef typename traits::difference_type	difference_type;
 			typedef typename traits::pointer			pointer;
-			typedef typename traits::reference	reference;
+			typedef typename traits::reference			reference;
 
 		protected :
 
