@@ -353,8 +353,10 @@ namespace ft {
 
 			RBTree &	operator=( RBTree const & rhs ) {
 
-				clear();
-				insert(rhs.begin(), rhs.end());
+				if ( this != &rhs ) {
+					clear();
+					insert(rhs.begin(), rhs.end());
+				}
 				return *this;
 			}
 
@@ -403,6 +405,13 @@ namespace ft {
 			}
 
 			iterator	insert( iterator position, T const & newValue ) {
+
+				(void)position;
+				return insert( newValue ).first;
+				
+			}
+
+			iterator	insert( const_iterator position, T const & newValue ) {
 
 				(void)position;
 				return insert( newValue ).first;
