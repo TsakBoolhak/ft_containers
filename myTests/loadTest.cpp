@@ -3,7 +3,8 @@
 #include <iostream>
 #include <sys/wait.h>
 #include <sys/types.h>
-#include <cunistd>
+#include <unistd.h>
+#include <stdlib.h>
 #include "loadTest.hpp"
 
 #define COLOR_DEFAULT "\e[0m"
@@ -12,12 +13,12 @@
 #define COLOR_GREEN "\e[0;32m"
 #define COLOR_RED "\e[0;31m"
 
-		TestObj::TestObj( std::string const &testName, std::string const & funcName, bool (*testFunc)() ) : testName ( testName ) , funcName ( funcName ), status ( 0 ), testFunc ( testFunc ) {}
+		TestObj::TestObj( std::string const &testName, std::string const & funcName, int (*testFunc)() ) : testName ( testName ) , funcName ( funcName ), status ( 0 ), testFunc ( testFunc ) {}
 
 //accessors
-		std::string const & TestObj::getTestName() const { return testName }
-		std::string const & TestObj::getFuncName() const { return testName }
-		int					TestObj::getStatus() const { return status }
+		std::string const & TestObj::getTestName() const { return testName; }
+		std::string const & TestObj::getFuncName() const { return funcName; }
+		int					TestObj::getStatus() const { return status; }
 
 //modifiers
 		void				TestObj::setTestName( std::string const & name ) { testName = name; }
@@ -47,6 +48,10 @@ void	checkIfTestCrashed( TestObj & currentTest ) {
 		else
 			std::cout << COLOR_RED << "Interrupted by a signal" << COLOR_DEFAULT << std::endl;
 	}
+	else if ( WIFEXITED( currentTest.getStatus() ) ) {
+
+		std::cout << "exit status : " << WEXITSTATUS( currentTest.getStatus() ) << std::endl;
+	}
 }
 
 void	forkAndTest( TestObj & currentTest ) {
@@ -61,7 +66,7 @@ void	forkAndTest( TestObj & currentTest ) {
 		else if ( !pid ) {
 
 			std::cout << COLOR_YELLOW << currentTest.getFuncName() << COLOR_DEFAULT << ":" << COLOR_BLUE << currentTest.getTestName() << COLOR_DEFAULT << ":" << std::endl;
-			currentTest->testFunc();
+			currentTest.testFunc();
 			exit(0);
 		}
 		else

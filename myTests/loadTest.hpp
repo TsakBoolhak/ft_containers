@@ -13,12 +13,12 @@ class	TestObj {
 
 		int			(*testFunc)();
 
-		TestObj( std::string const &testName, std::string const & funcName, bool (*testFunc)() );
+		TestObj( std::string const &testName, std::string const & funcName, int (*testFunc)() );
 
 //accessors
-		std::string const & getTestName();
-		std::string const & getFuncName();
-		int					getStatus();
+		std::string const & getTestName() const;
+		std::string const & getFuncName() const;
+		int					getStatus() const;
 //modifiers
 		void				setTestName( std::string const & name );
 		void				setFuncName( std::string const & name );
