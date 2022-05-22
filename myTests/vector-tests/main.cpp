@@ -10,5 +10,6 @@ int	main()
 	at_launcher();
 	back_launcher();
 	begin_launcher();
+	capacity_launcher();
 	return 0;
 }

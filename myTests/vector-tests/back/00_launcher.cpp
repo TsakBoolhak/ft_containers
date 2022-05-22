@@ -7,8 +7,8 @@ void	back_launcher() {
 
 	std::list< TestObj > testList;
 
-	loadTest(testList, "Back", "Single element", &singleElem );
-	loadTest(testList, "Back", "Several elements", &severalElem );
+	loadTest(testList, "Back", "Single element", &back_singleElem );
+	loadTest(testList, "Back", "Several elements", &back_severalElem );
 	loadTest(testList, "Back", "Several elements", &back_ConstAndNonConst );
 	launchTests(testList);
 }

@@ -22,6 +22,19 @@ SRCS		=	main.cpp \
 				begin/01_basic.cpp \
 				begin/02_beginEqualEnd.cpp \
 				begin/03_constAndNonConst.cpp \
+				capacity/00_launcher.cpp \
+				capacity/01_empty.cpp \
+				capacity/02_singleElem.cpp \
+				capacity/03_twoElem.cpp \
+				capacity/04_threeElem.cpp \
+				capacity/05_fiveElem.cpp \
+				capacity/06_copyCtor.cpp \
+				capacity/07_assignFill.cpp \
+				capacity/08_assignRange.cpp \
+				capacity/09_assignOperatorNotEnoughSpace.cpp \
+				capacity/10_assignOperatorEnoughSpace.cpp \
+				capacity/11_resizeLarger.cpp \
+				capacity/12_resizeShorter.cpp \
 				../loadTest.cpp
 
 OBJS		= ${SRCS:.cpp=.o}
@@ -55,7 +68,7 @@ test:
 	./${NAME}_mine
 	./${NAME}_real > realOutput
 	./${NAME}_mine > myOutput
-	diff --ignore-matching-lines="Testing namespace" ./realOutput ./myOutput > log
+	-diff --ignore-matching-lines="Testing namespace" ./realOutput ./myOutput > log
 
 all:
 	$(MAKE) -j $(NAME)

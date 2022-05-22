@@ -30,13 +30,27 @@ int		at_indexOnEmptyVec();
 int		at_ConstAndNonConst();
 
 void	back_launcher();
-int		singleElem();
-int		severalElem();
+int		back_singleElem();
+int		back_severalElem();
 int		back_ConstAndNonConst();
 
 void	begin_launcher();
 int		begin_basic();
 int		begin_equalEnd();
 int		begin_ConstAndNonConst();
+
+void	capacity_launcher();
+int		capacity_empty();
+int		capacity_singleElem();
+int		capacity_twoElem();
+int		capacity_threeElem();
+int		capacity_fiveElem();
+int		capacity_copyCtor();
+int		capacity_assignFill();
+int		capacity_assignRange();
+int		capacity_assignOperatorNotEnoughSpace();
+int		capacity_assignOperatorEnoughSpace();
+int		capacity_resizeLarger();
+int		capacity_resizeShorter();
 
 #endif
