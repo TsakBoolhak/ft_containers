@@ -6,6 +6,22 @@ SRCS		=	main.cpp \
 				constructors/04_fillIntCtor.cpp \
 				constructors/05_rangeIntCtor.cpp \
 				constructors/06_copyIntCtor.cpp \
+				assign/00_launcher.cpp \
+				assign/01_fillAssign.cpp \
+				assign/02_rangeAssign.cpp \
+				at/00_launcher.cpp \
+				at/01_validIndex.cpp \
+				at/02_outOfBoundIndex.cpp \
+				at/03_indexOnEmptyVec.cpp \
+				at/04_constAndNonConst.cpp \
+				back/00_launcher.cpp \
+				back/01_singleElem.cpp \
+				back/02_severalElem.cpp \
+				back/03_constAndNonConst.cpp \
+				begin/00_launcher.cpp \
+				begin/01_basic.cpp \
+				begin/02_beginEqualEnd.cpp \
+				begin/03_constAndNonConst.cpp \
 				../loadTest.cpp
 
 OBJS		= ${SRCS:.cpp=.o}

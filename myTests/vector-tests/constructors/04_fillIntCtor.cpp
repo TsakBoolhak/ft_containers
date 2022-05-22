@@ -1,5 +1,4 @@
 #include "vectorTests.hpp"
-#include <string>
 #include <iostream>
 
 int	fillIntCtor() {

@@ -13,6 +13,5 @@ void	constructor_launcher() {
 	loadTest(testList, "Constructors", "Fill int Ctor", &fillIntCtor);
 	loadTest(testList, "Constructors", "Range int Ctor", &rangeIntCtor);
 	loadTest(testList, "Constructors", "Copy int Ctor", &copyIntCtor);
-	std::cout << COLOR_RED << "Testing namespace " << COLOR_GREEN << VERSION << COLOR_DEFAULT << std::endl;
 	launchTests(testList);
 }
