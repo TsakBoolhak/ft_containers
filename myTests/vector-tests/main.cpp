@@ -15,5 +15,7 @@ int	main()
 	empty_launcher();
 	end_launcher();
 	erase_launcher();
+	front_launcher();
+	getAllocator_launcher();
 	return 0;
 }

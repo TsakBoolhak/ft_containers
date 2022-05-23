@@ -52,6 +52,11 @@ SRCS		=	main.cpp \
 				erase/00_launcher.cpp \
 				erase/01_singleElem.cpp \
 				erase/02_range.cpp \
+				front/00_launcher.cpp \
+				front/01_basic.cpp \
+				front/02_vecOfVec.cpp \
+				getAllocator/00_launcher.cpp \
+				getAllocator/01_basic.cpp \
 				../loadTest.cpp
 
 OBJS		= ${SRCS:.cpp=.o}
@@ -94,7 +99,7 @@ clean:
 	${RM} ${OBJS} ${DEP}
 
 fclean:			clean
-	${RM} ${NAME} ${NAME}_mine ${NAME}_real log realOutput myOutput
+	${RM} ${NAME} ${NAME}_mine ${NAME}_real vector.log realOutput myOutput
 
 re:				fclean all
 

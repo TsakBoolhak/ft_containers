@@ -74,4 +74,10 @@ void	erase_launcher();
 int		erase_singleElem();
 int		erase_range();
 
+void	front_launcher();
+int		front_basic();
+int		front_vecOfVec();
+
+void	getAllocator_launcher();
+int		getAllocator_basic();
 #endif
