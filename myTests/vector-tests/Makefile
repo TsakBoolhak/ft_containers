@@ -35,6 +35,23 @@ SRCS		=	main.cpp \
 				capacity/10_assignOperatorEnoughSpace.cpp \
 				capacity/11_resizeLarger.cpp \
 				capacity/12_resizeShorter.cpp \
+				clear/00_launcher.cpp \
+				clear/01_basic.cpp \
+				clear/02_empty.cpp \
+				clear/03_vecOfVec.cpp \
+				clear/04_doubleClear.cpp \
+				clear/05_pushBackAfterClear.cpp \
+				empty/00_launcher.cpp \
+				empty/01_emptyVec.cpp \
+				empty/02_filledVec.cpp \
+				empty/03_clearedVec.cpp \
+				empty/04_clearedAndRefilledVec.cpp \
+				end/00_launcher.cpp \
+				end/01_basic.cpp \
+				end/02_constAndNonConst.cpp \
+				erase/00_launcher.cpp \
+				erase/01_singleElem.cpp \
+				erase/02_range.cpp \
 				../loadTest.cpp
 
 OBJS		= ${SRCS:.cpp=.o}
@@ -68,7 +85,7 @@ test:
 	./${NAME}_mine
 	./${NAME}_real > realOutput
 	./${NAME}_mine > myOutput
-	-diff --ignore-matching-lines="Testing namespace" ./realOutput ./myOutput > log
+	-diff --ignore-matching-lines="Testing namespace" ./realOutput ./myOutput > vector.log
 
 all:
 	$(MAKE) -j $(NAME)

@@ -53,4 +53,25 @@ int		capacity_assignOperatorEnoughSpace();
 int		capacity_resizeLarger();
 int		capacity_resizeShorter();
 
+void	clear_launcher();
+int		clear_basic();
+int		clear_empty();
+int		clear_vecOfVec();
+int		clear_doubleClear();
+int		clear_pushBackAfterClear();
+
+void	empty_launcher();
+int		empty_emptyVec();
+int		empty_filledVec();
+int		empty_clearedVec();
+int		empty_clearedAndRefilledVec();
+
+void	end_launcher();
+int		end_basic();
+int		end_constAndNonConst();
+
+void	erase_launcher();
+int		erase_singleElem();
+int		erase_range();
+
 #endif

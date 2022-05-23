@@ -11,5 +11,9 @@ int	main()
 	back_launcher();
 	begin_launcher();
 	capacity_launcher();
+	clear_launcher();
+	empty_launcher();
+	end_launcher();
+	erase_launcher();
 	return 0;
 }
