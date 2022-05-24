@@ -22,5 +22,8 @@ int	main()
 	operatorEqual_launcher();
 	operatorBracket_launcher();
 	popBack_launcher();
+	pushBack_launcher();
+	rbegin_launcher();
+	rend_launcher();
 	return 0;
 }

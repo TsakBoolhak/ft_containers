@@ -74,6 +74,15 @@ SRCS		=	main.cpp \
 				popBack/00_launcher.cpp \
 				popBack/01_basic.cpp \
 				popBack/02_otherTests.cpp \
+				pushBack/00_launcher.cpp \
+				pushBack/01_basic.cpp \
+				rbegin/00_launcher.cpp \
+				rbegin/01_basic.cpp \
+				rbegin/02_equalRend.cpp \
+				rbegin/03_constAndNonConst.cpp \
+				rend/00_launcher.cpp \
+				rend/01_basic.cpp \
+				rend/02_constAndNonConst.cpp \
 				../loadTest.cpp
 
 OBJS		= ${SRCS:.cpp=.o}

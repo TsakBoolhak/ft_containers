@@ -103,4 +103,16 @@ void	popBack_launcher();
 int		popBack_basic();
 int		popBack_otherTests();
 
+void	pushBack_launcher();
+int		pushBack_basic();
+
+void	rbegin_launcher();
+int		rbegin_basic();
+int		rbegin_equalRend();
+int		rbegin_constAndNonConst();
+
+void	rend_launcher();
+int		rend_basic();
+int		rend_constAndNonConst();
+
 #endif
