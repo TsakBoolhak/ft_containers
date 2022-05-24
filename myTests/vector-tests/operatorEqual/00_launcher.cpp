@@ -3,11 +3,10 @@
 #include <iostream>
 #include <list>
 
-void	assign_launcher() {
+void	operatorEqual_launcher() {
 
 	std::list< TestObj > testList;
 
-	loadTest(testList, "Assign", "Fill assign", &fillAssign);
-	loadTest(testList, "Assign", "Range assign", &rangeAssign);
+	loadTest(testList, "operator =", "Valid index", &operatorEqual_basic );
 	launchTests(testList);
 }

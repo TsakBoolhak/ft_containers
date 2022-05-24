@@ -80,4 +80,27 @@ int		front_vecOfVec();
 
 void	getAllocator_launcher();
 int		getAllocator_basic();
+
+void	insert_launcher();
+int		insert_singleElem();
+int		insert_fill();
+int		insert_range();
+int		insert_mix();
+
+void	maxSize_launcher();
+int		maxSize_intVec();
+int		maxSize_charVec();
+int		maxSize_stringVec();
+
+void	operatorEqual_launcher();
+int		operatorEqual_basic();
+
+void	operatorBracket_launcher();
+int		operatorBracket_basic();
+int		operatorBracket_outOfBoundIndex();
+
+void	popBack_launcher();
+int		popBack_basic();
+int		popBack_otherTests();
+
 #endif

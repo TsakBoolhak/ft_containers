@@ -17,5 +17,10 @@ int	main()
 	erase_launcher();
 	front_launcher();
 	getAllocator_launcher();
+	insert_launcher();
+	maxSize_launcher();
+	operatorEqual_launcher();
+	operatorBracket_launcher();
+	popBack_launcher();
 	return 0;
 }

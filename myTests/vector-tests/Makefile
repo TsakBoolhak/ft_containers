@@ -57,6 +57,23 @@ SRCS		=	main.cpp \
 				front/02_vecOfVec.cpp \
 				getAllocator/00_launcher.cpp \
 				getAllocator/01_basic.cpp \
+				insert/00_launcher.cpp \
+				insert/01_singleElem.cpp \
+				insert/02_fill.cpp \
+				insert/03_range.cpp \
+				insert/04_mix.cpp \
+				maxSize/00_launcher.cpp \
+				maxSize/01_intVec.cpp \
+				maxSize/02_charVec.cpp \
+				maxSize/03_stringVec.cpp \
+				operatorEqual/00_launcher.cpp \
+				operatorEqual/01_basic.cpp \
+				operatorBracket/00_launcher.cpp \
+				operatorBracket/01_basic.cpp \
+				operatorBracket/02_outOfBoundIndex.cpp \
+				popBack/00_launcher.cpp \
+				popBack/01_basic.cpp \
+				popBack/02_otherTests.cpp \
 				../loadTest.cpp
 
 OBJS		= ${SRCS:.cpp=.o}
