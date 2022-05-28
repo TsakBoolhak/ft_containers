@@ -1,6 +1,18 @@
 SRCS		=	main.cpp \
 				constructor/00_launcher.cpp \
 				constructor/01_basic.cpp \
+				empty/00_launcher.cpp \
+				empty/01_basic.cpp \
+				pop/00_launcher.cpp \
+				pop/01_basic.cpp \
+				push/00_launcher.cpp \
+				push/01_basic.cpp \
+				size/00_launcher.cpp \
+				size/01_basic.cpp \
+				top/00_launcher.cpp \
+				top/01_basic.cpp \
+				relationalOperators/00_launcher.cpp \
+				relationalOperators/01_basic.cpp \
 				../loadTest.cpp
 
 OBJS		= ${SRCS:.cpp=.o}

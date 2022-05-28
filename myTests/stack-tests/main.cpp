@@ -5,7 +5,7 @@
 #include <string>
 #include <deque>
 
-#define TEST_NB 1
+#define TEST_NB 7
 
 typedef void (*functionPointer)();
 
@@ -14,11 +14,22 @@ void	myToLower( char & c ) { c = std::tolower(c); }
 int	main( int ac, char **av ) {
 
 	std::deque< functionPointer > funcList;
-
 	funcList.push_back( constructor_launcher );
+	funcList.push_back( empty_launcher );
+	funcList.push_back( pop_launcher );
+	funcList.push_back( push_launcher );
+	funcList.push_back( size_launcher );
+	funcList.push_back( top_launcher );
+	funcList.push_back( relationalOperators_launcher );
 
 	std::deque< std::string > funcNames;
 	funcNames.push_back("constructor");
+	funcNames.push_back("empty");
+	funcNames.push_back("pop");
+	funcNames.push_back("push");
+	funcNames.push_back("size");
+	funcNames.push_back("top");
+	funcNames.push_back("relational");
 
 	std::deque< bool >	launch;
 	if ( ac == 1 )
