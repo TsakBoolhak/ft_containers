@@ -83,6 +83,12 @@ SRCS		=	main.cpp \
 				rend/00_launcher.cpp \
 				rend/01_basic.cpp \
 				rend/02_constAndNonConst.cpp \
+				reserve/00_launcher.cpp \
+				reserve/01_basic.cpp \
+				reserve/02_lengthError.cpp \
+				reserve/03_badAlloc.cpp \
+				resize/00_launcher.cpp \
+				resize/01_basic.cpp \
 				../loadTest.cpp
 
 OBJS		= ${SRCS:.cpp=.o}

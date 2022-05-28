@@ -115,4 +115,12 @@ void	rend_launcher();
 int		rend_basic();
 int		rend_constAndNonConst();
 
+void	reserve_launcher();
+int		reserve_basic();
+int		reserve_lengthError();
+int		reserve_badAlloc();
+
+void	resize_launcher();
+int		resize_basic();
+
 #endif
