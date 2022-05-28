@@ -89,6 +89,14 @@ SRCS		=	main.cpp \
 				reserve/03_badAlloc.cpp \
 				resize/00_launcher.cpp \
 				resize/01_basic.cpp \
+				size/00_launcher.cpp \
+				size/01_basic.cpp \
+				swap/00_launcher.cpp \
+				swap/01_basic.cpp \
+				relationalOperators/00_launcher.cpp \
+				relationalOperators/01_basic.cpp \
+				swapOverload/00_launcher.cpp \
+				swapOverload/01_basic.cpp \
 				../loadTest.cpp
 
 OBJS		= ${SRCS:.cpp=.o}

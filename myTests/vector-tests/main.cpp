@@ -5,7 +5,7 @@
 #include <string>
 #include <deque>
 
-#define TEST_NB 22
+#define TEST_NB 26
 
 typedef void (*functionPointer)();
 
@@ -37,6 +37,10 @@ int	main( int ac, char **av ) {
 	funcList.push_back(rend_launcher );
 	funcList.push_back(reserve_launcher );
 	funcList.push_back(resize_launcher );
+	funcList.push_back(size_launcher );
+	funcList.push_back(swap_launcher );
+	funcList.push_back(relationalOperator_launcher);
+	funcList.push_back(swapOverload_launcher );
 
 	std::deque< bool >	launch ( TEST_NB, false );
 
@@ -63,6 +67,10 @@ int	main( int ac, char **av ) {
 	funcNames.push_back("rend");
 	funcNames.push_back("reserve");
 	funcNames.push_back("resize");
+	funcNames.push_back("size");
+	funcNames.push_back("swap");
+	funcNames.push_back("relational");
+	funcNames.push_back("swapoverload");
 	if ( ac == 1 )
 		launch = std::deque< bool > ( TEST_NB, true );
 

@@ -123,4 +123,16 @@ int		reserve_badAlloc();
 void	resize_launcher();
 int		resize_basic();
 
+void	size_launcher();
+int		size_basic();
+
+void	swap_launcher();
+int		swap_basic();
+
+void	relationalOperator_launcher();
+int		relationalOperator_basic();
+
+void	swapOverload_launcher();
+int		swapOverload_basic();
+
 #endif
