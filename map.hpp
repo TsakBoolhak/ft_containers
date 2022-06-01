@@ -75,19 +75,19 @@ namespace ft {
 		public :
 
 //	construct/copy/destroy
-			explicit	map( Compare const & comp = Compare(), Allocator const & alloc = Allocator() ) : _alloc ( alloc ), _keyComp ( comp ) {
+			explicit	map( Compare const & comp = Compare(), Allocator const & alloc = Allocator() ) : _alloc ( alloc ), _keyComp ( comp ), _tree (RBTree (value_compare(comp))) {
 
 				return ;
 			}
 
 			template < class InputIterator >
-			map( InputIterator first, InputIterator last, Compare const & comp = Compare(), Allocator const & alloc = Allocator() ) : _alloc ( alloc ), _keyComp ( comp ) {
+			map( InputIterator first, InputIterator last, Compare const & comp = Compare(), Allocator const & alloc = Allocator() ) : _alloc ( alloc ), _keyComp ( comp ), _tree (RBTree (value_compare(comp))) {
 
 				insert( first, last );
 				return ;
 			}
 
-			map( map< Key, T, Compare, Allocator> const & x ) : _alloc ( x._alloc ), _keyComp ( x._keyComp ) {
+			map( map< Key, T, Compare, Allocator> const & x ) : _alloc ( x._alloc ), _keyComp ( x._keyComp ), _tree (RBTree (value_compare(x._keyComp))) {
 
 				insert( x.begin(), x.end() );
 				return ;

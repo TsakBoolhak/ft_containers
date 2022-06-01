@@ -9,7 +9,7 @@
 
 namespace ft {
 
-	template < class T, class Key_Compare = std::less<T>, class Allocator = std::allocator< T > >
+	template < class T, class Key_Compare, class Allocator = std::allocator< T > >
 	class RBTree {
 
 		public :
@@ -340,7 +340,7 @@ namespace ft {
 
 		public :
 
-			RBTree() : _root ( NULL ), _size ( 0 ), _alloc ( allocator_type() ), _nodeAlloc ( node_allocator_type() ), _comp ( key_compare() ) {
+			RBTree( key_compare const & comp = key_compare()) : _root ( NULL ), _size ( 0 ), _alloc ( allocator_type() ), _nodeAlloc ( node_allocator_type() ), _comp ( comp ) {
 
 				return ;
 			}
