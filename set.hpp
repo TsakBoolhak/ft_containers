@@ -54,19 +54,19 @@ namespace ft {
 		public :
 
 //	construct/copy/destroy
-			explicit	set( Compare const & comp = Compare(), Allocator const & alloc = Allocator() ) : _alloc ( alloc ), _keyComp ( comp ) {
+			explicit	set( Compare const & comp = Compare(), Allocator const & alloc = Allocator() ) : _alloc ( alloc ), _keyComp ( comp ), _tree ( RBTree (comp) ) {
 
 				return ;
 			}
 
 			template < class InputIterator >
-			set( InputIterator first, InputIterator last, Compare const & comp = Compare(), Allocator const & alloc = Allocator() ) : _alloc ( alloc ), _keyComp ( comp ) {
+			set( InputIterator first, InputIterator last, Compare const & comp = Compare(), Allocator const & alloc = Allocator() ) : _alloc ( alloc ), _keyComp ( comp ), _tree ( RBTree (comp) ) {
 
 				insert( first, last );
 				return ;
 			}
 
-			set( set< Key, Compare, Allocator> const & x ) : _alloc ( x._alloc ), _keyComp ( x._keyComp ) {
+			set( set< Key, Compare, Allocator> const & x ) : _alloc ( x._alloc ), _keyComp ( x._keyComp ), _tree ( RBTree (x._keyComp) ) {
 
 				insert( x.begin(), x.end() );
 				return ;
