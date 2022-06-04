@@ -13,9 +13,11 @@ SRCS		=	main.cpp \
 				top/01_basic.cpp \
 				relationalOperators/00_launcher.cpp \
 				relationalOperators/01_basic.cpp \
-				../loadTest.cpp
+				loadTest.cpp
 
-OBJS		= ${SRCS:.cpp=.o}
+OBJFOLD		= obj/
+
+OBJS		= ${SRCS:%.cpp=${OBJFOLD}%.o}
 
 DEP			= ${OBJS:.o=.d}
 
@@ -26,36 +28,39 @@ CC			= c++
 
 CFLAGS		= -MMD -Wall -Wextra -Werror -std=c++98 -g3 -I. -I.. -I../..
 
-RM			= rm -f
+RM			= rm -rf
 
-%.o: %.cpp
-	${CC} ${CFLAGS} -c $< -o ${<:.cpp=.o}
+${OBJFOLD}%.o: %.cpp 
+	@mkdir -p ${@D}
+	${CC} ${CFLAGS} -c $< -o $@
 
 ${NAME}:		 ${OBJS}
 	${CC} ${CFLAGS} ${OBJS} -o ${NAME}
-#	${CC} ${CFLAGS} ${OBJS} -o ${NAME}_real
-#	make test
 
 test:
+	mkdir -p ../bin/
 	$(MAKE) re
-	cp ${NAME} ${NAME}_mine
+	cp ${NAME} ../bin/${NAME}_mine
 	$(MAKE) clean
 	$(MAKE) all CFLAGS="-MMD -Wall -Wextra -Werror -std=c++98 -g3 -I. -I.. -I../.. -D STD"
-	cp ${NAME} ${NAME}_real
-	./${NAME}_real
-	./${NAME}_mine
-	./${NAME}_real > realOutput
-	./${NAME}_mine > myOutput
-	-diff --ignore-matching-lines="Testing namespace" ./realOutput ./myOutput > stack.log
+	cp ${NAME} ../bin/${NAME}_real
+	rm ${NAME}
+	../bin/${NAME}_real
+	../bin/${NAME}_mine
+	mkdir -p ../logs
+	../bin/${NAME}_real > ../logs/stack.realOutput
+	../bin/${NAME}_mine > ../logs/stack.myOutput
+	-diff --ignore-matching-lines="Testing namespace" ../logs/stack.realOutput ../logs/stack.myOutput > ../logs/stack.diff
+	
 
 all:
 	$(MAKE) -j $(NAME)
 
 clean:
-	${RM} ${OBJS} ${DEP}
+	${RM} ${OBJFOLD}
 
 fclean:			clean
-	${RM} ${NAME} ${NAME}_mine ${NAME}_real stack.log realOutput myOutput
+	${RM} ${NAME} ../bin/${NAME}_mine ../bin/${NAME}_real ../logs/stack.diff ../logs/stack.realOutput ../logs/stack.myOutput
 
 re:				fclean all
 
